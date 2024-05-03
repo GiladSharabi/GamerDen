@@ -4,9 +4,12 @@ import NotFoundPage from "./components/NotFoundPage";
 import SignUp from "./components/SignUp";
 
 const AppRoutes = () => {
+
+
   return (
     <Routes>
-      <Route path='/' element={<Login />} />
+      <Route index element={<Login />} />
+      <Route path='/login' element={<Login />} />
       <Route path='/sign-up' element={<SignUp />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
