@@ -19,7 +19,8 @@ const SignUp = () => {
   // });
 
   const navigate = useNavigate();
-  const handleClickRegister = () => {
+  const handleClickRegister = (e: any) => {
+    e.stopPropogation();
     navigate("/");
   };
 

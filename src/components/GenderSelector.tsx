@@ -9,35 +9,49 @@ export enum Gender {
 const GenderSelector = () => {
   const [gender, setGender] = useState(Gender.None);
 
+  const handleGenderChange = (selectedGender: Gender) => {
+    setGender(selectedGender);
+  };
+
   return (
-    <div>
-      <button
-        onClick={(e) => {
-          setGender(Gender.Male);
-          e.preventDefault();
-        }}
-        className={`rounded-lg px-4 py-2 mr-4 ${
-          gender === Gender.Male
-            ? "bg-blue-500 text-white"
-            : "bg-black text-white"
-        }`}
-      >
-        Male
-      </button>
-      <button
-        onClick={(e) => {
-          setGender(Gender.Female);
-          e.preventDefault();
-        }}
-        className={`rounded-lg px-4 py-2 ${
-          gender === Gender.Female
-            ? "bg-pink-500 text-white"
-            : "bg-black text-white"
-        }`}
-      >
-        Female
-      </button>
-    </div>
+    <>
+      <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+        <input
+          id="bordered-radio-1"
+          type="radio"
+          value={Gender.Male}
+          checked={gender === Gender.Male}
+          name="gender"
+          onChange={() => handleGenderChange(Gender.Male)}
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          required
+        />
+        <label
+          htmlFor="bordered-radio-1"
+          className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        >
+          Male
+        </label>
+      </div>
+      <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+        <input
+          id="bordered-radio-2"
+          type="radio"
+          value={Gender.Female}
+          checked={gender === Gender.Female}
+          name="gender"
+          onChange={() => handleGenderChange(Gender.Female)}
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          required
+        />
+        <label
+          htmlFor="bordered-radio-2"
+          className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        >
+          Female
+        </label>
+      </div>
+    </>
   );
 };
 

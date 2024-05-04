@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 const DateSelector = () => {
+  const hundredYearsAgo = new Date().getFullYear() - 100;
   const days = [...Array(31).keys()].map((i) => i + 1);
   const months = [...Array(12).keys()].map((i) => i + 1);
-  const years = [...Array(101).keys()].map((i) => 1924 + i);
+  const years = [...Array(101).keys()].map((i) => hundredYearsAgo + i);
 
   const [day, setDay] = useState(0);
   const [month, setMonth] = useState(0);
@@ -16,6 +17,7 @@ const DateSelector = () => {
         value={day}
         onChange={(e) => setDay(parseInt(e.target.value))}
         className="border rounded p-2"
+        required
       >
         <option value="">Day</option>
         {days.map((day) => (
@@ -28,6 +30,7 @@ const DateSelector = () => {
         value={month}
         onChange={(e) => setMonth(parseInt(e.target.value))}
         className="border rounded p-2"
+        required
       >
         <option value="">Month</option>
         {months.map((month) => (
@@ -40,6 +43,7 @@ const DateSelector = () => {
         value={year}
         onChange={(e) => setYear(parseInt(e.target.value))}
         className="border rounded p-2"
+        required
       >
         <option value="">Year</option>
         {years.map((year) => (
