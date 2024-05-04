@@ -1,16 +1,8 @@
-// CountrySelector.tsx
-import React from "react";
+import { useState } from "react";
 
-interface CountrySelectorProps {
-  country: string;
-  onCountryChange: (value: string) => void;
-}
+const CountrySelector = () => {
+  const [country, setCountry] = useState("");
 
-const CountrySelector: React.FC<CountrySelectorProps> = ({
-  country,
-  onCountryChange,
-}) => {
-  // Hardcoded list of countries for demonstration
   const countries = [
     "Afghanistan",
     "Albania",
@@ -210,8 +202,11 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({
 
   return (
     <div>
-      {/* Country Select */}
-      <select value={country} onChange={(e) => onCountryChange(e.target.value)}>
+      <select
+        value={country}
+        onChange={(e) => setCountry(e.target.value)}
+        required
+      >
         <option value="">Select Country</option>
         {countries.map((country) => (
           <option key={country} value={country}>

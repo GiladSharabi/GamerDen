@@ -1,70 +1,50 @@
-// DateSelector.tsx
-import React from "react";
+import { useState } from "react";
 
-interface DateSelectorProps {
-  day: string;
-  month: string;
-  year: string;
-  onDayChange: (value: string) => void;
-  onMonthChange: (value: string) => void;
-  onYearChange: (value: string) => void;
-}
+const DateSelector = () => {
+  const days = [...Array(31).keys()].map((i) => i + 1);
+  const months = [...Array(12).keys()].map((i) => i + 1);
+  const years = [...Array(101).keys()].map((i) => 1924 + i);
 
-const DateSelector: React.FC<DateSelectorProps> = ({
-  day,
-  month,
-  year,
-  onDayChange,
-  onMonthChange,
-  onYearChange,
-}) => {
-  const generateOptions = (start: number, end: number) => {
-    const options = [];
-
-    for (let i = start; i <= end; i++) {
-      options.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-
-    return options;
-  };
-
-  const generateYearOptions = () => {
-    const currentYear = new Date().getFullYear();
-    const options = [];
-
-    for (let i = currentYear; i >= currentYear - 100; i--) {
-      options.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-
-    return options;
-  };
+  const [day, setDay] = useState(0);
+  const [month, setMonth] = useState(0);
+  const [year, setYear] = useState(0);
 
   return (
-    <div style={{ display: "flex", gap: "10px" }}>
+    <div className="flex gap-4">
       {/* Day Select */}
-      <select value={day} onChange={(e) => onDayChange(e.target.value)}>
+      <select
+        value={day}
+        onChange={(e) => setDay(parseInt(e.target.value))}
+        className="border rounded p-2"
+      >
         <option value="">Day</option>
-        {generateOptions(1, 31)}
+        {days.map((day) => (
+          <option key={day}>{day}</option>
+        ))}
       </select>
 
       {/* Month Select */}
-      <select value={month} onChange={(e) => onMonthChange(e.target.value)}>
+      <select
+        value={month}
+        onChange={(e) => setMonth(parseInt(e.target.value))}
+        className="border rounded p-2"
+      >
         <option value="">Month</option>
-        {generateOptions(1, 12)}
+        {months.map((month) => (
+          <option key={month}>{month}</option>
+        ))}
       </select>
 
       {/* Year Select */}
-      <select value={year} onChange={(e) => onYearChange(e.target.value)}>
+      <select
+        value={year}
+        onChange={(e) => setYear(parseInt(e.target.value))}
+        className="border rounded p-2"
+      >
         <option value="">Year</option>
-        {generateYearOptions()}
+        {years.map((year) => (
+          <option key={year}>{year}</option>
+        ))}
       </select>
     </div>
   );

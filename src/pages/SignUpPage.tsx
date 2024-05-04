@@ -1,39 +1,27 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
-import FormField from "./FormField";
-import DateSelector from "./DateSelector";
-import CountrySelector from "./CountrySelector";
-import GenderSelector from "./GenderSelector";
+import FormField from "../components/FormField";
+import DateSelector from "../components/DateSelector";
+import CountrySelector from "../components/CountrySelector";
+import GenderSelector, { Gender } from "../components/GenderSelector";
+import { useState } from "react";
 
 const SignUp = () => {
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [country, setCountry] = useState("");
-  const [gender, setGender] = useState("");
-
-  const handleDayChange = (value: string) => {
-    setDay(value);
-  };
-
-  const handleMonthChange = (value: string) => {
-    setMonth(value);
-  };
-
-  const handleYearChange = (value: string) => {
-    setYear(value);
-  };
-
-  const handleCountryChange = (value: string) => {
-    setCountry(value);
-  };
-
-  const handleGenderChange = (value: string) => {
-    setGender(value);
-  };
+  // const [formData, setFormData] = useState({
+  //   userName: "",
+  //   email: "",
+  //   password: "",
+  //   passwordConfirm: "",
+  //   day: 0,
+  //   month: 0,
+  //   year: 0,
+  //   gender: Gender.None,
+  //   country: "",
+  // });
 
   const navigate = useNavigate();
-  const handleClickRegister = () => navigate("/");
+  const handleClickRegister = () => {
+    navigate("/");
+  };
 
   return (
     <section className="bg-black dark:bg-gray-900 flex items-center justify-center h-screen">
@@ -74,34 +62,21 @@ const SignUp = () => {
               <label className="block mb-2 text-sm font-medium text-black dark:text-white">
                 Date Of Birth
               </label>
-              <DateSelector
-                day={day}
-                month={month}
-                year={year}
-                onDayChange={handleDayChange}
-                onMonthChange={handleMonthChange}
-                onYearChange={handleYearChange}
-              />
+              <DateSelector />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-black dark:text-white">
                 Country
               </label>
-              <CountrySelector
-                country={country}
-                onCountryChange={handleCountryChange}
-              />
+              <CountrySelector />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-black dark:text-white">
                 Gender
               </label>
-              <GenderSelector
-                gender={gender}
-                onGenderChange={handleGenderChange}
-              />
+              <GenderSelector />
             </div>
 
             <button
