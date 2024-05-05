@@ -5,7 +5,7 @@ const Login = () => {
   const navigate = useNavigate();
   const handleClickSignup = () => navigate("/sign-up");
   return (
-    <section className="bg-black dark:bg-gray-900 flex items-center justify-center h-screen">
+    <section className="dark:bg-gray-900 flex items-center justify-center">
       <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
@@ -17,7 +17,7 @@ const Login = () => {
               text="Email"
               type="email"
               id="email"
-              placeholder="name@company.com"
+              placeholder="example@example.com"
             />
             <FormField
               htmlFor="password"
@@ -39,6 +39,7 @@ const Login = () => {
               Don’t have an account yet?
               <button
                 onClick={handleClickSignup}
+                type="submit"
                 className="ml-1 font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 {" "}

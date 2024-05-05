@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import FormField from "../components/FormField";
 import DateSelector from "../components/DateSelector";
 import CountrySelector from "../components/CountrySelector";
-import GenderSelector, { Gender } from "../components/GenderSelector";
-import { useState } from "react";
+import GenderSelector from "../components/GenderSelector";
 
 const SignUp = () => {
   // const [formData, setFormData] = useState({
@@ -25,7 +24,7 @@ const SignUp = () => {
   };
 
   return (
-    <section className="bg-black dark:bg-gray-900 flex items-center justify-center h-screen">
+    <section className="bg-black dark:bg-gray-900 flex items-center justify-center">
       <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
@@ -43,7 +42,7 @@ const SignUp = () => {
               text="Email"
               type="email"
               id="email"
-              placeholder="name@company.com"
+              placeholder="example@example.com"
             />
             <FormField
               htmlFor="password"

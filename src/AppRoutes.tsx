@@ -3,15 +3,18 @@ import Login from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUp from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
+import Nav from "./components/Nav";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <div className="bg-black">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </div>
   );
 };
 

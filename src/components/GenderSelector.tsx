@@ -14,7 +14,7 @@ const GenderSelector = () => {
   };
 
   return (
-    <>
+    <div className="flex">
       <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
         <input
           id="bordered-radio-1"
@@ -51,7 +51,7 @@ const GenderSelector = () => {
           Female
         </label>
       </div>
-    </>
+    </div>
   );
 };
 
