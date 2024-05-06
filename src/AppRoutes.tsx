@@ -3,7 +3,7 @@ import Login from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUp from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
-import Nav from "./components/Nav";
+import LoginHomePage from "./pages/LoginHomePage";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +12,7 @@ const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/user-loggedin" element={<LoginHomePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

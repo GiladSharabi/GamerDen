@@ -6,7 +6,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        poetsen: ['Poetsen One', 'sans-serif'],
+        jersey: ['"Jersey 25"', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }
