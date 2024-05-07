@@ -1,5 +1,5 @@
 const LoginHomePage = () => {
-  return <div className="text-white">This is LoginHomePage</div>;
+  return <div className="text-white">This is LoggedinHomePage</div>;
 };
 
 export default LoginHomePage;

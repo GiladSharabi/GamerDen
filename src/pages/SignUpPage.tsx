@@ -16,6 +16,7 @@ const SignUp = () => {
   //   gender: Gender.None,
   //   country: "",
   // });
+  // bg-main-background-black bg-cover bg-no-repeat bg-center
 
   const navigate = useNavigate();
   const handleClickRegister = (e: any) => {
@@ -24,10 +25,10 @@ const SignUp = () => {
   };
 
   return (
-    <section className="bg-black dark:bg-gray-900 flex items-center justify-center">
-      <div className="mb-10 w-full bg-gray-200 rounded-lg shadow dark:border md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <section className="flex items-center justify-center">
+      <div className="mb-10 w-full bg-gray-200 rounded-lg shadow md:max-w-md xl:p-0">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
+          <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl">
             Sign Up
           </h1>
           <form className="space-y-4 md:space-y-6" action="#">
@@ -73,8 +74,8 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium text-black dark:text-white">
-                Gender
+              <label className="block text-sm font-medium text-black">
+                Gender:
               </label>
               <GenderSelector />
             </div>

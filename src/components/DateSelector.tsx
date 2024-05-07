@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+type props = {
+  defaultDay?: number;
+  defaultMonth?: number;
+  defaultYear?: number;
+};
 
-const DateSelector = () => {
+const DateSelector = ({ defaultDay, defaultMonth, defaultYear }: props) => {
   const hundredYearsAgo = new Date().getFullYear() - 100;
   const days = [...Array(31).keys()].map((i) => i + 1);
   const months = [...Array(12).keys()].map((i) => i + 1);
@@ -9,6 +14,14 @@ const DateSelector = () => {
   const [day, setDay] = useState(0);
   const [month, setMonth] = useState(0);
   const [year, setYear] = useState(0);
+
+  useEffect(() => {
+    if (defaultDay && defaultMonth && defaultYear) {
+      setDay(defaultDay);
+      setMonth(defaultMonth);
+      setYear(defaultYear);
+    }
+  }, [defaultDay, defaultMonth, defaultYear]);
 
   return (
     <div className="flex gap-4">

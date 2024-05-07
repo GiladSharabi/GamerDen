@@ -11,6 +11,9 @@ export default {
         sans: ['Roboto', 'sans-serif'],
         poetsen: ['Poetsen One', 'sans-serif'],
         jersey: ['"Jersey 25"', 'sans-serif'],
+      },
+      backgroundImage: {
+        'main-background-black' : "url('src/images/background-black.jpg')",
       }
     },
   },
