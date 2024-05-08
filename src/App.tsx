@@ -1,12 +1,22 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Nav from "./components/Nav";
+import { Gender } from "./components/GenderSelector";
+import { DateOfBirth } from "./components/DateSelector";
 
 export let isLoggedIn = true;
+export type theUser = {
+  userName: string;
+  email: string;
+  dateOfBirth: DateOfBirth;
+  country: string;
+  gender: Gender;
+  languages: string[];
+};
 
 const App = () => {
   return (
-    <div className="h-screen bg-main-background-black bg-no-repeat bg-cover">
+    <div className="bg-main-background-black bg-no-repeat bg-cover min-h-screen">
       <Router>
         <Nav></Nav>
         <AppRoutes />

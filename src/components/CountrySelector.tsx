@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import countriesData from "../countries.json";
+
 const CountrySelector = () => {
   const [country, setCountry] = useState("");
   const [countriesList, setCountriesList] = useState<string[]>([]);
-
   useEffect(() => {
     setCountriesList(countriesData.countries);
   }, []);
@@ -12,6 +12,7 @@ const CountrySelector = () => {
     <div>
       <select
         value={country}
+        className="rounded"
         onChange={(e) => setCountry(e.target.value)}
         required
       >

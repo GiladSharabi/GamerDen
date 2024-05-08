@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-type props = {
-  defaultDay?: number;
-  defaultMonth?: number;
-  defaultYear?: number;
+
+export type DateOfBirth = {
+  userDay?: number;
+  userMonth?: number;
+  userYear?: number;
 };
 
-const DateSelector = ({ defaultDay, defaultMonth, defaultYear }: props) => {
+const DateSelector = ({ userDay, userMonth, userYear }: DateOfBirth) => {
   const hundredYearsAgo = new Date().getFullYear() - 100;
   const days = [...Array(31).keys()].map((i) => i + 1);
   const months = [...Array(12).keys()].map((i) => i + 1);
@@ -16,12 +17,12 @@ const DateSelector = ({ defaultDay, defaultMonth, defaultYear }: props) => {
   const [year, setYear] = useState(0);
 
   useEffect(() => {
-    if (defaultDay && defaultMonth && defaultYear) {
-      setDay(defaultDay);
-      setMonth(defaultMonth);
-      setYear(defaultYear);
+    if (userDay && userMonth && userYear) {
+      setDay(userDay);
+      setMonth(userMonth);
+      setYear(userYear);
     }
-  }, [defaultDay, defaultMonth, defaultYear]);
+  }, [userDay, userMonth, userYear]);
 
   return (
     <div className="flex gap-4">
@@ -32,7 +33,7 @@ const DateSelector = ({ defaultDay, defaultMonth, defaultYear }: props) => {
         className="border rounded p-2"
         required
       >
-        <option value="">Day</option>
+        <option value="">{userDay ? userDay : "Day"}</option>
         {days.map((day) => (
           <option key={day}>{day}</option>
         ))}

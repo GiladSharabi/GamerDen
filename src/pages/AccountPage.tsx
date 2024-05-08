@@ -1,7 +1,12 @@
-import AccountDetailsForm from "../components/AccountDetailsForm";
+import ChangePasswordSection from "../components/ChangePasswordSection";
+import PersonalDetailsSection from "../components/PersonalDetailsSection";
 
 const AccountPage = () => {
-  return <AccountDetailsForm />;
+  return (
+    <div className="">
+      <PersonalDetailsSection />
+    </div>
+  );
 };
 
 export default AccountPage;

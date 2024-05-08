@@ -3,21 +3,9 @@ import FormField from "../components/FormField";
 import DateSelector from "../components/DateSelector";
 import CountrySelector from "../components/CountrySelector";
 import GenderSelector from "../components/GenderSelector";
+import LanguagesSelector from "../components/LanguagesSelector";
 
 const SignUp = () => {
-  // const [formData, setFormData] = useState({
-  //   userName: "",
-  //   email: "",
-  //   password: "",
-  //   passwordConfirm: "",
-  //   day: 0,
-  //   month: 0,
-  //   year: 0,
-  //   gender: Gender.None,
-  //   country: "",
-  // });
-  // bg-main-background-black bg-cover bg-no-repeat bg-center
-
   const navigate = useNavigate();
   const handleClickRegister = (e: any) => {
     e.stopPropogation();
@@ -60,30 +48,37 @@ const SignUp = () => {
               placeholder="••••••••"
             />
             <div>
-              <label className="block mb-2 text-sm font-medium text-black dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-black">
                 Date Of Birth
               </label>
               <DateSelector />
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium text-black dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-black">
                 Country
               </label>
               <CountrySelector />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-black">
-                Gender:
-              </label>
-              <GenderSelector />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-black">
+                  Gender
+                </label>
+                <GenderSelector />
+              </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-medium text-black">
+                  Languages
+                </label>
+                <LanguagesSelector />
+              </div>
+            </div>
             <button
               onClick={handleClickRegister}
               type="submit"
-              className="w-full text-black bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="w-full text-black bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
               Register
             </button>

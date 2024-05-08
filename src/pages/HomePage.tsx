@@ -15,13 +15,19 @@ const HomePage = () => {
       </h2>
       <div className="item-center justify-center">
         <Link to={"/login"}>
-          <button className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 mb-8 flex items-center justify-center">
+          <button
+            type="button"
+            className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 mb-8 flex items-center justify-center"
+          >
             Login
             <TbLogin2 className="ml-2"></TbLogin2>
           </button>
         </Link>
         <Link to={"/sign-up"}>
-          <button className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 flex items-center justify-center">
+          <button
+            type="button"
+            className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 flex items-center justify-center"
+          >
             Sign Up
             <FaPen className="ml-2"></FaPen>
           </button>
