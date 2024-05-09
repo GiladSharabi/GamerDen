@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import LoginHomePage from "./pages/LoginHomePage";
 import AccountPage from "./pages/AccountPage";
 import EditPersonalDetails from "./pages/EditPersonalDetailsPage";
+import EditGamingPreferences from "./pages/EditGamingPreferencesPage";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,10 @@ const AppRoutes = () => {
         <Route
           path="/edit-personal-details"
           element={<EditPersonalDetails />}
+        />
+        <Route
+          path="/edit-gaming-preferences"
+          element={<EditGamingPreferences />}
         />
         <Route path="/user-loggedin" element={<LoginHomePage />} />
         <Route path="*" element={<NotFoundPage />} />
