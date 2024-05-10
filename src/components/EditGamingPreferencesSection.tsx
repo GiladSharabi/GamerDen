@@ -8,6 +8,9 @@ import { useState } from "react";
 import RegionSelector from "./RegionSelector";
 import PlatformSelector from "./PlatformSelector";
 import SoloOrGroupSelector from "./SoloOrGroupSelector";
+import VoiceSelector from "./VoiceSelector";
+import TeammatePlatfromSelector from "./TeammatePlatfromSelector";
+import AgeRangeSelector from "./AgeRangeSelector";
 
 const EditGamingPreferencesSection = () => {
   const [bioText, setBioText] = useState("");
@@ -27,7 +30,7 @@ const EditGamingPreferencesSection = () => {
             <div>
               <label
                 htmlFor="bio"
-                className="block mb-2 text-sm font-medium text-black"
+                className="block mb-2 text-sm text-black  font-bold"
               >
                 Bio:
               </label>
@@ -45,7 +48,7 @@ const EditGamingPreferencesSection = () => {
             <div>
               <label
                 htmlFor="region"
-                className="block mb-2 text-sm font-medium text-black"
+                className="block mb-2 text-sm  text-black font-bold"
               >
                 Region:
               </label>
@@ -54,20 +57,35 @@ const EditGamingPreferencesSection = () => {
             <div>
               <label
                 htmlFor="platform"
-                className="block mb-2 text-sm font-medium text-black"
+                className="block mb-2 text-sm text-black font-bold"
               >
                 Platform:
               </label>
               <PlatformSelector></PlatformSelector>
             </div>
             <div>
-              <label
-                htmlFor="platform"
-                className="block mb-2 text-sm font-medium text-black"
-              >
+              <label className="block mb-2 text-sm text-black font-bold">
                 Are you searching alone or with other group?
               </label>
               <SoloOrGroupSelector></SoloOrGroupSelector>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm text-black font-bold">
+                Do you want to talk on voice?
+              </label>
+              <VoiceSelector></VoiceSelector>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm  text-black font-bold">
+                Teammate Platform:
+              </label>
+              <TeammatePlatfromSelector></TeammatePlatfromSelector>
+            </div>
+            <div className="flex">
+              <label className="block mb-2 text-sm text-black mr-5 font-bold">
+                Age Range:
+              </label>
+              <AgeRangeSelector></AgeRangeSelector>
             </div>
 
             <SaveButton></SaveButton>

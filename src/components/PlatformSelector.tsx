@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const platformData = ["PC", "XBOX", "PlayStation"];
+const platformData = ["PC", "Xbox", "PlayStation"];
 export enum Platform {
   PC,
   XBOX,

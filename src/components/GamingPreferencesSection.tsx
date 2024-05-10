@@ -22,12 +22,24 @@ const GamingPreferencesSection = () => {
             detailText="PlayStation"
           ></DetailsFormField>
           <DetailsFormField
-            labelText="Solo or Group?"
+            labelText="Solo or Group:"
             detailText="Solo"
+          ></DetailsFormField>
+          <DetailsFormField
+            labelText="Voice:"
+            detailText="Yes"
           ></DetailsFormField>
           <DetailsFormField
             labelText="Availability:"
             detailText="Thursday-Saturday : 20:00-23:00"
+          ></DetailsFormField>
+          <DetailsFormField
+            labelText="Teammate Platform"
+            detailText="Xbox, PlayStation"
+          ></DetailsFormField>
+          <DetailsFormField
+            labelText="Age Range:"
+            detailText="22-30"
           ></DetailsFormField>
 
           <Link to={"/edit-gaming-preferences"}>
