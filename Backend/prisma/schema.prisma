@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int              @id @default(autoincrement())
+  email       String           @unique
+  password    String
+  username    String           @unique
+  dob         DateTime
+  created_at  DateTime         @default(now())
+  country     String
+  gender      Gender
+  languages   String[]
+  preferences UserPreferences?
+}
+
+model UserPreferences {
+  id         Int        @id @default(autoincrement())
+  bio        String?    @default("")
+  region     String?
+  voice      Boolean    @default(false)
+  group_play Boolean    @default(false)
+  platform   Platform[]
+  weekday    Weekday[]  @default([])
+  age_range  Int[]      @default([18, 100])
+  games      Game[]     @relation("UserPreferencesGames")
+  user       User       @relation(fields: [userId], references: [id])
+  userId     Int        @unique
+}
+
+model Game {
+  id              Int               @id @default(autoincrement())
+  name            String
+  cover           String
+  userPreferences UserPreferences[] @relation("UserPreferencesGames")
+}
+
+enum Gender {
+  Male
+  Female
+}
+
+enum Platform {
+  PC
+  Xbox
+  Playstation
+}
+
+enum Weekday {
+  Sunday
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+}
