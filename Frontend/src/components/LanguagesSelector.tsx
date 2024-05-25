@@ -32,12 +32,11 @@ const LanguagesSelector = () => {
     <div className="space-y-4">
       <div className="flex space-x-4 items-center">
         <select
-          value=""
           onChange={handleLanguageChange}
-          required
           className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
+          required
         >
-          <option value="">Select Language</option>
+          <option value="">Select Languages</option>
           {languagesList.map((language) => (
             <option key={language} value={language}>
               {language}

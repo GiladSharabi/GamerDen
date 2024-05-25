@@ -8,8 +8,8 @@ import LanguagesSelector from "../components/LanguagesSelector";
 const SignUp = () => {
   const navigate = useNavigate();
   const handleClickRegister = (e: any) => {
-    e.stopPropogation();
-    navigate("/");
+    e.stopPropagation();
+    navigate("/login");
   };
 
   return (
