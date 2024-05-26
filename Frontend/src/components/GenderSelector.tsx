@@ -24,7 +24,7 @@ const GenderSelector = () => {
           name="gender"
           onChange={() => handleGenderChange(Gender.Male)}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-          required
+          // required
         />
         <label
           htmlFor="bordered-radio-1"
@@ -42,7 +42,7 @@ const GenderSelector = () => {
           name="gender"
           onChange={() => handleGenderChange(Gender.Female)}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600"
-          required
+          // required
         />
         <label
           htmlFor="bordered-radio-2"

@@ -1,17 +1,31 @@
+import { ChangeEvent } from "react";
+
 type props = {
   htmlFor: string;
   text: string;
   type: string;
   id: string;
+  value: string;
   placeholder?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  errorMsg?: string;
 };
 
-const FormField = ({ htmlFor, text, type, id, placeholder = "" }: props) => {
+const FormField = ({
+  htmlFor,
+  text,
+  type,
+  id,
+  value,
+  placeholder = "",
+  onChange,
+  errorMsg = "",
+}: props) => {
   return (
     <div>
       <label
         htmlFor={htmlFor}
-        className="block mb-2 text-sm font-medium text-black dark:text-white"
+        className="block mb-2 text-sm font-bold text-black"
       >
         {text}
       </label>
@@ -19,10 +33,12 @@ const FormField = ({ htmlFor, text, type, id, placeholder = "" }: props) => {
         type={type}
         name={id}
         id={id}
-        className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+        value={value}
+        className="mb-3 bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
         placeholder={placeholder}
-        required
+        onChange={onChange}
       />
+      <p className="text-red-600 text-sm">{errorMsg}</p>
     </div>
   );
 };

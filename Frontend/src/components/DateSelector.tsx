@@ -31,7 +31,7 @@ const DateSelector = ({ userDay, userMonth, userYear }: DateOfBirth) => {
         value={day}
         onChange={(e) => setDay(parseInt(e.target.value))}
         className="border rounded p-2"
-        required
+        // required
       >
         <option value="">{userDay ? userDay : "Day"}</option>
         {days.map((day) => (
@@ -44,7 +44,7 @@ const DateSelector = ({ userDay, userMonth, userYear }: DateOfBirth) => {
         value={month}
         onChange={(e) => setMonth(parseInt(e.target.value))}
         className="border rounded p-2"
-        required
+        // required
       >
         <option value="">Month</option>
         {months.map((month) => (
@@ -57,7 +57,7 @@ const DateSelector = ({ userDay, userMonth, userYear }: DateOfBirth) => {
         value={year}
         onChange={(e) => setYear(parseInt(e.target.value))}
         className="border rounded p-2"
-        required
+        // required
       >
         <option value="">Year</option>
         {years.map((year) => (

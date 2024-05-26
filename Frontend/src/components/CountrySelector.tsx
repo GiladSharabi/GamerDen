@@ -14,7 +14,7 @@ const CountrySelector = () => {
         value={country}
         className="rounded"
         onChange={(e) => setCountry(e.target.value)}
-        required
+        // required
       >
         <option value="">Select Country</option>
         {countriesList.map((country) => (

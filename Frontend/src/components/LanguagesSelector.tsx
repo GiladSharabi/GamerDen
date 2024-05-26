@@ -18,6 +18,12 @@ const LanguagesSelector = () => {
     if (language !== "" && !selectedLanguages.includes(language)) {
       const updatedLanguages = [...selectedLanguages, language].sort();
       setSelectedLanguages(updatedLanguages);
+      console.log(
+        "languages list: " +
+          updatedLanguages +
+          "\nlength:" +
+          updatedLanguages.length
+      );
     }
   };
 
@@ -26,6 +32,12 @@ const LanguagesSelector = () => {
       (language) => language !== languageToRemove
     );
     setSelectedLanguages(updatedLanguages);
+    console.log(
+      "languages list: " +
+        updatedLanguages +
+        "\nlength:" +
+        updatedLanguages.length
+    );
   };
 
   return (
@@ -34,7 +46,7 @@ const LanguagesSelector = () => {
         <select
           onChange={handleLanguageChange}
           className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
-          required
+          value=""
         >
           <option value="">Select Languages</option>
           {languagesList.map((language) => (
