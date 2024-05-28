@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-    getUserById,
-    updateUser,
-} from "./user.service";
+import { getUserById, updateUser } from "./user.service";
 
 const userRouter = Router();
 userRouter.get("/id/:id", getUserById);

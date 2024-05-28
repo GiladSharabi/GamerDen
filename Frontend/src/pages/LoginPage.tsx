@@ -1,9 +1,49 @@
 import { useNavigate } from "react-router-dom";
 import FormField from "../components/FormField";
+import { useState, useEffect } from "react";
+
+type FormValues = {
+  username: string;
+  password: string;
+};
+type FormErrors = Partial<FormValues>;
 
 const Login = () => {
   const navigate = useNavigate();
   const handleClickSignup = () => navigate("/sign-up");
+
+  const [formValues, setFormValues] = useState<FormValues>({
+    username: "",
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
+
+  const handleClickLogin = (e: any) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+  };
+
+  // useEffect(() => {}, [formErrors]);
+
+  const validate = (values: FormValues): FormErrors => {
+    const errors: FormErrors = {};
+    if (!values.username) {
+      errors.username = "Email is required!";
+    }
+    if (!values.password) {
+      errors.password = "Password is required!";
+    }
+    return errors;
+  };
+
   return (
     <section className="dark:bg-gray-900 flex items-center justify-center">
       <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -11,13 +51,19 @@ const Login = () => {
           <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
             Sign in to your GamerDen account
           </h1>
-          <form className="space-y-4 md:space-y-6" action="#">
+          <form
+            className="space-y-4 md:space-y-6"
+            action="#"
+            onSubmit={handleClickLogin}
+          >
             <FormField
-              htmlFor="email"
-              text="Email"
-              type="email"
-              id="email"
-              placeholder="example@example.com"
+              htmlFor="username"
+              text="Username"
+              type="text"
+              id="username"
+              value={formValues.username}
+              onFieldChange={handleChange}
+              errorMsg={formErrors.username}
             />
             <FormField
               htmlFor="password"
@@ -25,13 +71,13 @@ const Login = () => {
               type="password"
               id="password"
               placeholder="••••••••"
+              value={formValues.password}
+              onFieldChange={handleChange}
+              errorMsg={formErrors.password}
             />
             <button
-              onClick={(e) => {
-                e.preventDefault();
-              }}
               type="submit"
-              className="w-full text-black bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="w-full text-black bg-blue-600 hover:bg-blue-500 focus:outline-none font-bold rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
               Sign in
             </button>
@@ -39,8 +85,8 @@ const Login = () => {
               Don’t have an account yet?
               <button
                 onClick={handleClickSignup}
-                type="submit"
-                className="ml-1 font-medium text-primary-600 hover:underline dark:text-primary-500"
+                type="button"
+                className="ml-1 font-bold text-primary-600 hover:underline dark:text-primary-500"
               >
                 {" "}
                 Sign up

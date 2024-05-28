@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import languageData from "../languages.json";
 
-const LanguagesSelector = () => {
+type props = {
+  onLanguagesListChange: (languages: string[]) => void;
+  errorMsg?: string;
+};
+
+const LanguagesSelector = ({ onLanguagesListChange, errorMsg = "" }: props) => {
   const [languagesList, setLanguagesList] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   useEffect(() => {
+    // init the languages list from the json file
     setLanguagesList(languageData.languages);
   }, []);
 
@@ -13,11 +19,20 @@ const LanguagesSelector = () => {
     const selectedLanguage = e.target.value;
     addLanguage(selectedLanguage);
   };
+  useEffect(() => {
+    onLanguagesListChange(selectedLanguages);
+  }, [selectedLanguages]);
 
   const addLanguage = (language: string) => {
     if (language !== "" && !selectedLanguages.includes(language)) {
       const updatedLanguages = [...selectedLanguages, language].sort();
       setSelectedLanguages(updatedLanguages);
+      // console.log(
+      //   "languages list: " +
+      //     updatedLanguages +
+      //     "\nlength:" +
+      //     updatedLanguages.length
+      // );
     }
   };
 
@@ -26,18 +41,23 @@ const LanguagesSelector = () => {
       (language) => language !== languageToRemove
     );
     setSelectedLanguages(updatedLanguages);
+    // console.log(
+    //   "languages list: " +
+    //     updatedLanguages +
+    //     "\nlength:" +
+    //     updatedLanguages.length
+    // );
   };
 
   return (
     <div className="space-y-4">
       <div className="flex space-x-4 items-center">
         <select
-          value=""
           onChange={handleLanguageChange}
-          required
           className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
+          value=""
         >
-          <option value="">Select Language</option>
+          <option value="">Select Languages</option>
           {languagesList.map((language) => (
             <option key={language} value={language}>
               {language}
@@ -60,6 +80,9 @@ const LanguagesSelector = () => {
             </button>
           </span>
         ))}
+      </div>
+      <div>
+        <p className="text-red-600 text-sm">{errorMsg}</p>
       </div>
     </div>
   );
