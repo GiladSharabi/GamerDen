@@ -7,7 +7,7 @@ type props = {
   id: string;
   value: string;
   placeholder?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onFieldChange: (e: ChangeEvent<HTMLInputElement>) => void;
   errorMsg?: string;
 };
 
@@ -18,7 +18,7 @@ const FormField = ({
   id,
   value,
   placeholder = "",
-  onChange,
+  onFieldChange,
   errorMsg = "",
 }: props) => {
   return (
@@ -36,7 +36,7 @@ const FormField = ({
         value={value}
         className="mb-3 bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={onFieldChange}
       />
       <p className="text-red-600 text-sm">{errorMsg}</p>
     </div>

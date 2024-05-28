@@ -6,17 +6,26 @@ import GenderSelector, { Gender } from "../components/GenderSelector";
 import LanguagesSelector from "../components/LanguagesSelector";
 import { useState, useEffect } from "react";
 
-type FormValues = {
+export type FormValues = {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  dob: DateOfBirth | string;
+  dob: DateOfBirth;
   country: string;
-  gender: Gender | string;
+  gender: Gender;
   languages: string[];
 };
-type FormErrors = Partial<FormValues>;
+type FormErrors = {
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  dob?: string;
+  country?: string;
+  gender?: string;
+  languages?: string;
+};
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -26,7 +35,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    dob: {},
+    dob: { day: 0, month: 0, year: 0 },
     country: "",
     gender: Gender.None,
     languages: [],
@@ -35,35 +44,73 @@ const SignUp = () => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
+    console.log("the name: " + name);
     setFormValues({ ...formValues, [name]: value });
-    console.log(formValues);
   };
+  const handleDateChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      dob: { ...prevValues.dob, [name]: parseInt(value) },
+    }));
+    // console.log("id: " + id, " value: " + value);
+  };
+  const handleLanguageChange = (languages: string[]) => {
+    // console.log("bloop");
+    setFormValues({ ...formValues, languages: languages });
+  };
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
+
+  useEffect(() => {
+    console.log(formErrors);
+  }, [formErrors]);
 
   const handleClickRegister = (e: any) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
+    if (!formErrors) {
+      navigate("/login");
+    }
   };
 
   // useEffect(() => {}, [formErrors]);
 
   const validate = (values: FormValues): FormErrors => {
     const errors: FormErrors = {};
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
     if (!values.username) {
       errors.username = "Username is required!";
     }
     if (!values.email) {
       errors.email = "Email is required!";
-    } /*else if (emailRegex.test(values.email)) {
+    } else if (!emailRegex.test(values.email)) {
       errors.email = "This is not a valid email";
-    }*/
+    }
     if (!values.password) {
       errors.password = "Password is required!";
+    } else if (!passwordRegex.test(values.password)) {
+      errors.password =
+        "Password must be 8-12 characters long and contain at least one letter and one number";
     }
     if (!values.confirmPassword) {
       errors.confirmPassword = "Confirm Password is required!";
     } else if (values.password !== values.confirmPassword) {
       errors.confirmPassword = "Passwords must match!";
+    }
+    if (!values.dob.day || !values.dob.month || !values.dob.year) {
+      errors.dob = "Please enter a valid date";
+    }
+    if (!values.country) {
+      errors.country = "Please select a country";
+    }
+    if (values.gender === Gender.None) {
+      errors.gender = "Please select a gender";
+    }
+    if (values.languages.length === 0) {
+      errors.languages = "Please select at least one language";
     }
     return errors;
   };
@@ -77,7 +124,7 @@ const SignUp = () => {
           </h1>
           <form
             className="space-y-4 md:space-y-6"
-            action="#"
+            // action="#"
             onSubmit={handleClickRegister}
           >
             <FormField
@@ -86,17 +133,17 @@ const SignUp = () => {
               type="text"
               id="username"
               value={formValues.username}
-              onChange={handleChange}
+              onFieldChange={handleChange}
               errorMsg={formErrors.username}
             />
             <FormField
               htmlFor="email"
               text="Email"
-              type="email"
+              type="text"
               id="email"
               placeholder="example@example.com"
               value={formValues.email}
-              onChange={handleChange}
+              onFieldChange={handleChange}
               errorMsg={formErrors.email}
             />
             <FormField
@@ -106,7 +153,7 @@ const SignUp = () => {
               id="password"
               placeholder="••••••••"
               value={formValues.password}
-              onChange={handleChange}
+              onFieldChange={handleChange}
               errorMsg={formErrors.password}
             />
             <FormField
@@ -116,35 +163,47 @@ const SignUp = () => {
               id="confirmPassword"
               placeholder="••••••••"
               value={formValues.confirmPassword}
-              onChange={handleChange}
+              onFieldChange={handleChange}
               errorMsg={formErrors.confirmPassword}
             />
             <div>
               <label className="block mb-2 text-sm font-bold text-black">
                 Date Of Birth
               </label>
-              <DateSelector />
+              <DateSelector
+                onDateChange={handleDateChange}
+                errorMsg={formErrors.dob}
+              />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-bold text-black">
                 Country
               </label>
-              <CountrySelector />
+              <CountrySelector
+                onCountryChange={handleChange}
+                errorMsg={formErrors.country}
+              />
             </div>
             <div>
               <div>
                 <label className="block text-sm font-bold text-black">
                   Gender
                 </label>
-                <GenderSelector />
+                <GenderSelector
+                  onGenderChange={handleChange}
+                  errorMsg={formErrors.gender}
+                />
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-bold text-black">
                   Languages
                 </label>
-                <LanguagesSelector />
+                <LanguagesSelector
+                  onLanguagesListChange={handleLanguageChange}
+                  errorMsg={formErrors.languages}
+                />
               </div>
             </div>
             <button

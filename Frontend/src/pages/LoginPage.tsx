@@ -3,7 +3,7 @@ import FormField from "../components/FormField";
 import { useState, useEffect } from "react";
 
 type FormValues = {
-  email: string;
+  username: string;
   password: string;
 };
 type FormErrors = Partial<FormValues>;
@@ -13,7 +13,7 @@ const Login = () => {
   const handleClickSignup = () => navigate("/sign-up");
 
   const [formValues, setFormValues] = useState<FormValues>({
-    email: "",
+    username: "",
     password: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
@@ -21,8 +21,10 @@ const Login = () => {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(formValues);
   };
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   const handleClickLogin = (e: any) => {
     e.preventDefault();
@@ -33,8 +35,8 @@ const Login = () => {
 
   const validate = (values: FormValues): FormErrors => {
     const errors: FormErrors = {};
-    if (!values.email) {
-      errors.email = "Email is required!";
+    if (!values.username) {
+      errors.username = "Email is required!";
     }
     if (!values.password) {
       errors.password = "Password is required!";
@@ -55,14 +57,13 @@ const Login = () => {
             onSubmit={handleClickLogin}
           >
             <FormField
-              htmlFor="email"
-              text="Email"
-              type="email"
-              id="email"
-              placeholder="example@example.com"
-              value={formValues.email}
-              onChange={handleChange}
-              errorMsg={formErrors.email}
+              htmlFor="username"
+              text="Username"
+              type="text"
+              id="username"
+              value={formValues.username}
+              onFieldChange={handleChange}
+              errorMsg={formErrors.username}
             />
             <FormField
               htmlFor="password"
@@ -71,7 +72,7 @@ const Login = () => {
               id="password"
               placeholder="••••••••"
               value={formValues.password}
-              onChange={handleChange}
+              onFieldChange={handleChange}
               errorMsg={formErrors.password}
             />
             <button
