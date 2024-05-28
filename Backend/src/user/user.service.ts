@@ -68,25 +68,6 @@ export async function createUser(req: Request, res: Response): Promise<userResul
     }
 }
 
-export async function update(req: Request, res: Response) {
-    try {
-        const { preferences, userId } = req.body;
-        await db.user.update({
-            where: { id: userId },
-            data: {
-                preferences: {
-                    upsert: {
-                        create: preferences,
-                        update: preferences
-                    }
-                }
-            }
-        });
-    } catch (e: any) {
-
-    }
-}
-
 export async function updateUser(req: Request, res: Response) {
     try {
         const { username, preferences, password } = req.body;
