@@ -1,10 +1,5 @@
 import { useState } from "react";
-
-export enum Gender {
-  Male,
-  Female,
-  None,
-}
+import { Gender } from "../api/types";
 
 type props = {
   onGenderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,7 +26,7 @@ const GenderSelector = ({ onGenderChange, errorMsg = "" }: props) => {
             name="gender"
             onChange={handleGenderChange}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-            // required
+          // required
           />
           <label
             htmlFor="gender-male"
@@ -49,7 +44,7 @@ const GenderSelector = ({ onGenderChange, errorMsg = "" }: props) => {
             name="gender"
             onChange={handleGenderChange}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-            // required
+          // required
           />
           <label
             htmlFor="gender-female"

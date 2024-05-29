@@ -4,7 +4,9 @@ import Nav from "./components/Nav";
 import { Gender } from "./components/GenderSelector";
 import { DateOfBirth } from "./components/DateSelector";
 
-export let isLoggedIn = false;
+
+
+export let isLoggedIn = true;
 export type theUser = {
   userName: string;
   email: string;

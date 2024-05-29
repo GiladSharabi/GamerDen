@@ -4,6 +4,7 @@ import CountrySelector from "./CountrySelector";
 import GenderSelector from "./GenderSelector";
 import SaveButton from "./SaveButton";
 import LanguagesSelector from "./LanguagesSelector";
+
 const EditPersonalDetailsSection = () => {
   return (
     <section className="flex items-center justify-start ml-5">

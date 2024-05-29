@@ -22,9 +22,8 @@ export async function getUserById(req: Request, res: Response) {
     if (!user) {
       res.status(400).json({ error: "User not found" });
     }
-    res.status(400).json({ user });
+    res.status(200).json({ user });
   } catch (e: any) {
-    console.log("Error retrieving user:", e);
     return { error: "internal server error" };
   }
 }
@@ -41,7 +40,6 @@ export async function getUserByUserName(username: string): Promise<userResult> {
     }
     return { user };
   } catch (e: any) {
-    console.log("Error retrieving user:", e);
     return { error: "Internal server error" };
   }
 }
@@ -51,35 +49,30 @@ export async function createUser(
   res: Response
 ): Promise<userResult> {
   try {
-    const { username, password } = req.body;
+    const { username } = req.body;
     const userRes = await getUserByUserName(username);
     if (userRes.user) {
       return { error: "User already exists" };
     }
-    const gender =
-      parseInt(req.params.gender, 10) === 0 ? Gender.Male : Gender.Female;
+    fixUserRequestData(req);
     const data = req.body;
-    data.gender = gender;
-    data.password = bcrypt.hashSync(password, 10);
+
     const user = await db.user.create({
       data: data,
     });
 
     return { user };
   } catch (e: any) {
-    console.log("Error creating user:", e);
     return { error: "internal server error" };
   }
 }
 
 export async function updateUser(req: Request, res: Response) {
   try {
-    const { username, preferences, password } = req.body;
-    const gender =
-      parseInt(req.params.gender, 10) === 0 ? Gender.Male : Gender.Female;
+    const { username, preferences } = req.body;
+    fixUserRequestData(req);
     const data = req.body;
-    data.gender = gender;
-    data.password = bcrypt.hashSync(password, 10);
+
     const user = await db.user.update({
       where: { username: username },
       data: {
@@ -93,10 +86,23 @@ export async function updateUser(req: Request, res: Response) {
           }
           : undefined,
       },
+      include: {
+        preferences: true,
+      }
     });
     res.status(200).json(user);
   } catch (e: any) {
-    console.log(`Error: ${e}`);
     res.status(500).json({ error: "Internal server error" });
   }
+}
+
+
+function fixUserRequestData(req: Request) {
+  const { password } = req.body;
+
+  const gender =
+    parseInt(req.params.gender, 10) === 0 ? Gender.Male : Gender.Female;
+  const data = req.body;
+  data.gender = gender;
+  data.password = bcrypt.hashSync(password, 10);
 }

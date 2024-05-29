@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import FormField from "../components/FormField";
 import DateSelector, { DateOfBirth } from "../components/DateSelector";
 import CountrySelector from "../components/CountrySelector";
-import GenderSelector, { Gender } from "../components/GenderSelector";
+import GenderSelector from "../components/GenderSelector";
+import { Gender } from "../api/types";
 import LanguagesSelector from "../components/LanguagesSelector";
 import { useState, useEffect } from "react";
 
@@ -16,6 +17,7 @@ export type FormValues = {
   gender: Gender;
   languages: string[];
 };
+
 type FormErrors = {
   username?: string;
   email?: string;
@@ -71,6 +73,7 @@ const SignUp = () => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     if (!formErrors) {
+
       navigate("/login");
     }
   };

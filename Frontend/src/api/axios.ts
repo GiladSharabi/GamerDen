@@ -1,6 +1,8 @@
-const axios = require("axios");
+import axios from "axios";
+const API_ENDPOINT = import.meta.env.API_ENDPOINT;
 
 const instance = axios.create({
-  baseURL: "https://localhost:8080/api/",
+  baseURL: API_ENDPOINT,
 });
+
 export default instance;

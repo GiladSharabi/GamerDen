@@ -2,7 +2,7 @@ import { DateOfBirth } from "../components/DateSelector";
 
 export function convertDateOfBirthToISO(
   dateOfBirth: DateOfBirth
-): string | null {
+): Date | null {
   if (dateOfBirth.day && dateOfBirth.month && dateOfBirth.year) {
     const date = new Date(
       dateOfBirth.year,
@@ -11,8 +11,7 @@ export function convertDateOfBirthToISO(
     );
 
     if (!isNaN(date.getTime())) {
-      // Convert the Date object to ISO 8601 format
-      return date.toISOString().split("T")[0];
+      return date;
     } else {
       console.error("Invalid date components provided:", dateOfBirth);
     }
@@ -21,3 +20,19 @@ export function convertDateOfBirthToISO(
   }
   return null;
 }
+
+export function convertIsoToDateOfBirth(isoDateString: string): DateOfBirth | null {
+  const date = new Date(isoDateString);
+
+  if (!isNaN(date.getTime())) {
+    return {
+      day: date.getDate(),
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+    };
+  } else {
+    console.error("Invalid ISO date string provided:", isoDateString);
+    return null;
+  }
+}
+

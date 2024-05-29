@@ -1,4 +1,9 @@
-import { Gender } from "../components/GenderSelector.tsx";
+export enum Gender {
+  Male,
+  Female,
+  None,
+}
+
 
 export enum Platform {
   PC = "PC",
@@ -23,21 +28,17 @@ export type Game = {
 };
 
 export type UserPreferences = {
-  id: number;
   bio?: string;
   region?: string;
-  voice: boolean;
-  group_play: boolean;
-  platform: Platform[];
-  weekday: Weekday[];
-  age_range: number[];
-  games: Game[];
-  user: User;
-  userId: number;
+  voice?: boolean;
+  group_play?: boolean;
+  platform?: Platform[];
+  weekday?: Weekday[];
+  age_range?: number[];
+  games?: Game[];
 };
 
 export type User = {
-  id: number;
   email: string;
   password: string;
   username: string;

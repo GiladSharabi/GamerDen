@@ -1,9 +1,4 @@
-import FormField from "./FormField";
-import DateSelector from "./DateSelector";
-import CountrySelector from "./CountrySelector";
-import GenderSelector from "./GenderSelector";
 import SaveButton from "./SaveButton";
-import LanguagesSelector from "./LanguagesSelector";
 import { useState } from "react";
 import RegionSelector from "./RegionSelector";
 import PlatformSelector from "./PlatformSelector";
