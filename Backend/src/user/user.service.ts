@@ -99,9 +99,7 @@ export async function updateUser(req: Request, res: Response) {
 
 function fixUserRequestData(req: Request) {
   const { password } = req.body;
-
-  const gender =
-    parseInt(req.params.gender, 10) === 0 ? Gender.Male : Gender.Female;
+  const gender = parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
   const data = req.body;
   data.gender = gender;
   data.password = bcrypt.hashSync(password, 10);
