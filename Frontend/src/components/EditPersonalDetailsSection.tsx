@@ -4,8 +4,22 @@ import CountrySelector from "./CountrySelector";
 import GenderSelector from "./GenderSelector";
 import SaveButton from "./SaveButton";
 import LanguagesSelector from "./LanguagesSelector";
+import { FormValues } from "../pages/SignUpPage";
+import { useState } from "react";
+import { Gender } from "../api/types";
 
-const EditPersonalDetailsSection = () => {
+const EditPersonalDetailsSection = ({}: FormValues) => {
+  const [formValues, setFormValues] = useState<FormValues>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    dob: { day: 0, month: 0, year: 0 },
+    country: "",
+    gender: Gender.None,
+    languages: [],
+  });
+
   return (
     <section className="flex items-center justify-start ml-5">
       <div className="mb-5 w-full bg-gray-200 rounded-lg shadow md:max-w-4xl xl:p-0">
@@ -23,7 +37,7 @@ const EditPersonalDetailsSection = () => {
             <FormField
               htmlFor="email"
               text="Email"
-              type="email"
+              type="text"
               id="email"
               placeholder="example@example.com"
             />

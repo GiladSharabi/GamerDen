@@ -15,7 +15,7 @@ const DetailsFormField = ({ labelText, detailText }: props) => {
       <label>{detailText}</label>
 
       {/* {!isEdit ? (
-        <MdEdit
+        <MdEdit 
           onClick={handleEditClick}
           className="text-2xl cursor-pointer hover:text-gray-500"
         ></MdEdit>
