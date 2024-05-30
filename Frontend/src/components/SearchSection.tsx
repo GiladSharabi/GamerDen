@@ -1,29 +1,13 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { useState } from "react";
-
-const [selectedPlatform, setSelectedPlatform] = useState<string>("");
-
-const handleChange = (e: any) => {
-  setSelectedPlatform(e.target.value);
-};
 
 const SearchSection = () => {
   return (
-    <DropdownButton
-      id="dropdown-item-button"
-      title={selectedPlatform || "Select Platform"}
-      onChange={handleChange}
-    >
-      <Dropdown.Item as="button" value="playstation">
-        PlayStation
-      </Dropdown.Item>
-      <Dropdown.Item as="button" value="xbox">
-        XBOX
-      </Dropdown.Item>
-      <Dropdown.Item as="button" value="pc">
-        PC
-      </Dropdown.Item>
+    <DropdownButton id="dropdown-item-button" title="Dropdown button">
+      <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
+      <Dropdown.Item as="button">Action</Dropdown.Item>
+      <Dropdown.Item as="button">Another action</Dropdown.Item>
+      <Dropdown.Item as="button">Something else</Dropdown.Item>
     </DropdownButton>
   );
 };
