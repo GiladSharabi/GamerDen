@@ -1,8 +1,3 @@
-import { useState } from "react";
-import { MdEdit } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
-import { FaCheck } from "react-icons/fa6";
-
 type props = {
   labelText: string;
   detailText: string;

@@ -1,10 +1,8 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Nav from "./components/Nav";
-import { Gender } from "./components/GenderSelector";
+import { Gender } from "./api/types";
 import { DateOfBirth } from "./components/DateSelector";
-
-
 
 export let isLoggedIn = true;
 export type theUser = {

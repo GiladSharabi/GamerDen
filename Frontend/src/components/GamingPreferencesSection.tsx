@@ -10,10 +10,6 @@ const GamingPreferencesSection = () => {
             Gaming Preferences:
           </h1>
           <DetailsFormField
-            labelText="Bio:"
-            detailText="Im a talented player in FPS games, like to have fun and laugh."
-          ></DetailsFormField>
-          <DetailsFormField
             labelText="Region:"
             detailText="Europe"
           ></DetailsFormField>

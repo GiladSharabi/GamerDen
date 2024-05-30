@@ -6,6 +6,7 @@ import GenderSelector from "../components/GenderSelector";
 import { Gender } from "../api/types";
 import LanguagesSelector from "../components/LanguagesSelector";
 import { useState, useEffect } from "react";
+import Bio from "../components/Bio";
 
 export type FormValues = {
   username: string;
@@ -16,6 +17,7 @@ export type FormValues = {
   country: string;
   gender: Gender;
   languages: string[];
+  bio?: string;
 };
 
 type FormErrors = {
@@ -27,6 +29,7 @@ type FormErrors = {
   country?: string;
   gender?: string;
   languages?: string;
+  bio?: string;
 };
 
 const SignUp = () => {
@@ -41,12 +44,13 @@ const SignUp = () => {
     country: "",
     gender: Gender.None,
     languages: [],
+    bio: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    console.log("the name: " + name);
+    // console.log("the name: " + name);
     setFormValues({ ...formValues, [name]: value });
   };
   const handleDateChange = (e: any) => {
@@ -73,7 +77,6 @@ const SignUp = () => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     if (!formErrors) {
-
       navigate("/login");
     }
   };
@@ -170,7 +173,7 @@ const SignUp = () => {
               errorMsg={formErrors.confirmPassword}
             />
             <div>
-              <label className="block mb-2 text-sm font-bold text-black">
+              <label className="block mb-2 font-bold text-black">
                 Date Of Birth
               </label>
               <DateSelector
@@ -180,9 +183,7 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-bold text-black">
-                Country
-              </label>
+              <label className="block mb-2 font-bold text-black">Country</label>
               <CountrySelector
                 onCountryChange={handleChange}
                 errorMsg={formErrors.country}
@@ -190,9 +191,7 @@ const SignUp = () => {
             </div>
             <div>
               <div>
-                <label className="block text-sm font-bold text-black">
-                  Gender
-                </label>
+                <label className="block font-bold text-black">Gender</label>
                 <GenderSelector
                   onGenderChange={handleChange}
                   errorMsg={formErrors.gender}
@@ -200,13 +199,22 @@ const SignUp = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-black">
+                <label className="mb-2 block font-bold text-black">
                   Languages
                 </label>
                 <LanguagesSelector
                   onLanguagesListChange={handleLanguageChange}
                   errorMsg={formErrors.languages}
                 />
+              </div>
+              <div>
+                <label
+                  htmlFor="bio"
+                  className="block mb-2 text-black  font-bold"
+                >
+                  Bio (Optinal):
+                </label>
+                <Bio onBioChange={handleChange} value={formValues.bio}></Bio>
               </div>
             </div>
             <button

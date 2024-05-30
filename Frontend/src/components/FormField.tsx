@@ -23,10 +23,7 @@ const FormField = ({
 }: props) => {
   return (
     <div>
-      <label
-        htmlFor={htmlFor}
-        className="block mb-2 text-sm font-bold text-black"
-      >
+      <label htmlFor={htmlFor} className="block mb-2 font-bold text-black">
         {text}
       </label>
       <input

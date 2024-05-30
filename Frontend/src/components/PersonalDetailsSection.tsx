@@ -33,6 +33,10 @@ const PersonalDetailsSection = () => {
             labelText="Languages:"
             detailText="Hebrew, English"
           ></DetailsFormField>
+          <DetailsFormField
+            labelText="Bio:"
+            detailText="Im a very talented player"
+          ></DetailsFormField>
           <Link to={"/edit-personal-details"}>
             <button
               type="button"

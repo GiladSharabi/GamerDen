@@ -4,7 +4,6 @@ import RegionSelector from "./RegionSelector";
 import PlatformSelector from "./PlatformSelector";
 import SoloOrGroupSelector from "./SoloOrGroupSelector";
 import VoiceSelector from "./VoiceSelector";
-import TeammatePlatfromSelector from "./TeammatePlatfromSelector";
 import AgeRangeSelector from "./AgeRangeSelector";
 
 const EditGamingPreferencesSection = () => {
@@ -22,24 +21,6 @@ const EditGamingPreferencesSection = () => {
             Edit Your Gaming Preferences:
           </h1>
           <form className="space-y-4 md:space-y-6" action="#">
-            <div>
-              <label
-                htmlFor="bio"
-                className="block mb-2 text-sm text-black  font-bold"
-              >
-                Bio:
-              </label>
-              <textarea
-                value={bioText}
-                className="resize-none bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5"
-                rows={3}
-                cols={50}
-                onChange={handleBioChange}
-                id="bio"
-                placeholder="Enter your bio..."
-                required
-              />
-            </div>
             <div>
               <label
                 htmlFor="region"
@@ -74,7 +55,7 @@ const EditGamingPreferencesSection = () => {
               <label className="block mb-2 text-sm  text-black font-bold">
                 Teammate Platform:
               </label>
-              <TeammatePlatfromSelector></TeammatePlatfromSelector>
+              <PlatformSelector></PlatformSelector>
             </div>
             <div className="flex">
               <label className="block mb-2 text-sm text-black mr-5 font-bold">

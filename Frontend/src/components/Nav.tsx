@@ -19,7 +19,11 @@ const Nav = () => {
         onMouseLeave={handleClick}
       >
         <ul className=" text-center text-xl p-20">
-          <NavItem text="Home" to="/" isCollapseMenu={true} />
+          <NavItem
+            text="Home"
+            to={isLoggedIn ? "/user-loggedin-homepage" : "/"}
+            isCollapseMenu={true}
+          />
           {isLoggedIn ? (
             <>
               <NavItem text="My Account" to="/account" isCollapseMenu={true} />
@@ -44,7 +48,10 @@ const Nav = () => {
         <div className="lg:flex md:flex lg:flex-1 items center justify-end font-normal hidden">
           <div className="flex-10">
             <ul className="flex gap-8 mr-16 text-[18px]">
-              <NavItem text="Home" to="/" />
+              <NavItem
+                text="Home"
+                to={isLoggedIn ? "/user-loggedin-homepage" : "/"}
+              />
               {isLoggedIn ? (
                 <>
                   <NavItem

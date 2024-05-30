@@ -3,10 +3,11 @@ import Login from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUp from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
-import LoginHomePage from "./pages/LoginHomePage";
+import LoggedinHomePage from "./pages/LoggedinHomePage";
 import AccountPage from "./pages/AccountPage";
 import EditPersonalDetails from "./pages/EditPersonalDetailsPage";
 import EditGamingPreferences from "./pages/EditGamingPreferencesPage";
+import SearchPage from "./pages/SearchPage";
 
 const AppRoutes = () => {
   return (
@@ -24,7 +25,8 @@ const AppRoutes = () => {
           path="/edit-gaming-preferences"
           element={<EditGamingPreferences />}
         />
-        <Route path="/user-loggedin" element={<LoginHomePage />} />
+        <Route path="/user-loggedin-homepage" element={<LoggedinHomePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
