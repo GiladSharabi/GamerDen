@@ -1,0 +1,46 @@
+/* LoginHomePage.css */
+
+.search-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+}
+
+.login-homepage-container {
+    width: 500px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.selected-games-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    /* Add gap between game buttons */
+    margin-top: 10px;
+}
+
+.selected-game-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 100px;
+    /* Set a minimum width for the game buttons */
+    padding: 5px 5px;
+    /* Adjust padding for better appearance */
+    border-radius: 5px;
+}

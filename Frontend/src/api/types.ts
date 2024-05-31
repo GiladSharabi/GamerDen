@@ -28,7 +28,6 @@ export type Game = {
 };
 
 export type UserPreferences = {
-  bio?: string;
   region?: string;
   voice?: boolean;
   group_play?: boolean;
@@ -43,10 +42,11 @@ export type User = {
   password: string;
   username: string;
   dob: Date;
-  created_at: Date;
+  created_at?: Date;
   country: string;
   gender: Gender;
   languages: string[];
+  bio?: string;
   preferences?: UserPreferences;
 };
 

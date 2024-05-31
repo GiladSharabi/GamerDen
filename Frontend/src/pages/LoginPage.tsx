@@ -1,102 +1,104 @@
-import { useNavigate } from "react-router-dom";
-import FormField from "../components/FormField";
-import { useState, useEffect } from "react";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { Link as RouterLink } from 'react-router-dom';
 
-type FormValues = {
-  username: string;
-  password: string;
-};
-type FormErrors = Partial<FormValues>;
-
-const Login = () => {
-  const navigate = useNavigate();
-  const handleClickSignup = () => navigate("/sign-up");
-
-  const [formValues, setFormValues] = useState<FormValues>({
-    username: "",
-    password: "",
-  });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
-
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
-
-  const handleClickLogin = (e: any) => {
-    e.preventDefault();
-    setFormErrors(validate(formValues));
-  };
-
-  // useEffect(() => {}, [formErrors]);
-
-  const validate = (values: FormValues): FormErrors => {
-    const errors: FormErrors = {};
-    if (!values.username) {
-      errors.username = "Email is required!";
-    }
-    if (!values.password) {
-      errors.password = "Password is required!";
-    }
-    return errors;
+export default function LoginPage() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      username: data.get('username'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <section className="dark:bg-gray-900 flex items-center justify-center">
-      <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
-            Sign in to your GamerDen account
-          </h1>
-          <form
-            className="space-y-4 md:space-y-6"
-            action="#"
-            onSubmit={handleClickLogin}
-          >
-            <FormField
-              htmlFor="username"
-              text="Username"
-              type="text"
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={12}
+        component={Paper}
+        elevation={6}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundImage: 'url(./src/images/LoginBackground.jpeg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(5px)',
+            p: 4,
+            borderRadius: 4,
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="username"
-              value={formValues.username}
-              onFieldChange={handleChange}
-              errorMsg={formErrors.username}
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
             />
-            <FormField
-              htmlFor="password"
-              text="Password"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
               type="password"
               id="password"
-              placeholder="••••••••"
-              value={formValues.password}
-              onFieldChange={handleChange}
-              errorMsg={formErrors.password}
+              autoComplete="current-password"
             />
-            <button
+            <Button
               type="submit"
-              className="w-full text-black bg-blue-600 hover:bg-blue-500 focus:outline-none font-bold rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
-              Sign in
-            </button>
-            <p className="text-sm font-light text-black dark:text-white">
-              Don’t have an account yet?
-              <button
-                onClick={handleClickSignup}
-                type="button"
-                className="ml-1 font-bold text-primary-600 hover:underline dark:text-primary-500"
-              >
-                {" "}
-                Sign up
-              </button>
-            </p>
-          </form>
-        </div>
-      </div>
-    </section>
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+              </Grid>
+              <Grid item>
+                <RouterLink to="/sign-up" style={{ textDecoration: 'none' }}>
+                  {"Don't have an account? Sign Up"}
+                </RouterLink>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
-};
-
-export default Login;
+}

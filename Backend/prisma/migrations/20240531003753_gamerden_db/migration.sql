@@ -18,6 +18,8 @@ CREATE TABLE "User" (
     "country" TEXT NOT NULL,
     "gender" "Gender" NOT NULL,
     "languages" TEXT[],
+    "bio" TEXT NOT NULL DEFAULT 'No Bio Available',
+    "avatar" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -25,11 +27,10 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "UserPreferences" (
     "id" SERIAL NOT NULL,
-    "bio" TEXT DEFAULT '',
-    "region" TEXT,
+    "region" TEXT NOT NULL,
     "voice" BOOLEAN NOT NULL DEFAULT false,
     "group_play" BOOLEAN NOT NULL DEFAULT false,
-    "platform" "Platform"[],
+    "platform" "Platform"[] DEFAULT ARRAY[]::"Platform"[],
     "weekday" "Weekday"[] DEFAULT ARRAY[]::"Weekday"[],
     "age_range" INTEGER[] DEFAULT ARRAY[18, 100]::INTEGER[],
     "userId" INTEGER NOT NULL,

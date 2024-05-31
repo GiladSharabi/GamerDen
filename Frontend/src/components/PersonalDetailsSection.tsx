@@ -1,70 +1,72 @@
-import DetailsFormField from "./DetailsFormField";
 import { Link } from "react-router-dom";
+import { Typography, Button, Grid, Box } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const PersonalDetailsSection = () => {
   return (
-    <section className="flex items-center justify-start ml-5">
-      <div className=" w-full bg-gray-200 rounded-lg shadow md:max-w-4xl xl:p-0">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl">
-            Personal Details:
-          </h1>
-          <DetailsFormField
-            labelText="User Name:"
-            detailText="GiladTheYemen"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Email:"
-            detailText="gilad1197@gmail.com"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Date Of Birth:"
-            detailText="11/9/1997"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Country:"
-            detailText="Israel"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Gender:"
-            detailText="Male"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Languages:"
-            detailText="Hebrew, English"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Bio:"
-            detailText="Im a very talented player"
-          ></DetailsFormField>
-          <Link to={"/edit-personal-details"}>
-            <button
-              type="button"
-              className="mt-8 text-black bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            >
-              Edit
-            </button>
-          </Link>
-
-          {/* <DateSelector
-          defaultDay={theUser.dateOfBirth.}
-            defaultMonth="Date Of Birth:"
-            defaultYear="11/9/1997"
-          ></DateSelector>
-          <DetailsFormField
-            labelText="Country:"
-            detailText="Israel"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Gender:"
-            detailText="Male"
-          ></DetailsFormField>
-          <DetailsFormField
-            labelText="Languages:"
-            detailText="Hebrew, English"
-          ></DetailsFormField> */}
-        </div>
-      </div>
+    <section className="ml-5">
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Box
+            className="bg-gray-200 rounded-lg shadow-md p-6"
+            sx={{ border: "1px solid #ccc" }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Personal Details:
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <ul style={{ listStyleType: "none", padding: 0 }}>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>User Name:</strong> GiladTheYemen
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Email:</strong> gilad1197@gmail.com
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Date Of Birth:</strong> 11/9/1997
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Country:</strong> Israel
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Gender:</strong> Male
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Languages:</strong> Hebrew, English
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography variant="body1">
+                      <strong>Bio:</strong> I'm a very talented player
+                    </Typography>
+                  </li>
+                </ul>
+              </Grid>
+            </Grid>
+            <Link to={"/edit-personal-details"} className="mt-8">
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<EditIcon />}
+              >
+                Edit
+              </Button>
+            </Link>
+          </Box>
+        </Grid>
+      </Grid>
     </section>
   );
 };

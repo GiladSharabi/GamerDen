@@ -13,7 +13,7 @@ export const getAllGames = async (req: Request, res: Response) => {
                 name: 'asc',
             },
         });
-        res.status(200).json({ allGames });
+        res.status(200).json(allGames);
     } catch (e: any) {
         res.status(500).json(e);
     }

@@ -7,18 +7,12 @@ import { Gender } from "../api/types";
 import LanguagesSelector from "../components/LanguagesSelector";
 import { useState, useEffect } from "react";
 import Bio from "../components/Bio";
+import { User } from "../api/types"
 
-export type FormValues = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  dob: DateOfBirth;
-  country: string;
-  gender: Gender;
-  languages: string[];
-  bio?: string;
-};
+type formUser = {
+  user: User,
+  confirmPassword: string,
+}
 
 type FormErrors = {
   username?: string;
@@ -35,16 +29,19 @@ type FormErrors = {
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState<FormValues>({
-    username: "",
-    email: "",
-    password: "",
+  const [formValues, setFormValues] = useState<formUser>({
+    user: {
+
+      username: "",
+      email: "",
+      password: "",
+      dob: new Date(),
+      country: "",
+      gender: Gender.None,
+      languages: [],
+      bio: "",
+    },
     confirmPassword: "",
-    dob: { day: 0, month: 0, year: 0 },
-    country: "",
-    gender: Gender.None,
-    languages: [],
-    bio: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -57,14 +54,19 @@ const SignUp = () => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
-      dob: { ...prevValues.dob, [name]: parseInt(value) },
+      dob: { ...prevValues.user.dob, [name]: parseInt(value) },
     }));
-    // console.log("id: " + id, " value: " + value);
   };
   const handleLanguageChange = (languages: string[]) => {
-    // console.log("bloop");
-    setFormValues({ ...formValues, languages: languages });
+    setFormValues(prevFormValues => ({
+      ...prevFormValues,
+      user: {
+        ...prevFormValues.user,
+        languages: languages
+      }
+    }));
   };
+
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
@@ -83,39 +85,40 @@ const SignUp = () => {
 
   // useEffect(() => {}, [formErrors]);
 
-  const validate = (values: FormValues): FormErrors => {
+  const validate = (values: formUser): FormErrors => {
     const errors: FormErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
-    if (!values.username) {
+    if (!values.user.username) {
       errors.username = "Username is required!";
     }
-    if (!values.email) {
+    if (!values.user.email) {
       errors.email = "Email is required!";
-    } else if (!emailRegex.test(values.email)) {
+    } else if (!emailRegex.test(values.user.email)) {
       errors.email = "This is not a valid email";
     }
-    if (!values.password) {
+    if (!values.user.password) {
       errors.password = "Password is required!";
-    } else if (!passwordRegex.test(values.password)) {
+    } else if (!passwordRegex.test(values.user.password)) {
       errors.password =
         "Password must be 8-12 characters long and contain at least one letter and one number";
     }
     if (!values.confirmPassword) {
       errors.confirmPassword = "Confirm Password is required!";
-    } else if (values.password !== values.confirmPassword) {
+    } else if (values.user.password !== values.confirmPassword) {
       errors.confirmPassword = "Passwords must match!";
     }
-    if (!values.dob.day || !values.dob.month || !values.dob.year) {
-      errors.dob = "Please enter a valid date";
+    const ageDifference = new Date().getFullYear() - values.user.dob.getFullYear();
+    if (ageDifference < 18) {
+      errors.dob = "User must be atleast 18 years old";
     }
-    if (!values.country) {
+    if (!values.user.country) {
       errors.country = "Please select a country";
     }
-    if (values.gender === Gender.None) {
+    if (values.user.gender === Gender.None) {
       errors.gender = "Please select a gender";
     }
-    if (values.languages.length === 0) {
+    if (values.user.languages.length === 0) {
       errors.languages = "Please select at least one language";
     }
     return errors;
@@ -138,7 +141,7 @@ const SignUp = () => {
               text="Username"
               type="text"
               id="username"
-              value={formValues.username}
+              value={formValues.user.username}
               onFieldChange={handleChange}
               errorMsg={formErrors.username}
             />
@@ -148,7 +151,7 @@ const SignUp = () => {
               type="text"
               id="email"
               placeholder="example@example.com"
-              value={formValues.email}
+              value={formValues.user.email}
               onFieldChange={handleChange}
               errorMsg={formErrors.email}
             />
@@ -158,7 +161,7 @@ const SignUp = () => {
               type="password"
               id="password"
               placeholder="••••••••"
-              value={formValues.password}
+              value={formValues.user.password}
               onFieldChange={handleChange}
               errorMsg={formErrors.password}
             />
@@ -212,9 +215,9 @@ const SignUp = () => {
                   htmlFor="bio"
                   className="block mb-2 text-black  font-bold"
                 >
-                  Bio (Optinal):
+                  Bio (Optional):
                 </label>
-                <Bio onBioChange={handleChange} value={formValues.bio}></Bio>
+                <Bio onBioChange={handleChange} value={formValues.user.bio}></Bio>
               </div>
             </div>
             <button

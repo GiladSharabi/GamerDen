@@ -1,7 +1,5 @@
 import instance from "../api/axios.ts";
 import { UserResult, User, Game } from "../api/types.ts";
-import { convertDateOfBirthToISO } from "../api/api.utils.ts";
-import { FormValues } from "../pages/SignUpPage.tsx";
 
 export async function getUserById(userID: number): Promise<UserResult> {
   try {
@@ -16,31 +14,17 @@ export async function getUserById(userID: number): Promise<UserResult> {
   }
 }
 
-export async function signup(formValues: FormValues) {
-  const dobISO: Date | null = convertDateOfBirthToISO(formValues.dob);
-  if (dobISO) {
-    const user: Omit<User, "id" | "created_at"> = {
-      email: formValues.email,
-      password: formValues.password,
-      username: formValues.username,
-      dob: dobISO,
-      country: formValues.country,
-      gender: formValues.gender,
-      languages: formValues.languages,
-    };
-
-    try {
-      const response = await instance.post(`/signup`, user, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (e: any) {
-      console.log("Error during signup:", e);
-    }
-  } else {
-    console.log("Invalid date of birth:", formValues.dob);
+export async function signup(user: Partial<User>) {
+  try {
+    const response = await instance.post(`/signup`, user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (e: any) {
+    console.log("Error during signup:", e);
+    return { error: e };
   }
 }
 
@@ -56,6 +40,7 @@ export async function getUser(token: string) {
     }
   } catch (e: any) {
     console.log("Get user Error:", e);
+    return { error: e };
   }
 }
 
@@ -72,6 +57,7 @@ export async function updateUser(user: Partial<User>) {
     return response.data;
   } catch (e) {
     console.error("Error updating user:", e);
+    return { error: e };
   }
 }
 
@@ -91,6 +77,7 @@ export async function login(username: string, password: string) {
     }
   } catch (e: any) {
     console.log("unexpected error in login:", e);
+    return { error: e };
   }
 }
 
@@ -100,6 +87,7 @@ export async function getGames(limit?: number): Promise<Game[]> {
     if (!response) {
       console.log("error in getgames");
     }
+    console.log(response.data);
     return response.data;
   } catch (e) {
     console.log("Get games error:", e);

@@ -3,6 +3,7 @@ import { Gender, User } from "@prisma/client";
 import { Request, Response } from "express";
 
 const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const db = new PrismaClient();
 
@@ -56,13 +57,13 @@ export async function createUser(
     }
     fixUserRequestData(req);
     const data = req.body;
-
     const user = await db.user.create({
       data: data,
     });
 
     return { user };
   } catch (e: any) {
+    console.log(e);
     return { error: "internal server error" };
   }
 }
@@ -71,8 +72,8 @@ export async function updateUser(req: Request, res: Response) {
   try {
     const { username, preferences } = req.body;
     fixUserRequestData(req);
+    console.log(req.body);
     const data = req.body;
-
     const user = await db.user.update({
       where: { username: username },
       data: {
@@ -92,6 +93,7 @@ export async function updateUser(req: Request, res: Response) {
     });
     res.status(200).json(user);
   } catch (e: any) {
+    console.log(e);
     res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -99,8 +101,12 @@ export async function updateUser(req: Request, res: Response) {
 
 function fixUserRequestData(req: Request) {
   const { password } = req.body;
-  const gender = parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
   const data = req.body;
+  if (password) {
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(password, salt);
+    data.password = hash;
+  }
+  const gender = parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
   data.gender = gender;
-  data.password = bcrypt.hashSync(password, 10);
 }

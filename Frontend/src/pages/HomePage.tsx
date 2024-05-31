@@ -1,55 +1,54 @@
 import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import { TbLogin2 } from "react-icons/tb";
-import { getUserById, getUser, login, getGames, signup } from "../api/api.endpoints";
-import { UserResult } from "../api/types";
-import { User } from "../api/types"
-import { Game } from "../api/types";
-import { FormValues } from "./SignUpPage";
+import { getUserById, getUser, login, getGames, signup, updateUser } from "../api/api.endpoints";
+import { Game, User } from "../api/types";
 
 const HomePage = () => {
 
   const handleClick = async () => {
     try {
-      const user: FormValues = {
-        email: "exazmpzzaaazazle2d@example.com",
-        password: "passwzzfaord123",
-        confirmPassword: "passwzzfaord123",
-        username: "exzazadaamzaplzze_user",
-        dob: { day: 1, month: 12, year: 1995 },
-        country: "bazb",
-        gender: 0,
-        languages: ["English", "Spanish"],
-      };
-      const answer = await signup(user);
-      if (answer) {
-        console.log(answer);
-      }
-      // const user: Partial<User> = {
-      //   email: "yes@example.com",
+      // const user: User = {
+      //   email: "eaasdsdza@example.com",
       //   password: "passwzzfaord123",
-      //   username: "exzazdmzplzze_user",
-      //   country: "big dog",
+      //   username: "ezasdasdaeza",
+      //   dob: new Date(Date.now()),
+      //   country: "bazb",
+      //   gender: 0,
       //   languages: ["English", "Spanish"],
-      //   preferences: {
-      //     "bio": "i like cake very much",
-      //     "region": "europapap",
-      //     "voice": false,
-      //     "age_range": [18, 50]
-      //   }
-
       // };
-      // await updateUser(user);
+      // console.log(user);
+      // const answer = await signup(user);
+      // if (answer) {
+      //   console.log(answer);
+      // }
+      const user: Partial<User> = {
+        email: "eaasdsdza@example.com",
+        username: "ezasdasdaeza",
+        country: "bigest of dogs",
+        languages: ["English", "Spanish"],
+        preferences: {
+          "region": "europapap",
+          "voice": true,
+          "age_range": [18, 50]
+        }
+
+      };
+      await updateUser(user);
+      const games: Game[] = await getGames();
+      console.log(games);
+      const names: string[] = games.map(({ name }) => name);
+      console.log(names);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
   };
   return (
     <section className="flex items-start justify-start flex-col ml-5">
-      <h1 className="font-jersey text-white text-6xl font-bold mb-10">
+      <h1 className=" text-white text-6xl font-bold mb-10">
         Welcome to GamerDen
       </h1>
-      <h2 className="font-poetsen text-white text-3xl mb-14">
+      <h2 className=" text-white text-3xl mb-14">
         Embark on your gaming journey with the perfect companion.
         <br />
         Discover your ideal gaming partner and elevate your gaming experience to

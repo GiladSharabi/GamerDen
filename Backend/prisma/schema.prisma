@@ -17,16 +17,17 @@ model User {
   country     String
   gender      Gender
   languages   String[]
+  bio         String           @default("No Bio Available")
+  avatar      String?
   preferences UserPreferences?
 }
 
 model UserPreferences {
   id         Int        @id @default(autoincrement())
-  bio        String?    @default("")
-  region     String?
+  region     String
   voice      Boolean    @default(false)
   group_play Boolean    @default(false)
-  platform   Platform[]
+  platform   Platform[] @default([])
   weekday    Weekday[]  @default([])
   age_range  Int[]      @default([18, 100])
   games      Game[]     @relation("UserPreferencesGames")
