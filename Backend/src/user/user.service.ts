@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Gender, User } from "@prisma/client";
 import { Request, Response } from "express";
+import bcrypt from "..";
 
-const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const db = new PrismaClient();

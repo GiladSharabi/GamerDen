@@ -47,6 +47,8 @@ export type User = {
   gender: Gender;
   languages: string[];
   bio?: string;
+  rating?: number;
+  rating_count?: number;
   preferences?: UserPreferences;
 };
 

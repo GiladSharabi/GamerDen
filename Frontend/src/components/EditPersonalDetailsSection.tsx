@@ -1,9 +1,9 @@
 import FormField from "./FormField";
-import DateSelector from "./DateSelector";
+import DateSelector from "./DatePickerComponent";
 import CountrySelector from "./CountrySelector";
 import GenderSelector from "./GenderSelector";
 import SaveButton from "./SaveButton";
-import LanguagesSelector from "./LanguagesSelector";
+import LanguagesSelector from "./SignUpComponents/LanguagesSelector";
 import { FormValues } from "../pages/SignUpPage";
 import { useState } from "react";
 import { Gender } from "../api/types";

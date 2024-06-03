@@ -6,9 +6,10 @@ import { gameRouter } from "./game/game.router";
 import userRouter from "./user/user.router";
 import { createUser, getUserByUserName } from "./user/user.service";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
+export default bcrypt;
 
-const bcrypt = require('bcrypt');
 dotenvexpand.expand(dotenv.config());
 
 const app: Express = express();

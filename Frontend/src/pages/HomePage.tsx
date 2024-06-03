@@ -1,88 +1,98 @@
-import { Link } from "react-router-dom";
-import { FaPen } from "react-icons/fa";
-import { TbLogin2 } from "react-icons/tb";
-import { getUserById, getUser, login, getGames, signup, updateUser } from "../api/api.endpoints";
-import { Game, User } from "../api/types";
+import { Link as RouterLink } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, Paper, Box, Grid, Typography, Divider } from '@mui/material';
+import { Login, Edit, VideogameAsset } from '@mui/icons-material';
+import { getGames } from "../api/api.endpoints";
+
 
 const HomePage = () => {
 
   const handleClick = async () => {
     try {
-      // const user: User = {
-      //   email: "eaasdsdza@example.com",
-      //   password: "passwzzfaord123",
-      //   username: "ezasdasdaeza",
-      //   dob: new Date(Date.now()),
-      //   country: "bazb",
-      //   gender: 0,
-      //   languages: ["English", "Spanish"],
-      // };
-      // console.log(user);
-      // const answer = await signup(user);
-      // if (answer) {
-      //   console.log(answer);
-      // }
-      const user: Partial<User> = {
-        email: "eaasdsdza@example.com",
-        username: "ezasdasdaeza",
-        country: "bigest of dogs",
-        languages: ["English", "Spanish"],
-        preferences: {
-          "region": "europapap",
-          "voice": true,
-          "age_range": [18, 50]
-        }
-
-      };
-      await updateUser(user);
-      const games: Game[] = await getGames();
+      const games = await getGames();
       console.log(games);
-      const names: string[] = games.map(({ name }) => name);
-      console.log(names);
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error('Error fetching games:', error);
     }
   };
+
   return (
-    <section className="flex items-start justify-start flex-col ml-5">
-      <h1 className=" text-white text-6xl font-bold mb-10">
-        Welcome to GamerDen
-      </h1>
-      <h2 className=" text-white text-3xl mb-14">
-        Embark on your gaming journey with the perfect companion.
-        <br />
-        Discover your ideal gaming partner and elevate your gaming experience to
-        new heights!
-      </h2>
-      <div className="item-center justify-center">
-        <Link to={"/login"}>
-          <button
-            type="button"
-            className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 mb-8 flex items-center justify-center"
-          >
-            Login
-            <TbLogin2 className="ml-2" />
-          </button>
-        </Link>
-        <Link to={"/sign-up"}>
-          <button
-            type="button"
-            className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 flex items-center justify-center"
-          >
-            Sign Up
-            <FaPen className="ml-2" />
-          </button>
-        </Link>
-        <button
-          onClick={handleClick}
-          type="button"
-          className="text-2xl p-2.5 w-full text-black font-bold bg-blue-600 rounded-2xl hover:bg-blue-500 focus:ring-4 flex items-center justify-center"
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={12}
+        component={Paper}
+        elevation={6}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundImage: 'url(./src/images/LoginBackground.jpeg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(5px)',
+            p: 4,
+            borderRadius: 4,
+          }}
         >
-          testing 123
-          <FaPen className="ml-2" />
-        </button>
-      </div>
-    </section>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <VideogameAsset />
+          </Avatar>
+          <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+            Welcome to GamerDen
+          </Typography>
+          <Typography component="h2" variant="h6" sx={{ textAlign: 'center', mt: 2 }}>
+            Embark on your gaming journey with the perfect companion.
+            <br />
+            Discover your ideal gaming partner and elevate your gaming experience to new heights!
+          </Typography>
+          <Divider sx={{ width: '100%', my: 3, backgroundColor: 'primary.main', height: '3px' }} />
+          <Box sx={{ mt: 4, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+            <RouterLink to="/login" style={{ textDecoration: 'none' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<Login />}
+                sx={{ fontWeight: 'bold', width: '200px' }}
+              >
+                Sign In
+              </Button>
+            </RouterLink>
+            <RouterLink to="/sign-up" style={{ textDecoration: 'none' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<Edit />}
+                sx={{ fontWeight: 'bold', width: '200px' }}
+              >
+                Sign Up
+              </Button>
+            </RouterLink>
+            <Button
+              onClick={handleClick}
+              variant="contained"
+              color="primary"
+              startIcon={<Edit />}
+              sx={{ fontWeight: 'bold', width: '200px' }}
+            >
+              Testing 123
+            </Button>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,26 +1,30 @@
+import { Box, Container, Checkbox, Grid, ThemeProvider } from "@mui/material";
 import GameSelector from "../components/GameSelector";
-import SearchSection from "../components/SearchSection";
 import UserCards from "../components/UserCards";
-import MyCheckBox from "../components/MyCheckBox";
-import { Box, Container, Grid } from '@mui/material';
+import theme from "../components/Theme";
 
 const LoginHomePage = () => {
+
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
   return (
-    <Container>
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12}>
-          <Box p={2} border={1} borderRadius={8}>
-            <GameSelector />
-          </Box>
+    <ThemeProvider theme={theme}>
+      <Container style={{ marginTop: "50px" }}>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12}>
+            <Box bgcolor="background.default" p={2} borderRadius={4}>
+              <GameSelector />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Checkbox {...label} />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <MyCheckBox label="Voice" />
-        </Grid>
-      </Grid>
-      <Box display="flex" justifyContent="center" mt={4}>
-        <UserCards />
-      </Box>
-    </Container>
+        <Box display="flex" justifyContent="center" mt={4}>
+          <UserCards />
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
 

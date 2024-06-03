@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id          Int              @id @default(autoincrement())
-  email       String           @unique
-  password    String
-  username    String           @unique
-  dob         DateTime
-  created_at  DateTime         @default(now())
-  country     String
-  gender      Gender
-  languages   String[]
-  bio         String           @default("No Bio Available")
-  avatar      String?
-  preferences UserPreferences?
+  id           Int              @id @default(autoincrement())
+  email        String           @unique
+  password     String
+  username     String           @unique
+  dob          DateTime
+  created_at   DateTime         @default(now())
+  country      String
+  gender       Gender
+  languages    String[]
+  bio          String           @default("No Bio Available")
+  avatar       String?
+  rating       Float            @default(0)
+  rating_count Int              @default(0)
+  preferences  UserPreferences?
 }
 
 model UserPreferences {
