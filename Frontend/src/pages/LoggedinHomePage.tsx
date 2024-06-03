@@ -4,8 +4,7 @@ import UserCards from "../components/UserCards";
 import theme from "../components/Theme";
 
 const LoginHomePage = () => {
-
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   return (
     <ThemeProvider theme={theme}>

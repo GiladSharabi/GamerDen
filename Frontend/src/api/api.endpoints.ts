@@ -14,6 +14,19 @@ export async function getUserById(userID: number): Promise<UserResult> {
   }
 }
 
+export async function getUserByUserName(userID: number): Promise<UserResult> {
+  try {
+    const response = await instance.get(`/users/id/${userID}`);
+    const user: User = response.data;
+    if (!user) {
+      return { error: "User doesn't exist, Please try again" };
+    }
+    return { user };
+  } catch (e: any) {
+    return { error: "An error occurred while fetching user data" };
+  }
+}
+
 export async function signup(user: Partial<User>) {
   try {
     const response = await instance.post(`/signup`, user, {
