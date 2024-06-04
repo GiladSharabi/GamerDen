@@ -30,8 +30,10 @@ const SignUp = () => {
     languages: [],
     bio: "",
   });
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const today = new Date();
 
   const handleUserChange = (name: keyof User, value: string) => {
     setUser({ ...user, [name]: value });
@@ -50,27 +52,28 @@ const SignUp = () => {
   };
 
   const handleSubmit = async () => {
+    console.log(user);
     if (
-      !(
-        user.username ||
-        user.email ||
-        user.password ||
-        user.dob ||
-        user.country ||
-        user.gender !== Gender.None ||
-        user.languages
-      )
+      user.username &&
+      user.email &&
+      user.password &&
+      (user.dob.getFullYear() !== today.getFullYear() ||
+        user.dob.getMonth() !== today.getMonth() ||
+        user.dob.getDate() !== today.getDate()) &&
+      user.country &&
+      user.gender !== Gender.None &&
+      user.languages.length !== 0
     ) {
-      <Alert severity="error">Please fill all fields.</Alert>;
-      return;
-    } else {
       try {
+        setHasError(false);
         await signup(user);
         navigate("/login");
         console.log(user);
       } catch (e) {
         console.log("Error signup: " + e);
       }
+    } else {
+      setHasError(true);
     }
   };
 
@@ -140,6 +143,13 @@ const SignUp = () => {
               onChange={(value) => setUser({ ...user, bio: value })}
             />
             <SubmitButton onSubmit={handleSubmit} />
+            {hasError ? (
+              <Alert variant="filled" severity="error">
+                Please fill all fields.
+              </Alert>
+            ) : (
+              <></>
+            )}
           </Box>
         </Box>
       </Grid>

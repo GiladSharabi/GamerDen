@@ -11,16 +11,16 @@ import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { getUserById } from "../api/api.endpoints";
 
-export default function LoginPage() {
+const LoginPage = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
-    const theUser = getUserById(0);
-    console.log(theUser);
+    // console.log({
+    //   username: data.get("username"),
+    //   password: data.get("password"),
+    // });
+    // const theUser = getUserById(0);
+    // console.log(theUser);
   };
 
   return (
@@ -125,4 +125,6 @@ export default function LoginPage() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default LoginPage;

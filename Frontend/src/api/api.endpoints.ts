@@ -100,7 +100,7 @@ export async function getGames(limit?: number): Promise<Game[]> {
     if (!response) {
       console.log("error in getgames");
     }
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (e) {
     console.log("Get games error:", e);
