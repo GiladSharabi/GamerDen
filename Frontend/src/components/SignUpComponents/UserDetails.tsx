@@ -8,16 +8,40 @@ import {
   Typography,
 } from "@mui/material";
 import { User, Gender } from "../../api/types";
+import { useState } from "react";
 
 type UserDetailsProps = {
   user: User;
+  confirmPassword: string;
   onChange: (name: keyof User, value: string) => void;
+  onConfirmPasswordChange: (value: string) => void;
+  usernameError: string;
+  emailError: string;
+  passwordError: string;
+  confirmPasswordError: string;
 };
 
-const UserDetails = ({ user, onChange }: UserDetailsProps) => {
+const UserDetails = ({
+  user,
+  confirmPassword,
+  onChange,
+  onConfirmPasswordChange,
+  usernameError = "",
+  emailError = "",
+  passwordError = "",
+  confirmPasswordError = "",
+}: UserDetailsProps) => {
+  // const [usernameError, setUsernameError] = useState<string>("");
+  // const [emailError, setEmailError] = useState<string>("");
+  // const [passwordError, setPasswordError] = useState<string>("");
+  // const [isUsernameError, seIstUsernameError] = useState<boolean>(false);
+  // const [isEmailError, setIsEmailError] = useState<boolean>(false);
+  // const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
   return (
     <Box>
       <TextField
+        error={!(usernameError === "")}
+        helperText={usernameError}
         margin="normal"
         required
         fullWidth
@@ -30,6 +54,8 @@ const UserDetails = ({ user, onChange }: UserDetailsProps) => {
         onChange={(e) => onChange("username", e.target.value)}
       />
       <TextField
+        error={!(emailError === "")}
+        helperText={emailError}
         margin="normal"
         required
         fullWidth
@@ -41,6 +67,8 @@ const UserDetails = ({ user, onChange }: UserDetailsProps) => {
         onChange={(e) => onChange("email", e.target.value)}
       />
       <TextField
+        error={!(passwordError === "")}
+        helperText={passwordError}
         margin="normal"
         required
         fullWidth
@@ -51,6 +79,20 @@ const UserDetails = ({ user, onChange }: UserDetailsProps) => {
         autoComplete="new-password"
         value={user.password}
         onChange={(e) => onChange("password", e.target.value)}
+      />
+      <TextField
+        error={!(confirmPasswordError === "")}
+        helperText={confirmPasswordError}
+        margin="normal"
+        required
+        fullWidth
+        name="confirmPassword"
+        label="Confirm Password"
+        type="password"
+        id="confirmPassword"
+        autoComplete="new-password"
+        value={confirmPassword}
+        onChange={(e) => onConfirmPasswordChange(e.target.value)}
       />
       <FormControl component="fieldset" margin="normal">
         <Typography variant="subtitle1" gutterBottom>

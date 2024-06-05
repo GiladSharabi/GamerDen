@@ -30,13 +30,23 @@ const SignUp = () => {
     languages: [],
     bio: "",
   });
+
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [hasError, setHasError] = useState<boolean>(false);
+  const [usernameError, setUsernameError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
   const navigate = useNavigate();
   const today = new Date();
 
   const handleUserChange = (name: keyof User, value: string) => {
     setUser({ ...user, [name]: value });
+  };
+
+  const handleConfirmPasswordChanage = (value: string) => {
+    setConfirmPassword(value);
   };
 
   const handleCountryChange = (value: string) => {
@@ -52,29 +62,50 @@ const SignUp = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(user);
-    if (
-      user.username &&
-      user.email &&
-      user.password &&
-      (user.dob.getFullYear() !== today.getFullYear() ||
-        user.dob.getMonth() !== today.getMonth() ||
-        user.dob.getDate() !== today.getDate()) &&
-      user.country &&
-      user.gender !== Gender.None &&
-      user.languages.length !== 0
-    ) {
-      try {
-        setHasError(false);
-        await signup(user);
-        navigate("/login");
-        console.log(user);
-      } catch (e) {
-        console.log("Error signup: " + e);
-      }
+    if (!user.username) {
+      setUsernameError("Please enter Username.");
     } else {
-      setHasError(true);
+      setUsernameError("");
     }
+    if (!user.email) {
+      setEmailError("Please enter Email.");
+    } else {
+      setEmailError("");
+    }
+    if (!user.password) {
+      setPasswordError("Please enter Password.");
+    } else {
+      setPasswordError("");
+    }
+    if (!confirmPassword) {
+      setConfirmPasswordError("Please enter Confirm Password.");
+    } else {
+      setConfirmPasswordError("");
+    }
+
+    // console.log(user);
+    // if (
+    //   user.username &&
+    //   user.email &&
+    //   user.password &&
+    //   (user.dob.getFullYear() !== today.getFullYear() ||
+    //     user.dob.getMonth() !== today.getMonth() ||
+    //     user.dob.getDate() !== today.getDate()) &&
+    //   user.country &&
+    //   user.gender !== Gender.None &&
+    //   user.languages.length !== 0
+    // ) {
+    //   try {
+    //     setHasError(false);
+    //     const result = await signup(user);
+    //     navigate("/login");
+    //     // console.log(user);
+    //   } catch (e) {
+    //     console.log("Error signup: " + e);
+    //   }
+    // } else {
+    //   setHasError(true);
+    // }
   };
 
   return (
@@ -125,7 +156,16 @@ const SignUp = () => {
             Sign Up
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
-            <UserDetails user={user} onChange={handleUserChange} />
+            <UserDetails
+              user={user}
+              confirmPassword={confirmPassword}
+              onChange={handleUserChange}
+              onConfirmPasswordChange={handleConfirmPasswordChanage}
+              usernameError={usernameError}
+              emailError={emailError}
+              passwordError={passwordError}
+              confirmPasswordError={confirmPasswordError}
+            />
             <DatePickerComponent
               selectedDate={user.dob}
               onChange={handleDateChange}
@@ -142,7 +182,6 @@ const SignUp = () => {
               bio={user.bio || ""}
               onChange={(value) => setUser({ ...user, bio: value })}
             />
-            <SubmitButton onSubmit={handleSubmit} />
             {hasError ? (
               <Alert variant="filled" severity="error">
                 Please fill all fields.
@@ -150,6 +189,7 @@ const SignUp = () => {
             ) : (
               <></>
             )}
+            <SubmitButton onClick={handleSubmit} />
           </Box>
         </Box>
       </Grid>

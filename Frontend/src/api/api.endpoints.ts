@@ -77,20 +77,19 @@ export async function updateUser(user: Partial<User>) {
 export async function login(username: string, password: string) {
   try {
     const response = await instance.post("/login", {
-      username: username,
-      password: password,
+      username,
+      password,
     });
 
     if (response.data.accessToken) {
       localStorage.setItem("accessToken", response.data.accessToken);
-      console.log("Login successful");
-      console.log(response.data.accessToken);
+      return { success: true, accessToken: response.data.accessToken };
     } else {
-      console.log("Login failed:", response.data.error);
+      return { success: false, error: response.data.error };
     }
-  } catch (e: any) {
-    console.log("unexpected error in login:", e);
-    return { error: e };
+  } catch (e) {
+    console.log("Unexpected error in login:", e);
+    return { success: false, error: e };
   }
 }
 

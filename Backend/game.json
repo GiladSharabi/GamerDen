@@ -75,14 +75,14 @@
         "name": "Half-Life"
     },
     {
-        "id": 500,
-        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voj.jpg",
-        "name": "Batman: Arkham Asylum"
-    },
-    {
         "id": 25076,
         "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1q1f.jpg",
         "name": "Red Dead Redemption 2"
+    },
+    {
+        "id": 500,
+        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voj.jpg",
+        "name": "Batman: Arkham Asylum"
     },
     {
         "id": 7346,
@@ -90,14 +90,14 @@
         "name": "The Legend of Zelda: Breath of the Wild"
     },
     {
-        "id": 501,
-        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voh.jpg",
-        "name": "Batman: Arkham City"
-    },
-    {
         "id": 73,
         "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1x7o.jpg",
         "name": "Mass Effect"
+    },
+    {
+        "id": 501,
+        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voh.jpg",
+        "name": "Batman: Arkham City"
     },
     {
         "id": 7331,
@@ -120,14 +120,14 @@
         "name": "Uncharted 2: Among Thieves"
     },
     {
-        "id": 529,
-        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1vpd.jpg",
-        "name": "Far Cry 3"
-    },
-    {
         "id": 11156,
         "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co2una.jpg",
         "name": "Horizon Zero Dawn"
+    },
+    {
+        "id": 529,
+        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1vpd.jpg",
+        "name": "Far Cry 3"
     },
     {
         "id": 16,

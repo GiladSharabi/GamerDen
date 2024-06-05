@@ -1,17 +1,17 @@
 import { Button } from "@mui/material";
 
 type SubmitButtonProps = {
-  onSubmit: () => void;
+  onClick: () => void;
 };
 
-const SubmitButton = ({ onSubmit }: SubmitButtonProps) => {
+const SubmitButton = ({ onClick }: SubmitButtonProps) => {
   return (
     <Button
       type="button"
       fullWidth
       variant="contained"
       sx={{ mt: 3, mb: 2 }}
-      onClick={onSubmit}
+      onClick={onClick}
     >
       Register
     </Button>

@@ -20,6 +20,8 @@ CREATE TABLE "User" (
     "languages" TEXT[],
     "bio" TEXT NOT NULL DEFAULT 'No Bio Available',
     "avatar" TEXT,
+    "rating" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "rating_count" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

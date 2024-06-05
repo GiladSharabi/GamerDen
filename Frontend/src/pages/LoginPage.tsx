@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,18 +8,36 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
-import { getUserById } from "../api/api.endpoints";
+import { useRef, useState } from "react";
+import { login } from "../api/api.endpoints";
+import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material";
 
 const LoginPage = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // console.log({
-    //   username: data.get("username"),
-    //   password: data.get("password"),
-    // });
-    // const theUser = getUserById(0);
-    // console.log(theUser);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const handleClick = async () => {
+    console.log(usernameRef.current?.value);
+    console.log(passwordRef.current?.value);
+    try {
+      if (usernameRef.current && passwordRef.current) {
+        const result = await login(
+          usernameRef.current.value,
+          passwordRef.current.value
+        );
+        if (result.success) {
+          setHasError(false);
+          navigate("/user-loggedin-homepage");
+        } else {
+          setHasError(true);
+          console.log("Failed in login: " + result.error);
+        }
+      }
+    } catch (e) {
+      console.log("Error Signin: " + e);
+    }
   };
 
   return (
@@ -53,6 +70,8 @@ const LoginPage = () => {
             backdropFilter: "blur(5px)",
             p: 4,
             borderRadius: 4,
+            width: { xs: "90%", sm: "80%", md: "60%", lg: "40%", xl: "30%" },
+            maxWidth: "600px",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -61,12 +80,7 @@ const LoginPage = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" noValidate sx={{ mt: 1, width: "100%" }}>
             <TextField
               margin="normal"
               required
@@ -76,6 +90,7 @@ const LoginPage = () => {
               name="username"
               autoComplete="username"
               autoFocus
+              inputRef={usernameRef}
             />
             <TextField
               margin="normal"
@@ -86,12 +101,21 @@ const LoginPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              inputRef={passwordRef}
             />
+            {hasError ? (
+              <Alert severity="error" sx={{ width: "100%" }}>
+                Invalid Username or Password. Please try again.
+              </Alert>
+            ) : (
+              <></>
+            )}
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={handleClick}
             >
               Sign In
             </Button>

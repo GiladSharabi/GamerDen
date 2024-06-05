@@ -29,7 +29,7 @@ const LanguageSelector = ({ languages, onChange }: LanguageSelectorProps) => {
   };
 
   return (
-    <div>
+    <div className="mt-2">
       <Autocomplete
         options={allLanguages}
         freeSolo
