@@ -79,6 +79,8 @@ const SignUp = () => {
     }
     if (!confirmPassword) {
       setConfirmPasswordError("Please enter Confirm Password.");
+    } else if (confirmPassword !== user.password) {
+      setConfirmPasswordError("Passwords does not match!");
     } else {
       setConfirmPasswordError("");
     }

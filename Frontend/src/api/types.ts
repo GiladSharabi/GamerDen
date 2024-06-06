@@ -1,9 +1,21 @@
+export type searchProps = {
+  platform: string[];
+  isVoice: boolean;
+  isSolo: boolean;
+  prefGender: Gender;
+  region: string;
+  partnerPlatform: string[];
+  ageRange: {
+    minAge: number;
+    maxAge: number;
+  };
+};
+
 export enum Gender {
   Male,
   Female,
   None,
 }
-
 
 export enum Platform {
   PC = "PC",

@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { User, Gender } from "../../api/types";
 import { useState } from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../Theme";
 
 type UserDetailsProps = {
   user: User;
@@ -43,7 +45,7 @@ const UserDetails = ({
         error={!(usernameError === "")}
         helperText={usernameError}
         margin="normal"
-        required
+        // required
         fullWidth
         id="username"
         label="Username"
@@ -57,7 +59,7 @@ const UserDetails = ({
         error={!(emailError === "")}
         helperText={emailError}
         margin="normal"
-        required
+        // required
         fullWidth
         id="email"
         label="Email Address"
@@ -70,7 +72,7 @@ const UserDetails = ({
         error={!(passwordError === "")}
         helperText={passwordError}
         margin="normal"
-        required
+        // required
         fullWidth
         name="password"
         label="Password"
@@ -84,7 +86,7 @@ const UserDetails = ({
         error={!(confirmPasswordError === "")}
         helperText={confirmPasswordError}
         margin="normal"
-        required
+        // required
         fullWidth
         name="confirmPassword"
         label="Confirm Password"
