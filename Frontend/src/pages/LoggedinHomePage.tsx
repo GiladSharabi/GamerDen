@@ -3,33 +3,109 @@ import {
   Container,
   Checkbox,
   Grid,
+  Button,
   ThemeProvider,
+  Typography,
   FormControlLabel,
 } from "@mui/material";
 import GameSelector from "../components/GameSelector";
 import UserCards from "../components/UserCards";
 import theme from "../components/Theme";
-import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PlatformSelector from "../components/PlatformSelector";
-import { searchProps } from "../api/types";
+import { SearchProps, Gender, SoloOrGroup } from "../api/types";
 import VoiceSelector from "../components/VoiceSelector";
+import SoloOrGroupSelector from "../components/SoloOrGroupSelector";
+import PreferedGenderSelector from "../components/PreferedGenderSelector";
+import RegionSelector from "../components/RegionSelector";
+import AgeRangeSelector from "../components/AgeRangeSelector";
 /*
   platform
   voice - checkbox
   solo/group
   pref gender
   region
-  partner platform
+  teammate platform
   age range
 */
 
 const LoggedinHomePage = () => {
-  const [isVoice, setIsVoice] = useState<boolean>(false);
-  let searchProps: searchProps;
+  const [searchProps, setSearchProps] = useState<SearchProps>({
+    platforms: [],
+    isVoice: false,
+    soloOrGroup: SoloOrGroup.None,
+    prefGender: Gender.None,
+    region: "",
+    teammatePlatform: [],
+    ageRange: {
+      minAge: 18,
+      maxAge: 90,
+    },
+  });
+
+  useEffect(() => {
+    console.log(searchProps);
+  }, [searchProps]);
 
   const handleVoiceClick = () => {
-    setIsVoice(!isVoice);
+    setSearchProps((prev) => ({
+      ...prev,
+      isVoice: !prev.isVoice,
+    }));
+  };
+  const handlePlatformChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newPlatform: string
+  ) => {
+    setSearchProps((prev) => ({
+      ...prev,
+      platforms: prev.platforms.includes(newPlatform)
+        ? prev.platforms.filter((platform) => platform !== newPlatform)
+        : [...prev.platforms, newPlatform],
+    }));
+  };
+  const handleTeammatePlatformChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newPlatform: string
+  ) => {
+    setSearchProps((prev) => ({
+      ...prev,
+      teammatePlatform: prev.teammatePlatform.includes(newPlatform)
+        ? prev.teammatePlatform.filter((platform) => platform !== newPlatform)
+        : [...prev.teammatePlatform, newPlatform],
+    }));
+  };
+
+  const handleSoloGroupChange = (choice: SoloOrGroup) => {
+    setSearchProps((prev) => ({
+      ...prev,
+      soloOrGroup: choice,
+    }));
+  };
+  const handleGenderChange = (gender: Gender) => {
+    setSearchProps((prev) => ({
+      ...prev,
+      prefGender: gender,
+    }));
+  };
+  const handleRegionChange = (selectedRegion: string) => {
+    setSearchProps((prev) => ({
+      ...prev,
+      region: selectedRegion,
+    }));
+  };
+
+  const handleAgeRangeChange = (event: Event, newValue: number | number[]) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setSearchProps((prev) => ({
+      ...prev,
+      ageRange: {
+        minAge: newValue[0],
+        maxAge: newValue[1],
+      },
+    }));
   };
 
   return (
@@ -46,14 +122,50 @@ const LoggedinHomePage = () => {
             >
               {/* the Box that hold all fields */}
               <GameSelector />
-              <PlatformSelector />
-              <VoiceSelector isVoice={isVoice} onChange={handleVoiceClick} />
+              <PlatformSelector
+                label="Select Platform"
+                selectedPlatforms={searchProps.platforms}
+                onChange={handlePlatformChange}
+              />
+              <RegionSelector
+                region={searchProps.region}
+                onChange={handleRegionChange}
+                label="Select Region"
+              />
+              <SoloOrGroupSelector
+                label="Are you searching alone or with other group?"
+                soloOrGroup={searchProps.soloOrGroup}
+                onChange={handleSoloGroupChange}
+              />
+              <PreferedGenderSelector
+                label="Which gender do you prefer to play with?"
+                selectedGender={searchProps.prefGender}
+                onChange={handleGenderChange}
+              />
+              <PlatformSelector
+                label="Select teammate Platform"
+                selectedPlatforms={searchProps.teammatePlatform}
+                onChange={handleTeammatePlatformChange}
+              />
+              <AgeRangeSelector
+                label="Between what ages are your ideal teammates?"
+                minAge={searchProps.ageRange.minAge}
+                maxAge={searchProps.ageRange.maxAge}
+                onChange={handleAgeRangeChange}
+              />
+              <VoiceSelector
+                isVoice={searchProps.isVoice}
+                onChange={handleVoiceClick}
+              />
+              <Button variant="contained" size="medium" sx={{ width: "30%" }}>
+                Search
+              </Button>
             </Box>
           </Grid>
         </Grid>
-        {/* <Box display="flex" justifyContent="center" mt={4}>
+        <Box display="flex" justifyContent="center" mt={4}>
           <UserCards />
-        </Box> */}
+        </Box>
       </Container>
     </ThemeProvider>
   );

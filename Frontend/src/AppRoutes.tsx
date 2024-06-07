@@ -23,7 +23,7 @@ const AppRoutes = () => {
           path="/edit-gaming-preferences"
           element={<EditGamingPreferences />}
         />
-        <Route path="/user-loggedin-homepage" element={<LoggedinHomePage />} />
+        <Route path="/dashboard" element={<LoggedinHomePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

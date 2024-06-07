@@ -29,7 +29,7 @@ const LoginPage = () => {
         );
         if (result.success) {
           setHasError(false);
-          navigate("/user-loggedin-homepage");
+          navigate("/dashboard");
         } else {
           setHasError(true);
           console.log("Failed in login: " + result.error);

@@ -29,7 +29,7 @@ const Navbar = ({ isLoggedIn }: LoginProp) => {
           </IconButton>
           <div style={{ flexGrow: 1 }} />
           <Link
-            to="/user-loggedin-homepage"
+            to="/dashboard"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <IconButton color="inherit" aria-label="home">

@@ -1,4 +1,4 @@
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { FormControlLabel, Checkbox, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 type props = {
   isVoice: boolean;
@@ -7,10 +7,12 @@ type props = {
 
 const VoiceSelector = ({ isVoice, onChange }: props) => {
   return (
-    <FormControlLabel
-      control={<Checkbox checked={isVoice} onChange={onChange} />}
-      label={<Typography color="textPrimary">Voice</Typography>}
-    ></FormControlLabel>
+    <Box sx={{ width: "100%" }}>
+      <FormControlLabel
+        control={<Checkbox checked={isVoice} onChange={onChange} />}
+        label={<Typography color="textPrimary">Voice</Typography>}
+      ></FormControlLabel>
+    </Box>
   );
 };
 

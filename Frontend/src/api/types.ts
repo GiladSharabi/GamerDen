@@ -1,10 +1,10 @@
-export type searchProps = {
-  platform: string[];
+export type SearchProps = {
+  platforms: string[];
   isVoice: boolean;
-  isSolo: boolean;
+  soloOrGroup: SoloOrGroup;
   prefGender: Gender;
   region: string;
-  partnerPlatform: string[];
+  teammatePlatform: string[];
   ageRange: {
     minAge: number;
     maxAge: number;
@@ -14,6 +14,12 @@ export type searchProps = {
 export enum Gender {
   Male,
   Female,
+  Both,
+  None,
+}
+export enum SoloOrGroup {
+  Solo,
+  Group,
   None,
 }
 

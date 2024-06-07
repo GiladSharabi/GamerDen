@@ -8,7 +8,7 @@ import { FormValues } from "../pages/SignUpPage";
 import { useState } from "react";
 import { Gender } from "../api/types";
 
-const EditPersonalDetailsSection = ({ }: FormValues) => {
+const EditPersonalDetailsSection = ({}: FormValues) => {
   const [formValues, setFormValues] = useState<FormValues>({
     username: "",
     email: "",
@@ -20,7 +20,7 @@ const EditPersonalDetailsSection = ({ }: FormValues) => {
     languages: [],
   });
 
-  return <div />
+  return <div />;
   //(
   // <section className="flex items-center justify-start ml-5">
   //   <div className="mb-5 w-full bg-gray-200 rounded-lg shadow md:max-w-4xl xl:p-0">

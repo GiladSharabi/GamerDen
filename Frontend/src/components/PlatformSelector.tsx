@@ -1,27 +1,28 @@
-import { useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
+import { MouseEvent } from "react";
+type props = {
+  label: string;
+  selectedPlatforms: string[];
+  onChange: (event: MouseEvent<HTMLElement>, newPlatform: string) => void;
+};
 
-const PlatformSelector = () => {
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-
-  const togglePlatform = (e: any) => {
-    if (selectedPlatforms.includes(e.target.value)) {
-      setSelectedPlatforms(
-        selectedPlatforms.filter((p) => p !== e.target.value)
-      );
-    } else {
-      setSelectedPlatforms([...selectedPlatforms, e.target.value]);
-    }
-  };
-
+const PlatformSelector = ({
+  selectedPlatforms,
+  onChange,
+  label = "",
+}: props) => {
   return (
     <div className="mb-2">
+      <Typography variant="h6" gutterBottom color="white">
+        {label}
+      </Typography>
       <ToggleButtonGroup
         color="primary"
         value={selectedPlatforms}
         exclusive
-        onChange={togglePlatform}
+        onChange={onChange}
         aria-label="Platform"
       >
         <ToggleButton value="Playstation">Playstation</ToggleButton>
