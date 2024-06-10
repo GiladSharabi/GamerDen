@@ -53,9 +53,17 @@ const UserDetails = ({ user, onChange }: UserDetailsProps) => {
                     value={user.gender}
                     onChange={(e) => onChange('gender', e.target.value)}
                 >
-                    <FormControlLabel value={Gender.Male} control={<Radio />} label="Male" />
-                    <FormControlLabel value={Gender.Female} control={<Radio />} label="Female" />
-                    <FormControlLabel value={Gender.None} control={<Radio />} label="None" />
+                    {Object.keys(Gender).map((key) => {
+                        const genderOption = Gender[key as keyof typeof Gender];
+                        return (
+                            <FormControlLabel
+                                key={genderOption}
+                                value={genderOption}
+                                control={<Radio />}
+                                label={genderOption}
+                            />
+                        );
+                    })}
                 </RadioGroup>
             </FormControl>
         </Box>

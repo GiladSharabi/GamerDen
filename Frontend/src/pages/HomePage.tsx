@@ -1,17 +1,28 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, Paper, Box, Grid, Typography, Divider } from '@mui/material';
 import { Login, Edit, VideogameAsset } from '@mui/icons-material';
-import { getGames } from "../api/api.endpoints";
-
+import { getGames, signup } from "../api/api.endpoints";
+import { User, Gender } from "../api/types"
 
 const HomePage = () => {
 
   const handleClick = async () => {
     try {
-      const games = await getGames();
-      console.log(games);
+      const user: User = {
+        username: "gasdilad",
+        email: "gilaasdd1197@gmail.com",
+        password: "asd",
+        gender: Gender.None,
+        dob: new Date(Date.now()),
+        country: "Israel",
+        languages: ["Hebrew", "English"],
+      };
+      const resultUser = await signup(user);
+      console.log(resultUser);
+      // const games = await getGames();
+      // console.log(games);
     } catch (error) {
-      console.error('Error fetching games:', error);
+      console.error("Error fetching games:", error);
     }
   };
 

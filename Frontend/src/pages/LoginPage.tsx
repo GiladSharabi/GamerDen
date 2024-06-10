@@ -9,15 +9,16 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import { useRef } from "react"
 
 export default function LoginPage() {
+  const ref = useRef<HTMLInputElement>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
+    if (ref.current) {
+      const reference: string = ref.current.value;
+      console.log(reference);
+    }
   };
 
   return (
@@ -78,6 +79,7 @@ export default function LoginPage() {
               type="password"
               id="password"
               autoComplete="current-password"
+              inputRef={ref}
             />
             <Button
               type="submit"
