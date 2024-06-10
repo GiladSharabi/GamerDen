@@ -12,15 +12,15 @@ export type SearchProps = {
 };
 
 export enum Gender {
-  Male,
-  Female,
-  Both,
-  None,
+  Male = "Male",
+  Female = "Female",
+  Both = "Both",
+  None = "None",
 }
 export enum SoloOrGroup {
-  Solo,
-  Group,
-  None,
+  Solo = "Solo",
+  Group = "Group",
+  None = "None",
 }
 
 export enum Platform {
@@ -65,6 +65,7 @@ export type User = {
   gender: Gender;
   languages: string[];
   bio?: string;
+  avatar?: string;
   rating?: number;
   rating_count?: number;
   preferences?: UserPreferences;

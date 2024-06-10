@@ -19,8 +19,8 @@ const LoginPage = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const handleClick = async () => {
-    console.log(usernameRef.current?.value);
-    console.log(passwordRef.current?.value);
+    // console.log(usernameRef.current?.value);
+    // console.log(passwordRef.current?.value);
     try {
       if (usernameRef.current && passwordRef.current) {
         const result = await login(

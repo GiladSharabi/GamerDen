@@ -10,6 +10,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
+import { logout } from "../api/api.endpoints";
 
 type LoginProp = {
   isLoggedIn: Boolean;
@@ -53,7 +54,13 @@ const Navbar = ({ isLoggedIn }: LoginProp) => {
                 </IconButton>
               </Link>
               <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-                <IconButton color="inherit" aria-label="logout">
+                <IconButton
+                  color="inherit"
+                  aria-label="logout"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
                   <ExitToAppIcon />
                   <Typography variant="body1" sx={{ ml: 1 }}>
                     Logout

@@ -16,7 +16,7 @@ const BioTextarea = ({ bio, onChange }: BioTextareaProps) => {
   return (
     <Box sx={{ width: "100%", marginBottom: 2, mt: 2 }}>
       <Typography variant="subtitle1" gutterBottom>
-        Bio (Optinal)
+        Bio (Optional)
       </Typography>
       <TextareaAutosize
         placeholder="Type your biography here..."

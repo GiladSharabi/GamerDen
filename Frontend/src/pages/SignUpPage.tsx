@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Gender, User } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
 import CountrySelector from "../components/SignUpComponents/CountrySelector";
@@ -37,6 +37,10 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
+
+  useEffect(() => {
+    console.log("my user: " + user);
+  }, [user]);
 
   const navigate = useNavigate();
   const today = new Date();
@@ -83,6 +87,14 @@ const SignUp = () => {
       setConfirmPasswordError("Passwords does not match!");
     } else {
       setConfirmPasswordError("");
+    }
+    try {
+      setHasError(false);
+      const result = await signup(user);
+      console.log("signup result: " + result);
+      navigate("/login");
+    } catch (e) {
+      console.log("Error in signup" + e);
     }
 
     // console.log(user);

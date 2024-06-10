@@ -39,7 +39,7 @@ const UserCard = ({ username, rating, bio, games, avatarUrl }: CardProps) => {
                 </Avatar>
               </Link>
             </Grid>
-            <Grid sm>
+            <Grid>
               <Typography
                 variant="h6"
                 color="primary"

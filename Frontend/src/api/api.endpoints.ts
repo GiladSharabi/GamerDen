@@ -14,19 +14,6 @@ export async function getUserById(userID: number): Promise<UserResult> {
   }
 }
 
-export async function getUserByUserName(userID: number): Promise<UserResult> {
-  try {
-    const response = await instance.get(`/users/id/${userID}`);
-    const user: User = response.data;
-    if (!user) {
-      return { error: "User doesn't exist, Please try again" };
-    }
-    return { user };
-  } catch (e: any) {
-    return { error: "An error occurred while fetching user data" };
-  }
-}
-
 export async function signup(user: Partial<User>) {
   try {
     const response = await instance.post(`/signup`, user, {
@@ -109,5 +96,21 @@ export async function getGames(limit?: number): Promise<Game[]> {
 
 export function logout() {
   localStorage.removeItem("accessToken");
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
   // navigate to homepage
+}
+
+export async function getUserByToken(): Promise<User | undefined> {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      // console.log("token:" + token);
+      return getUser(token);
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.log("Error in getUserByToken: " + e);
+  }
 }
