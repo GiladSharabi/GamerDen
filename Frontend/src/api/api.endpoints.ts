@@ -86,7 +86,7 @@ export async function getGames(limit?: number): Promise<Game[]> {
     if (!response) {
       console.log("error in getgames");
     }
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (e) {
     console.log("Get games error:", e);
@@ -96,5 +96,21 @@ export async function getGames(limit?: number): Promise<Game[]> {
 
 export function logout() {
   localStorage.removeItem("accessToken");
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
   // navigate to homepage
+}
+
+export async function getUserByToken(): Promise<User | undefined> {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      // console.log("token:" + token);
+      return getUser(token);
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.log("Error in getUserByToken: " + e);
+  }
 }

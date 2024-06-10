@@ -1,15 +1,17 @@
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 type DatePickerComponentProps = {
   selectedDate: Date;
   onChange: (date: Date | null) => void;
 };
 
-const DatePickerComponent = ({ selectedDate, onChange }: DatePickerComponentProps) => {
-  const maxDate = dayjs();
-  console.log(maxDate);
+const DatePickerComponent = ({
+  selectedDate,
+  onChange,
+}: DatePickerComponentProps) => {
+  const maxDate = dayjs().subtract(18, "year");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -21,6 +23,6 @@ const DatePickerComponent = ({ selectedDate, onChange }: DatePickerComponentProp
       />
     </LocalizationProvider>
   );
-}
+};
 
 export default DatePickerComponent;

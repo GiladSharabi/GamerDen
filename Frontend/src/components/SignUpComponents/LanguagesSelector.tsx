@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { TextField, Chip, ThemeProvider } from "@mui/material";
+import { TextField, Chip } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { languages as LanguageListing } from '../../languages.json';
+import { languages as LanguageListing } from "../../languages.json";
 
 type LanguageSelectorProps = {
   languages: string[];
@@ -13,29 +13,28 @@ const LanguageSelector = ({ languages, onChange }: LanguageSelectorProps) => {
 
   useEffect(() => {
     const languageList: string[] = LanguageListing;
-    setAllLanguages(languageList.filter(lang => !languages.includes(lang)));
+    setAllLanguages(languageList.filter((lang) => !languages.includes(lang)));
   }, [languages]);
 
   const handleAddLanguage = (language: string) => {
-    onChange([...languages, language]);
-    setAllLanguages(allLanguages.filter(lang => lang !== language));
+    if (allLanguages.includes(language)) {
+      onChange([...languages, language]);
+      setAllLanguages(allLanguages.filter((lang) => lang !== language));
+    }
   };
 
   const handleRemoveLanguage = (language: string) => {
-    onChange(languages.filter(lang => lang !== language));
+    onChange(languages.filter((lang) => lang !== language));
     setAllLanguages([...allLanguages, language]);
   };
 
   return (
-    <div>
+    <div className="mt-2">
       <Autocomplete
         options={allLanguages}
         freeSolo
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Select Language"
-          />
+          <TextField {...params} label="Select Language" />
         )}
         onChange={(event, value) => value && handleAddLanguage(value)}
       />

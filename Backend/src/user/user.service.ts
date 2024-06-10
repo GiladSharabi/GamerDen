@@ -80,16 +80,16 @@ export async function updateUser(req: Request, res: Response) {
         ...data,
         preferences: preferences
           ? {
-            upsert: {
-              create: preferences,
-              update: preferences,
-            },
-          }
+              upsert: {
+                create: preferences,
+                update: preferences,
+              },
+            }
           : undefined,
       },
       include: {
         preferences: true,
-      }
+      },
     });
     res.status(200).json(user);
   } catch (e: any) {
@@ -97,7 +97,6 @@ export async function updateUser(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
 
 function fixUserRequestData(req: Request) {
   const { password } = req.body;
@@ -107,6 +106,7 @@ function fixUserRequestData(req: Request) {
     const hash = bcrypt.hashSync(password, salt);
     data.password = hash;
   }
-  const gender = parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
-  data.gender = gender;
+  // const gender =
+  //   parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
+  // data.gender = gender;
 }

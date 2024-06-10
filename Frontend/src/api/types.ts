@@ -1,9 +1,27 @@
+export type SearchProps = {
+  platforms: string[];
+  isVoice: boolean;
+  soloOrGroup: SoloOrGroup;
+  prefGender: Gender;
+  region: string;
+  teammatePlatform: string[];
+  ageRange: {
+    minAge: number;
+    maxAge: number;
+  };
+};
+
 export enum Gender {
   Male = "Male",
   Female = "Female",
+  Both = "Both",
   None = "None",
 }
-
+export enum SoloOrGroup {
+  Solo = "Solo",
+  Group = "Group",
+  None = "None",
+}
 
 export enum Platform {
   PC = "PC",
@@ -47,6 +65,7 @@ export type User = {
   gender: Gender;
   languages: string[];
   bio?: string;
+  avatar?: string;
   rating?: number;
   rating_count?: number;
   preferences?: UserPreferences;

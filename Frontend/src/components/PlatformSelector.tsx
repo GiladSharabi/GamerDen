@@ -1,50 +1,35 @@
-import { useState } from "react";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
+import { MouseEvent } from "react";
+type props = {
+  label: string;
+  selectedPlatforms: string[];
+  onChange: (event: MouseEvent<HTMLElement>, newPlatform: string) => void;
+};
 
-const PlatformSelector = () => {
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-
-  const togglePlatform = (platform: string) => {
-    if (selectedPlatforms.includes(platform)) {
-      setSelectedPlatforms(selectedPlatforms.filter((p) => p !== platform));
-    } else {
-      setSelectedPlatforms([...selectedPlatforms, platform]);
-    }
-  };
-
+const PlatformSelector = ({
+  selectedPlatforms,
+  onChange,
+  label = "",
+}: props) => {
   return (
-    <div className="flex flex-wrap gap-2">
-      <span
-        className={`px-4 py-2 border rounded cursor-pointer hover:bg-gray-700 ${
-          selectedPlatforms.includes("Xbox")
-            ? "bg-black text-white"
-            : "bg-white text-black"
-        }`}
-        onClick={() => togglePlatform("Xbox")}
+    <div className="mb-2">
+      <Typography variant="h6" gutterBottom color="white">
+        {label}
+      </Typography>
+      <ToggleButtonGroup
+        color="primary"
+        value={selectedPlatforms}
+        exclusive
+        onChange={onChange}
+        aria-label="Platform"
       >
-        Xbox
-      </span>
-      <span
-        className={`px-4 py-2 border rounded cursor-pointer hover:bg-gray-700 ${
-          selectedPlatforms.includes("PlayStation")
-            ? "bg-black text-white"
-            : "bg-white text-black"
-        }`}
-        onClick={() => togglePlatform("PlayStation")}
-      >
-        PlayStation
-      </span>
-      <span
-        className={`px-4 py-2 border rounded cursor-pointer hover:bg-gray-700 ${
-          selectedPlatforms.includes("PC")
-            ? "bg-black text-white"
-            : "bg-white text-black"
-        }`}
-        onClick={() => togglePlatform("PC")}
-      >
-        PC
-      </span>
+        <ToggleButton value="Playstation">Playstation</ToggleButton>
+        <ToggleButton value="Xbox">Xbox</ToggleButton>
+        <ToggleButton value="PC">PC</ToggleButton>
+      </ToggleButtonGroup>
     </div>
   );
 };
-
 export default PlatformSelector;
