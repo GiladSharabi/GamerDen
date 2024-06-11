@@ -4,6 +4,7 @@ import { getUser, logout } from "../api/api.endpoints";
 
 interface AuthContextType {
   user: User | null;
+  AuthLogin: (token: string) => void;
   AuthLogout: () => void;
 }
 
@@ -16,14 +17,25 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const authenticateUser = async () => {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const userResult = await getUser(token);
-        setUser(userResult);
+        try {
+          const userResult = await getUser(token);
+          setUser(userResult);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
       }
     };
     authenticateUser();
   }, []);
 
-  // login
+  const AuthLogin = async (token: string) => {
+    try {
+      const userResult = await getUser(token);
+      setUser(userResult);
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
+  };
 
   const AuthLogout = () => {
     logout();
@@ -31,7 +43,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, AuthLogout }}>
+    <AuthContext.Provider value={{ user, AuthLogin, AuthLogout }}>
       {children}
     </AuthContext.Provider>
   );

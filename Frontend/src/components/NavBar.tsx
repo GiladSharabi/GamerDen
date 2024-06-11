@@ -10,12 +10,18 @@ import PersonIcon from "@mui/icons-material/Person";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
-import { AuthProvider, AuthContext } from "../context/AuthProvider";
+import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
-import { User } from "../api/types";
 
 const Navbar = () => {
-  const { user, AuthLogout } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+
+  const { user, AuthLogout } = authContext;
+  console.log(user);
 
   return (
     <ThemeProvider theme={theme}>

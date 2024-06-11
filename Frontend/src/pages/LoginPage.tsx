@@ -12,15 +12,25 @@ import { useRef, useState } from "react";
 import { login } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
 
 const LoginPage = () => {
+
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+
+  const { user, AuthLogin } = authContext;
+
+  console.log(user);
   const [hasError, setHasError] = useState<boolean>(false);
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const handleClick = async () => {
-    // console.log(usernameRef.current?.value);
-    // console.log(passwordRef.current?.value);
     try {
       if (usernameRef.current && passwordRef.current) {
         const result = await login(
@@ -29,6 +39,7 @@ const LoginPage = () => {
         );
         if (result.success) {
           setHasError(false);
+          AuthLogin(result.accessToken);
           navigate("/dashboard");
         } else {
           setHasError(true);
