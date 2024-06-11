@@ -96,9 +96,6 @@ export async function getGames(limit?: number): Promise<Game[]> {
 
 export function logout() {
   localStorage.removeItem("accessToken");
-  const token = localStorage.getItem("accessToken");
-  console.log(token);
-  // navigate to homepage
 }
 
 export async function getUserByToken(): Promise<User | undefined> {

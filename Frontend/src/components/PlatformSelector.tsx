@@ -2,14 +2,15 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { MouseEvent } from "react";
+import { Platform } from "../api/types";
 type props = {
   label: string;
-  selectedPlatforms: string[];
-  onChange: (event: MouseEvent<HTMLElement>, newPlatform: string) => void;
+  selectedPlatforms: Platform[];
+  onChange: (event: MouseEvent<HTMLElement>, newPlatform: Platform) => void;
 };
 
 const PlatformSelector = ({
-  selectedPlatforms,
+  selectedPlatforms = [],
   onChange,
   label = "",
 }: props) => {

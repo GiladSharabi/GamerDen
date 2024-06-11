@@ -106,7 +106,4 @@ function fixUserRequestData(req: Request) {
     const hash = bcrypt.hashSync(password, salt);
     data.password = hash;
   }
-  // const gender =
-  //   parseInt(req.body.gender, 10) === 0 ? Gender.Male : Gender.Female;
-  // data.gender = gender;
 }
