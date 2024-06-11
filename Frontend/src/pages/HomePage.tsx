@@ -10,30 +10,8 @@ import {
   Divider,
 } from "@mui/material";
 import { Login, Edit, VideogameAsset } from "@mui/icons-material";
-import { getGames, signup } from "../api/api.endpoints";
-import { User, Gender } from "../api/types";
 
 const HomePage = () => {
-  const handleClick = async () => {
-    try {
-      const user: User = {
-        username: "gasdilad",
-        email: "gilaasdd1197@gmail.com",
-        password: "asd",
-        gender: Gender.None,
-        dob: new Date(Date.now()),
-        country: "Israel",
-        languages: ["Hebrew", "English"],
-      };
-      const resultUser = await signup(user);
-      console.log(resultUser);
-      // const games = await getGames();
-      // console.log(games);
-    } catch (error) {
-      console.error("Error fetching games:", error);
-    }
-  };
-
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
@@ -124,15 +102,6 @@ const HomePage = () => {
                 Sign Up
               </Button>
             </RouterLink>
-            <Button
-              onClick={handleClick}
-              variant="contained"
-              color="primary"
-              startIcon={<Edit />}
-              sx={{ fontWeight: "bold", width: "200px" }}
-            >
-              Testing 123
-            </Button>
           </Box>
         </Box>
       </Grid>

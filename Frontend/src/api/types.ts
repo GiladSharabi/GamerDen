@@ -48,10 +48,11 @@ export type Game = {
 export type UserPreferences = {
   region?: string;
   voice?: boolean;
-  group_play?: boolean;
+  soloOrGroup?: SoloOrGroup;
   platform?: Platform[];
-  weekday?: Weekday[];
-  age_range?: number[];
+  prefGender?: Gender;
+  ageRange?: number[];
+  teammatePlatform?: Platform[];
   games?: Game[];
 };
 

@@ -11,23 +11,20 @@ import RegionSelector from "../components/RegionSelector";
 import SoloOrGroupSelector from "../components/SoloOrGroupSelector";
 import PreferedGenderSelector from "../components/PreferedGenderSelector";
 import AgeRangeSelector from "../components/AgeRangeSelector";
-import VoiceSelector from "../components/VoiceSelector";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
-import { UserPreferences, Gender, SoloOrGroup, Platform } from "../api/types";
 
-const EditGamingPreferencesSection = () => {
+const EditGamingPreferencesPage = () => {
+  const navigate = useNavigate();
+
+  const handleSaveClick = () => { };
   const authContext = useContext(AuthContext);
-  const [userPref, setUserPref] = useState<UserPreferences | undefined>(
-    authContext?.user?.preferences
-  );
 
-  const handleClick = (fieldName: keyof UserPreferences, value: any) => {
-    setUserPref((prev) => ({
-      ...prev,
-      [fieldName]: value,
-    }));
-  };
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+
+  const { user } = authContext;
 
   return (
     userPref && (

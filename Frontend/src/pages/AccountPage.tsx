@@ -18,19 +18,19 @@ import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
 import MyDivider from "../components/MyDivider";
 import { MdModeEditOutline } from "react-icons/md";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
 
 const AccountPage = () => {
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+
+  const { user } = authContext;
+
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | undefined>(undefined);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserByToken();
-      setUser(userData);
-    };
-
-    fetchUser();
-  }, []);
 
   const calculateAge = (dob: Date): number => {
     const birthDate = new Date(dob);
@@ -171,7 +171,7 @@ const AccountPage = () => {
                 <MyDivider />
                 <Typography variant="body1">
                   <strong>Solo or Group:</strong>{" "}
-                  {user.preferences?.group_play ? "Group" : "Solo"}
+                  {user.preferences?.soloOrGroup ? "Group" : "Solo"}
                 </Typography>
                 <MyDivider />
                 <Typography variant="body1">
@@ -181,10 +181,10 @@ const AccountPage = () => {
                 <MyDivider />
                 <Typography variant="body1">
                   <strong>Age Range:</strong>{" "}
-                  {user.preferences?.age_range &&
-                    user.preferences?.age_range[0] +
+                  {user.preferences?.ageRange &&
+                    user.preferences?.ageRange[0] +
                       " - " +
-                      user.preferences?.age_range[1]}
+                      user.preferences?.ageRange[1]}
                 </Typography>
                 <MyDivider />
                 <Box
