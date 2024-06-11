@@ -5,8 +5,6 @@ import {
   Grid,
   Button,
   ThemeProvider,
-  Typography,
-  FormControlLabel,
 } from "@mui/material";
 import GameSelector from "../components/GameSelector";
 import UserCards from "../components/UserCards";
