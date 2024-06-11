@@ -11,6 +11,7 @@ import {
 import GameSelector from "../components/GameSelector";
 import UserCards from "../components/UserCards";
 import theme from "../components/Theme";
+import { IoSearch } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import PlatformSelector from "../components/PlatformSelector";
 import { SearchProps, Gender, SoloOrGroup } from "../api/types";
@@ -19,6 +20,7 @@ import SoloOrGroupSelector from "../components/SoloOrGroupSelector";
 import PreferedGenderSelector from "../components/PreferedGenderSelector";
 import RegionSelector from "../components/RegionSelector";
 import AgeRangeSelector from "../components/AgeRangeSelector";
+import { Platform } from "../api/types";
 /*
   platform
   voice - checkbox
@@ -55,7 +57,7 @@ const LoggedinHomePage = () => {
   };
   const handlePlatformChange = (
     event: React.MouseEvent<HTMLElement>,
-    newPlatform: string
+    newPlatform: Platform
   ) => {
     setSearchProps((prev) => ({
       ...prev,
@@ -66,7 +68,7 @@ const LoggedinHomePage = () => {
   };
   const handleTeammatePlatformChange = (
     event: React.MouseEvent<HTMLElement>,
-    newPlatform: string
+    newPlatform: Platform
   ) => {
     setSearchProps((prev) => ({
       ...prev,
@@ -157,7 +159,24 @@ const LoggedinHomePage = () => {
                 isVoice={searchProps.isVoice}
                 onChange={handleVoiceClick}
               />
-              <Button variant="contained" size="medium" sx={{ width: "30%" }}>
+              <Button
+                startIcon={<IoSearch />}
+                variant="contained"
+                size="medium"
+                sx={{
+                  width: "30%",
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  backgroundColor: "#555555",
+                  color: "#BBBBBB",
+                  border: "1px solid transparent",
+                  "&:hover": {
+                    color: "white",
+                    backgroundColor: "#222222",
+                    border: "1px solid white",
+                  },
+                }}
+              >
                 Search
               </Button>
             </Box>

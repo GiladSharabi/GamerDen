@@ -1,10 +1,10 @@
 export type SearchProps = {
-  platforms: string[];
+  platforms: Platform[];
   isVoice: boolean;
   soloOrGroup: SoloOrGroup;
   prefGender: Gender;
   region: string;
-  teammatePlatform: string[];
+  teammatePlatform: Platform[];
   ageRange: {
     minAge: number;
     maxAge: number;

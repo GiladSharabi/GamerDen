@@ -10,13 +10,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
-import { logout } from "../api/api.endpoints";
+import { AuthProvider, AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
+import { User } from "../api/types";
 
-type LoginProp = {
-  isLoggedIn: Boolean;
-};
+const Navbar = () => {
+  const { user, AuthLogout } = useContext(AuthContext);
 
-const Navbar = ({ isLoggedIn }: LoginProp) => {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
@@ -40,7 +40,7 @@ const Navbar = ({ isLoggedIn }: LoginProp) => {
               </Typography>
             </IconButton>
           </Link>
-          {isLoggedIn ? (
+          {user ? (
             <>
               <Link
                 to="/account"
@@ -58,7 +58,7 @@ const Navbar = ({ isLoggedIn }: LoginProp) => {
                   color="inherit"
                   aria-label="logout"
                   onClick={() => {
-                    logout();
+                    AuthLogout();
                   }}
                 >
                   <ExitToAppIcon />

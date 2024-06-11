@@ -5,25 +5,28 @@ import {
   Grid,
   Typography,
   Container,
+  Button,
   ThemeProvider,
   Divider,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import theme from "../components/Theme";
 import { getUserByToken } from "../api/api.endpoints";
 import { User, Gender } from "../api/types";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
+import MyDivider from "../components/MyDivider";
+import { MdModeEditOutline } from "react-icons/md";
 
 const AccountPage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await getUserByToken();
       setUser(userData);
-      // console.log("userData: " + userData?.gender);
     };
 
     fetchUser();
@@ -41,6 +44,10 @@ const AccountPage = () => {
       age--;
     }
     return age;
+  };
+
+  const handleEditGamingPreferences = () => {
+    navigate("/edit-gaming-preferences");
   };
 
   return (
@@ -127,67 +134,91 @@ const AccountPage = () => {
             </Box>
           </Box>
         </Box>
-        <Typography variant="h6" color="white" fontSize={40}>
+
+        <Typography variant="h6" color="white" fontSize={40} marginRight={2}>
           Gaming Preferences
         </Typography>
 
         <ThemeProvider theme={theme}>
           <Grid sx={{ marginTop: 4, width: "50%" }}>
             {/* the Grid of the user details */}
-            <Grid item xs={12}>
-              <Box
-                color={theme.palette.text.primary}
-                bgcolor="background.default"
-                p={2}
-                borderRadius={4}
-                display="flex"
-                flexDirection="column"
-              >
-                {/* {user.preferences ? ( */}
-                <>
-                  <Typography variant="body1">
-                    <strong>Platform:</strong>{" "}
-                    {user.preferences?.platform &&
-                      user.preferences?.platform.join(", ")}
-                  </Typography>
-                  <Divider
-                    variant="middle"
+
+            <Box
+              color={theme.palette.text.primary}
+              bgcolor="background.default"
+              p={2}
+              borderRadius={4}
+              display="flex"
+              flexDirection="column"
+            >
+              {/* {user.preferences ? ( */}
+              <>
+                <Typography variant="body1">
+                  <strong>Games:</strong>{" "}
+                  {user.preferences?.games &&
+                    user.preferences?.games.join(", ")}
+                </Typography>
+                <MyDivider />
+                <Typography variant="body1">
+                  <strong>Platform:</strong>{" "}
+                  {user.preferences?.platform &&
+                    user.preferences?.platform.join(", ")}
+                </Typography>
+                <MyDivider />
+                <Typography variant="body1">
+                  <strong>Region:</strong> {user.preferences?.region}
+                </Typography>
+                <MyDivider />
+                <Typography variant="body1">
+                  <strong>Solo or Group:</strong>{" "}
+                  {user.preferences?.group_play ? "Group" : "Solo"}
+                </Typography>
+                <MyDivider />
+                <Typography variant="body1">
+                  <strong>Voice:</strong>{" "}
+                  {user.preferences?.voice ? "Yes" : "No"}
+                </Typography>
+                <MyDivider />
+                <Typography variant="body1">
+                  <strong>Age Range:</strong>{" "}
+                  {user.preferences?.age_range &&
+                    user.preferences?.age_range[0] +
+                      " - " +
+                      user.preferences?.age_range[1]}
+                </Typography>
+                <MyDivider />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    paddingRight: 2,
+                  }}
+                >
+                  <Button
+                    startIcon={<MdModeEditOutline />}
+                    variant="contained"
+                    size="medium"
                     sx={{
-                      borderBottomWidth: "3px",
-                      borderBottomColor: "white",
-                      marginTop: 2,
-                      marginBottom: 2,
+                      width: "wrap",
+                      backgroundColor: "#555555",
+                      color: "#BBBBBB",
+                      border: "1px solid transparent",
+                      "&:hover": {
+                        color: "white",
+                        backgroundColor: "#222222",
+                        border: "1px solid white",
+                      },
                     }}
-                  />
-                  <Typography variant="body1">
-                    <strong>Country:</strong> {user.country}
-                  </Typography>
-                  <Divider
-                    variant="middle"
-                    sx={{
-                      borderBottomWidth: "3px",
-                      borderBottomColor: "white",
-                      marginTop: 2,
-                      marginBottom: 2,
-                    }}
-                  />
-                  <Typography variant="body1">
-                    <strong>Gender:</strong> {user.gender}
-                  </Typography>
-                  <Divider
-                    variant="middle"
-                    sx={{
-                      borderBottomWidth: "3px",
-                      borderBottomColor: "white",
-                      marginTop: 2,
-                      marginBottom: 2,
-                    }}
-                  />
-                  <Typography variant="body1">
-                    <strong>Languages:</strong> {user.languages.join(", ")}
-                  </Typography>
-                </>
-                {/* ) : (
+                    onClick={handleEditGamingPreferences}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+              </>
+              {/* ) : (
                   <Box
                     sx={{
                       display: "flex",
@@ -214,8 +245,7 @@ const AccountPage = () => {
                     </Typography>
                   </Box>
                 )} */}
-              </Box>
-            </Grid>
+            </Box>
           </Grid>
         </ThemeProvider>
       </Grid>

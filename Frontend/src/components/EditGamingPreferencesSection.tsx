@@ -15,7 +15,7 @@ const EditGamingPreferencesSection = () => {
 
   return (
     <section className="flex items-center justify-start ml-5">
-      <div className="mb-5 w-full bg-gray-200 rounded-lg shadow md:max-w-4xl xl:p-0">
+      {/* <div className="mb-5 w-full bg-gray-200 rounded-lg shadow md:max-w-4xl xl:p-0">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl">
             Edit Your Gaming Preferences:
@@ -67,7 +67,7 @@ const EditGamingPreferencesSection = () => {
             <SaveButton></SaveButton>
           </form>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };
