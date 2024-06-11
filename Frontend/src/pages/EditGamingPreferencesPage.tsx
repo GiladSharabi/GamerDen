@@ -20,24 +20,21 @@ import SoloOrGroupSelector from "../components/SoloOrGroupSelector";
 import PreferedGenderSelector from "../components/PreferedGenderSelector";
 import RegionSelector from "../components/RegionSelector";
 import AgeRangeSelector from "../components/AgeRangeSelector";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
 
 const EditGamingPreferencesPage = () => {
   const navigate = useNavigate();
 
   const handleSaveClick = () => {};
+  const authContext = useContext(AuthContext);
 
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [userPref, setUserPref] = useState<UserPreferences>();
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserByToken();
-      setUser(userData);
-      setUserPref(userData?.preferences);
-    };
+  const { user } = authContext;
 
-    fetchUser();
-  }, []);
   return (
     user && (
       <Grid

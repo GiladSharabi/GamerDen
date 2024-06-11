@@ -43,10 +43,6 @@ const LoggedinHomePage = () => {
     },
   });
 
-  // useEffect(() => {
-  //   console.log(searchProps);
-  // }, [searchProps]);
-
   const handleVoiceClick = () => {
     setSearchProps((prev) => ({
       ...prev,
