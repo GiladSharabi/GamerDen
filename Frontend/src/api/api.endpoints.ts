@@ -24,7 +24,7 @@ export async function signup(user: Partial<User>) {
     return response.data;
   } catch (e: any) {
     console.log("Error during signup:", e);
-    return { error: e };
+    return { error: "Error in signup" };
   }
 }
 
@@ -40,7 +40,7 @@ export async function getUser(token: string) {
     }
   } catch (e: any) {
     console.log("Get user Error:", e);
-    return { error: e };
+    return { error: "Error in login" };
   }
 }
 
@@ -57,7 +57,7 @@ export async function updateUser(user: Partial<User>) {
     return response.data;
   } catch (e) {
     console.error("Error updating user:", e);
-    return { error: e };
+    return { error: "Error in user update" };
   }
 }
 
@@ -76,7 +76,7 @@ export async function login(username: string, password: string) {
     }
   } catch (e) {
     console.log("Unexpected error in login:", e);
-    return { success: false, error: e };
+    return { success: false, error: "Error in login" };
   }
 }
 
@@ -86,7 +86,6 @@ export async function getGames(limit?: number): Promise<Game[]> {
     if (!response) {
       console.log("error in getgames");
     }
-    // console.log(response.data);
     return response.data;
   } catch (e) {
     console.log("Get games error:", e);
@@ -102,12 +101,10 @@ export async function getUserByToken(): Promise<User | undefined> {
   try {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      // console.log("token:" + token);
       return getUser(token);
-    } else {
-      return undefined;
     }
   } catch (e) {
     console.log("Error in getUserByToken: " + e);
   }
+  return undefined;
 }

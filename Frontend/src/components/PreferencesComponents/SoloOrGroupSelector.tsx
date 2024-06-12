@@ -1,18 +1,27 @@
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Typography from "@mui/material/Typography";
-import { SoloOrGroup } from "../api/types";
-type props = {
+import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { SoloOrGroup } from "../../api/types";
+import React from "react";
+
+type PlatformSelectorProps = {
   label: string;
   soloOrGroup: SoloOrGroup;
   onChange: (choice: SoloOrGroup) => void;
 };
 
-const PlatformSelector = ({
+const PlatformSelector: React.FC<PlatformSelectorProps> = ({
+  label = "",
   soloOrGroup = SoloOrGroup.None,
   onChange,
-  label = "",
-}: props) => {
+}: PlatformSelectorProps) => {
+  const handleToggleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    choice: SoloOrGroup | null
+  ) => {
+    if (choice !== null) {
+      onChange(choice);
+    }
+  };
+
   return (
     <div className="mb-2">
       <Typography variant="h6" gutterBottom color="white">
@@ -22,11 +31,7 @@ const PlatformSelector = ({
         color="primary"
         value={soloOrGroup}
         exclusive
-        onChange={(event, choice) => {
-          if (choice !== null) {
-            onChange(choice);
-          }
-        }}
+        onChange={handleToggleChange}
         aria-label="SoloOrGroup"
       >
         <ToggleButton value={SoloOrGroup.Solo}>Solo</ToggleButton>
@@ -35,4 +40,5 @@ const PlatformSelector = ({
     </div>
   );
 };
+
 export default PlatformSelector;

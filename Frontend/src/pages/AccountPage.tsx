@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
   Grid,
   Typography,
-  Container,
   Button,
   ThemeProvider,
-  Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import theme from "../components/Theme";
-import { getUserByToken } from "../api/api.endpoints";
-import { User, Gender } from "../api/types";
+import { Gender } from "../api/types";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
 import MyDivider from "../components/MyDivider";
@@ -53,14 +49,12 @@ const AccountPage = () => {
   return (
     user && (
       <Grid
-        // main Grid of all the section
         sx={{
           alignItems: "start",
           p: 2,
         }}
       >
         <Box
-          // the Box of the profile picture section
           sx={{
             display: "flex",
             justifyContent: "flex-start",
@@ -183,8 +177,8 @@ const AccountPage = () => {
                   <strong>Age Range:</strong>{" "}
                   {user.preferences?.ageRange &&
                     user.preferences?.ageRange[0] +
-                      " - " +
-                      user.preferences?.ageRange[1]}
+                    " - " +
+                    user.preferences?.ageRange[1]}
                 </Typography>
                 <MyDivider />
                 <Box

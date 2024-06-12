@@ -1,5 +1,4 @@
 import EditPersonalDetailsSection from "../components/EditPersonalDetailsSection";
-import ChangePasswordSection from "../components/ChangePasswordSection";
 
 const EditPersonalDetailsPage = () => {
   // return (

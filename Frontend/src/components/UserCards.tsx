@@ -17,9 +17,9 @@ const users = [
 
 const UserCards = () => {
     return (
-        <Grid container spacing={10} justifyContent="center" mb={10}>
+        <Grid className='flex justify-center flex-wrap mb-20 size-full'>
             {users.map((user, i) => (
-                <Grid item key={i} xs={12} sm={6} md={4} lg={3} mb={-8.5}>
+                <Grid item key={i} m={1} mb={20} className='size-80'>
                     <UserCard
                         username={user.username}
                         bio={user.bio}

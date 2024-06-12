@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import countriesData from "../countries.json";
+import countriesData from "../../countries.json";
 
 type props = {
   onCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -27,7 +27,7 @@ const CountrySelector = ({ onCountryChange, errorMsg = "" }: props) => {
           value={country}
           className="rounded mb-3"
           onChange={handleChange}
-          // required
+        // required
         >
           <option value="">Select Country</option>
           {countriesList.map((country) => (

@@ -6,9 +6,8 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import regionsData from "../regions.json";
+import regionsData from "../../regions.json";
 
 type props = {
   label: string;

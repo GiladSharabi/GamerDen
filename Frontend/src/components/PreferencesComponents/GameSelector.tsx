@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { TextField, Chip, ThemeProvider } from "@mui/material";
+import { TextField, Chip } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Game } from "../api/types";
-import { getGames } from "../api/api.endpoints";
+import { Game } from "../../api/types";
+import { getGames } from "../../api/api.endpoints";
 
 const GameSelector = () => {
   const [gamesList, setGamesList] = useState<string[]>([]);

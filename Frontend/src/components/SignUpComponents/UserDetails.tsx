@@ -8,9 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { User, Gender } from "../../api/types";
-import { useState } from "react";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../Theme";
 
 type UserDetailsProps = {
   user: User;

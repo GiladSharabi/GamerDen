@@ -2,7 +2,6 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Avatar,
   Button,
-  CssBaseline,
   Paper,
   Box,
   Grid,
@@ -13,11 +12,19 @@ import { Login, Edit, VideogameAsset } from "@mui/icons-material";
 
 const HomePage = () => {
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
+    <Grid
+      container
+      component="main"
+      sx={{
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Grid
         item
         xs={12}
+        sm={4}
         component={Paper}
         elevation={6}
         sx={{
@@ -25,23 +32,19 @@ const HomePage = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundImage: "url(./src/images/LoginBackground.jpeg)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          p: 1,
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 4,
         }}
       >
         <Box
           sx={{
-            my: 8,
-            mx: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            backdropFilter: "blur(5px)",
             p: 4,
-            borderRadius: 4,
+            maxWidth: "700px",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>

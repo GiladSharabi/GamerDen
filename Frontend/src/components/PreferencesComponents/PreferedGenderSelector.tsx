@@ -1,7 +1,5 @@
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Typography from "@mui/material/Typography";
-import { Gender } from "../api/types";
+import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Gender } from "../../api/types";
 type props = {
   label: string;
   selectedGender: Gender;

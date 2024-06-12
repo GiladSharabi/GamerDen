@@ -1,13 +1,15 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  TextField,
+} from "@mui/material";
+import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { useRef, useState } from "react";
 import { login } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
@@ -16,16 +18,14 @@ import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 
 const LoginPage = () => {
-
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
     return <div>Loading...</div>;
   }
 
-  const { user, AuthLogin } = authContext;
+  const { AuthLogin } = authContext;
 
-  console.log(user);
   const [hasError, setHasError] = useState<boolean>(false);
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -52,11 +52,19 @@ const LoginPage = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
+    <Grid
+      container
+      component="main"
+      sx={{
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Grid
         item
         xs={12}
+        sm={3.5}
         component={Paper}
         elevation={6}
         sx={{
@@ -64,25 +72,18 @@ const LoginPage = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundImage: "url(./src/images/LoginBackground.jpeg)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          p: 1,
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 4,
         }}
       >
         <Box
           sx={{
-            my: 8,
-            mx: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            backdropFilter: "blur(5px)",
             p: 4,
-            borderRadius: 4,
-            width: { xs: "90%", sm: "80%", md: "60%", lg: "40%", xl: "30%" },
-            maxWidth: "600px",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -91,7 +92,7 @@ const LoginPage = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1, width: "100%" }}>
+          <Box component="form" noValidate sx={{ mt: 1, width: "80%" }}>
             <TextField
               margin="normal"
               required
@@ -136,7 +137,7 @@ const LoginPage = () => {
             >
               <Typography variant="body2">
                 Don't have an account?&nbsp;
-                <RouterLink to="/sign-up" style={{ textDecoration: "none" }}>
+                <Link to="/sign-up" style={{ textDecoration: "none" }}>
                   <span
                     style={{
                       textDecoration: "none",
@@ -152,7 +153,7 @@ const LoginPage = () => {
                   >
                     Sign Up
                   </span>
-                </RouterLink>
+                </Link>
               </Typography>
             </Grid>
           </Box>

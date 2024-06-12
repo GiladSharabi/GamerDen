@@ -1,8 +1,6 @@
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Typography from "@mui/material/Typography";
+import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { MouseEvent } from "react";
-import { Platform } from "../api/types";
+import { Platform } from "../../api/types";
 type props = {
   label: string;
   selectedPlatforms: Platform[];

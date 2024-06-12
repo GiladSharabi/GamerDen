@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<User>({
     username: "",
     email: "",
@@ -42,7 +44,6 @@ const SignUp = () => {
     console.log("my user: " + user);
   }, [user]);
 
-  const navigate = useNavigate();
   const today = new Date();
 
   const handleUserChange = (name: keyof User, value: string) => {
@@ -123,50 +124,17 @@ const SignUp = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
-      <Grid
-        item
-        xs={12}
-        component={Paper}
-        elevation={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundImage: "url(./src/images/LoginBackground.jpeg)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          margin: 0,
-        }}
-      >
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: "400px",
-            my: 8,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            backdropFilter: "blur(5px)",
-            p: 4,
-            borderRadius: 4,
-            mt: 8,
-            mb: 8,
-          }}
-        >
+    <Grid
+      container
+      component="main"
+      sx={{ height: "100vh", justifyContent: "center", alignItems: "center", overflow: "auto" }}
+    >
+      <Grid item xs={12} sm={3.5} component={Paper} elevation={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "50px", marginBottom: "100px", justifyContent: "center", p: 1, background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(5px)", borderRadius: 4 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 4 }}>
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <PersonAdd />
           </Avatar>
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ fontWeight: "bold", textAlign: "center" }}
-          >
+          <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
@@ -180,22 +148,10 @@ const SignUp = () => {
               passwordError={passwordError}
               confirmPasswordError={confirmPasswordError}
             />
-            <DatePickerComponent
-              selectedDate={user.dob}
-              onChange={handleDateChange}
-            />
-            <CountrySelector
-              country={user.country}
-              onChange={handleCountryChange}
-            />
-            <LanguageSelector
-              languages={user.languages}
-              onChange={handleLanguageChange}
-            />
-            <BioTextarea
-              bio={user.bio || ""}
-              onChange={(value) => setUser({ ...user, bio: value })}
-            />
+            <DatePickerComponent selectedDate={user.dob} onChange={handleDateChange} />
+            <CountrySelector country={user.country} onChange={handleCountryChange} />
+            <LanguageSelector languages={user.languages} onChange={handleLanguageChange} />
+            <BioTextarea bio={user.bio || ""} onChange={(value) => setUser({ ...user, bio: value })} />
             {hasError ? (
               <Alert variant="filled" severity="error">
                 Please fill all fields.

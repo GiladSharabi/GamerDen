@@ -6,27 +6,32 @@ import HomePage from "./pages/HomePage";
 import LoggedinHomePage from "./pages/LoggedinHomePage";
 import AccountPage from "./pages/AccountPage";
 import EditGamingPreferences from "./pages/EditGamingPreferencesPage";
+import Background from "./components/Background";
+import NavBar from "./components/NavBar/NavBar";
 
 const AppRoutes = () => {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/account" element={<AccountPage />} />
-        {/* <Route
+    <Background>
+      <NavBar />
+      <div className="overflow-auto h-screen w-screen">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/account" element={<AccountPage />} />
+          {/* <Route
           path="/edit-personal-details"
           element={<EditPersonalDetails />}
         /> */}
-        <Route
-          path="/edit-gaming-preferences"
-          element={<EditGamingPreferences />}
-        />
-        <Route path="/dashboard" element={<LoggedinHomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </div>
+          <Route
+            path="/edit-gaming-preferences"
+            element={<EditGamingPreferences />}
+          />
+          <Route path="/dashboard" element={<LoggedinHomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
+    </Background>
   );
 };
 
