@@ -1,11 +1,8 @@
 -- CreateEnum
-CREATE TYPE "Gender" AS ENUM ('Male', 'Female');
+CREATE TYPE "Gender" AS ENUM ('None', 'Male', 'Female', 'Both');
 
 -- CreateEnum
 CREATE TYPE "Platform" AS ENUM ('PC', 'Xbox', 'Playstation');
-
--- CreateEnum
-CREATE TYPE "Weekday" AS ENUM ('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -29,11 +26,11 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "UserPreferences" (
     "id" SERIAL NOT NULL,
-    "region" TEXT NOT NULL,
+    "region" TEXT NOT NULL DEFAULT '',
     "voice" BOOLEAN NOT NULL DEFAULT false,
-    "group_play" BOOLEAN NOT NULL DEFAULT false,
     "platform" "Platform"[] DEFAULT ARRAY[]::"Platform"[],
-    "weekday" "Weekday"[] DEFAULT ARRAY[]::"Weekday"[],
+    "teammate_platform" "Platform"[] DEFAULT ARRAY[]::"Platform"[],
+    "preferred_gender" "Gender" NOT NULL DEFAULT 'None',
     "age_range" INTEGER[] DEFAULT ARRAY[18, 100]::INTEGER[],
     "userId" INTEGER NOT NULL,
 

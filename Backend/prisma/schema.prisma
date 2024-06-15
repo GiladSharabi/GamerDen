@@ -25,16 +25,16 @@ model User {
 }
 
 model UserPreferences {
-  id         Int        @id @default(autoincrement())
-  region     String
-  voice      Boolean    @default(false)
-  group_play Boolean    @default(false)
-  platform   Platform[] @default([])
-  weekday    Weekday[]  @default([])
-  age_range  Int[]      @default([18, 100])
-  games      Game[]     @relation("UserPreferencesGames")
-  user       User       @relation(fields: [userId], references: [id])
-  userId     Int        @unique
+  id                 Int         @id @default(autoincrement())
+  region             String      @default("")
+  voice              Boolean     @default(false)
+  platform           Platform[]  @default([])
+  teammate_platform  Platform[]  @default([])
+  preferred_gender   Gender      @default(None)
+  age_range          Int[]       @default([18, 100])
+  games              Game[]      @relation("UserPreferencesGames")
+  user               User        @relation(fields: [userId], references: [id])
+  userId             Int         @unique
 }
 
 model Game {
@@ -45,22 +45,14 @@ model Game {
 }
 
 enum Gender {
+  None
   Male
   Female
+  Both
 }
 
 enum Platform {
   PC
   Xbox
   Playstation
-}
-
-enum Weekday {
-  Sunday
-  Monday
-  Tuesday
-  Wednesday
-  Thursday
-  Friday
-  Saturday
 }

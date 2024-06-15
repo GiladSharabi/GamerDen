@@ -163,11 +163,7 @@ const AccountPage = () => {
                   <strong>Region:</strong> {user.preferences?.region}
                 </Typography>
                 <MyDivider />
-                <Typography variant="body1">
-                  <strong>Solo or Group:</strong>{" "}
-                  {user.preferences?.soloOrGroup ? "Group" : "Solo"}
-                </Typography>
-                <MyDivider />
+
                 <Typography variant="body1">
                   <strong>Voice:</strong>{" "}
                   {user.preferences?.voice ? "Yes" : "No"}
@@ -177,8 +173,8 @@ const AccountPage = () => {
                   <strong>Age Range:</strong>{" "}
                   {user.preferences?.ageRange &&
                     user.preferences?.ageRange[0] +
-                    " - " +
-                    user.preferences?.ageRange[1]}
+                      " - " +
+                      user.preferences?.ageRange[1]}
                 </Typography>
                 <MyDivider />
                 <Box

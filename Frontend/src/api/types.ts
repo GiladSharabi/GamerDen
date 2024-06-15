@@ -12,10 +12,10 @@ export type SearchProps = {
 };
 
 export enum Gender {
+  None = "None",
   Male = "Male",
   Female = "Female",
   Both = "Both",
-  None = "None",
 }
 export enum SoloOrGroup {
   Solo = "Solo",
@@ -29,16 +29,6 @@ export enum Platform {
   Playstation = "Playstation",
 }
 
-export enum Weekday {
-  Sunday = "Sunday",
-  Monday = "Monday",
-  Tuesday = "Tuesday",
-  Wednesday = "Wednesday",
-  Thursday = "Thursday",
-  Friday = "Friday",
-  Saturday = "Saturday",
-}
-
 export type Game = {
   id: number;
   name: string;
@@ -48,11 +38,10 @@ export type Game = {
 export type UserPreferences = {
   region?: string;
   voice?: boolean;
-  soloOrGroup?: SoloOrGroup;
   platform?: Platform[];
+  teammatePlatform?: Platform[];
   prefGender?: Gender;
   ageRange?: number[];
-  teammatePlatform?: Platform[];
   games?: Game[];
 };
 

@@ -4,7 +4,7 @@ import { Platform } from "../../api/types";
 type props = {
   label: string;
   selectedPlatforms: Platform[];
-  onChange: (event: MouseEvent<HTMLElement>, newPlatform: Platform) => void;
+  onChange: (event: MouseEvent<HTMLElement>, newPlatform: Platform[]) => void;
 };
 
 const PlatformSelector = ({
@@ -20,13 +20,13 @@ const PlatformSelector = ({
       <ToggleButtonGroup
         color="primary"
         value={selectedPlatforms}
-        exclusive
-        onChange={onChange}
+        exclusive={false}
+        onChange={(event, newValue) => onChange(event, newValue)}
         aria-label="Platform"
       >
-        <ToggleButton value="Playstation">Playstation</ToggleButton>
-        <ToggleButton value="Xbox">Xbox</ToggleButton>
-        <ToggleButton value="PC">PC</ToggleButton>
+        <ToggleButton value={Platform.Playstation}>Playstation</ToggleButton>
+        <ToggleButton value={Platform.Xbox}>Xbox</ToggleButton>
+        <ToggleButton value={Platform.PC}>PC</ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

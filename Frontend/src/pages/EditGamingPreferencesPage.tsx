@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Grid,
-  Button,
-} from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import { IoSearch } from "react-icons/io5";
 import GameSelector from "../components/PreferencesComponents/GameSelector";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
@@ -14,22 +10,21 @@ import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelect
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import EditGamingPreferencesSection from "../components/EditGamingPreferencesSection";
 
 const EditGamingPreferencesPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleSaveClick = () => { };
-  const authContext = useContext(AuthContext);
+  // const handleSaveClick = () => { };
+  // const authContext = useContext(AuthContext);
 
-  if (!authContext) {
-    return <div>Loading...</div>;
-  }
+  // if (!authContext) {
+  //   return <div>Loading...</div>;
+  // }
 
-  const { user } = authContext;
+  // const { user } = authContext;
 
-  return (
-    <></>
-  );
+  return <EditGamingPreferencesSection />;
 };
 
 export default EditGamingPreferencesPage;
