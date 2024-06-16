@@ -19,6 +19,7 @@ CREATE TABLE "User" (
     "avatar" TEXT,
     "rating" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "rating_count" INTEGER NOT NULL DEFAULT 0,
+    "preferencesId" INTEGER NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -32,7 +33,6 @@ CREATE TABLE "UserPreferences" (
     "teammate_platform" "Platform"[] DEFAULT ARRAY[]::"Platform"[],
     "preferred_gender" "Gender" NOT NULL DEFAULT 'None',
     "age_range" INTEGER[] DEFAULT ARRAY[18, 100]::INTEGER[],
-    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "UserPreferences_pkey" PRIMARY KEY ("id")
 );
@@ -59,7 +59,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserPreferences_userId_key" ON "UserPreferences"("userId");
+CREATE UNIQUE INDEX "User_preferencesId_key" ON "User"("preferencesId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_UserPreferencesGames_AB_unique" ON "_UserPreferencesGames"("A", "B");
@@ -68,7 +68,7 @@ CREATE UNIQUE INDEX "_UserPreferencesGames_AB_unique" ON "_UserPreferencesGames"
 CREATE INDEX "_UserPreferencesGames_B_index" ON "_UserPreferencesGames"("B");
 
 -- AddForeignKey
-ALTER TABLE "UserPreferences" ADD CONSTRAINT "UserPreferences_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_preferencesId_fkey" FOREIGN KEY ("preferencesId") REFERENCES "UserPreferences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_UserPreferencesGames" ADD CONSTRAINT "_UserPreferencesGames_A_fkey" FOREIGN KEY ("A") REFERENCES "Game"("id") ON DELETE CASCADE ON UPDATE CASCADE;

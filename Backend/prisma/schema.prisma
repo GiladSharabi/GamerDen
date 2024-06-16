@@ -8,33 +8,33 @@ datasource db {
 }
 
 model User {
-  id           Int              @id @default(autoincrement())
-  email        String           @unique
-  password     String
-  username     String           @unique
-  dob          DateTime
-  created_at   DateTime         @default(now())
-  country      String
-  gender       Gender
-  languages    String[]
-  bio          String           @default("No Bio Available")
-  avatar       String?
-  rating       Float            @default(0)
-  rating_count Int              @default(0)
-  preferences  UserPreferences?
+  id            Int             @id @default(autoincrement())
+  email         String          @unique
+  password      String
+  username      String          @unique
+  dob           DateTime
+  created_at    DateTime        @default(now())
+  country       String
+  gender        Gender
+  languages     String[]
+  bio           String          @default("No Bio Available")
+  avatar        String?
+  rating        Float           @default(0)
+  rating_count  Int             @default(0)
+  preferences   UserPreferences @relation(fields: [preferencesId], references: [id], onDelete: Cascade)
+  preferencesId Int             @unique
 }
 
 model UserPreferences {
-  id                 Int         @id @default(autoincrement())
-  region             String      @default("")
-  voice              Boolean     @default(false)
-  platform           Platform[]  @default([])
-  teammate_platform  Platform[]  @default([])
-  preferred_gender   Gender      @default(None)
-  age_range          Int[]       @default([18, 100])
-  games              Game[]      @relation("UserPreferencesGames")
-  user               User        @relation(fields: [userId], references: [id])
-  userId             Int         @unique
+  id                Int        @id @default(autoincrement())
+  region            String     @default("")
+  voice             Boolean    @default(false)
+  platform          Platform[] @default([])
+  teammate_platform Platform[] @default([])
+  preferred_gender  Gender     @default(None)
+  age_range         Int[]      @default([18, 100])
+  games             Game[]     @relation("UserPreferencesGames")
+  user              User?
 }
 
 model Game {

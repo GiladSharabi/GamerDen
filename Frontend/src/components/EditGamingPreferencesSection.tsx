@@ -7,54 +7,61 @@ import PlatformSelector from "../components/PreferencesComponents/PlatformSelect
 import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
 import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
-import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
+import age_rangeSelector from "../components/PreferencesComponents/age_rangeSelector";
 import { Platform, Game } from "../api/types";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 
-const EditGamingPreferencesSection = () => {
+type props = {
+  buttonLabel: string;
+  onSubmitClick: () => void;
+  // userPref: UserPreferences | undefined;
+  // setPref: (pref: UserPreferences) => void;
+};
+
+const EditGamingPreferencesSection = ({
+  buttonLabel,
+  onSubmitClick,
+}: // userPref,
+// setPref,
+props) => {
   const authContext = useContext(AuthContext);
   if (!authContext) {
     return <div>Loading...</div>;
   }
   const { user } = authContext;
-  const [userPref, setUserPref] = useState<UserPreferences>({
-    voice: false,
-    platform: [],
-    teammatePlatform: [],
-    ageRange: [18, 100],
-  });
+  console.log("the pref: " + user.preferences);
+  const [tempPref, setTempPref] = useState<UserPreferences>(user.preferences);
   useEffect(() => {
-    if (userPref !== undefined) {
-      console.log(userPref);
+    if (tempPref !== undefined) {
+      console.log(tempPref);
     }
-  }, [userPref]);
+  }, [tempPref]);
 
-  const handleGamesChange = (newGame: Game | undefined) => {
-    if (newGame) {
-      setUserPref((prev) => {
-        const gameExists = prev.games?.some((game) => game.id === newGame.id);
+  const handleGamesChange = (newGame: Game) => {
+    // if (newGame) {
+    setTempPref((prev) => {
+      const gameExists = prev.games?.some((game) => game.id === newGame.id);
 
-        if (gameExists) {
-          // remove the game from the list
-
-          return {
-            ...prev,
-            games: prev.games?.filter((game) => game.id !== newGame.id) ?? [],
-          };
-        } else {
-          // add the game to the list
-          return {
-            ...prev,
-            games: [...(prev.games ?? []), newGame],
-          };
-        }
-      });
-    }
+      if (gameExists) {
+        // remove the game from the list
+        return {
+          ...prev,
+          games: prev.games?.filter((game) => game.id !== newGame.id) ?? [],
+        };
+      } else {
+        // add the game to the list
+        return {
+          ...prev,
+          games: [...(prev.games ?? []), newGame],
+        };
+      }
+    });
+    // }
   };
 
   const handleVoiceClick = () => {
-    setUserPref((prev) => ({
+    setTempPref((prev) => ({
       ...prev,
       voice: !prev.voice,
     }));
@@ -63,43 +70,42 @@ const EditGamingPreferencesSection = () => {
     event: React.MouseEvent<HTMLElement>,
     newPlatform: Platform[]
   ) => {
-    setUserPref((prev) => ({
+    setTempPref((prev) => ({
       ...prev,
       platform: newPlatform,
     }));
   };
-  const handleTeammatePlatformChange = (
+  const handleteammate_platformChange = (
     event: React.MouseEvent<HTMLElement>,
     newPlatform: Platform[]
   ) => {
-    setUserPref((prev) => ({
+    setTempPref((prev) => ({
       ...prev,
-      teammatePlatform: newPlatform,
+      teammate_platform: newPlatform,
     }));
   };
 
   const handleGenderChange = (gender: Gender) => {
-    setUserPref((prev) => ({
+    setTempPref((prev) => ({
       ...prev,
-      prefGender: gender,
+      preferred_gender: gender,
     }));
   };
   const handleRegionChange = (selectedRegion: string) => {
-    setUserPref((prev) => ({
+    setTempPref((prev) => ({
       ...prev,
       region: selectedRegion,
     }));
   };
 
-  const handleAgeRangeChange = (newValue: number[]) => {
+  const handleage_rangeChange = (newValue: number[]) => {
     if (Array.isArray(newValue)) {
-      setUserPref((prev) => ({
+      setTempPref((prev) => ({
         ...prev,
-        ageRange: newValue,
+        age_range: newValue,
       }));
     }
   };
-  const handleSaveClick = () => {};
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,26 +120,26 @@ const EditGamingPreferencesSection = () => {
           >
             {/* the Box that hold all fields */}
             <GameSelector
-              selectedGames={userPref.games}
+              selectedGames={tempPref.games}
               onChange={handleGamesChange}
             />
             <PlatformSelector
               label="Select Platform"
               selectedPlatforms={
-                userPref && userPref.platform ? userPref.platform : []
+                tempPref && tempPref.platform ? tempPref.platform : []
               }
               onChange={handlePlatformChange}
             />
             <RegionSelector
-              region={userPref && userPref.region ? userPref.region : ""}
+              region={tempPref && tempPref.region ? tempPref.region : ""}
               onChange={handleRegionChange}
               label="Select Region"
             />
             <PreferedGenderSelector
               label="Which gender do you prefer to play with?"
               selectedGender={
-                userPref && userPref.prefGender
-                  ? userPref.prefGender
+                tempPref && tempPref.preferred_gender
+                  ? tempPref.preferred_gender
                   : Gender.None
               }
               onChange={handleGenderChange}
@@ -141,27 +147,29 @@ const EditGamingPreferencesSection = () => {
             <PlatformSelector
               label="Select teammate Platform"
               selectedPlatforms={
-                userPref && userPref.teammatePlatform
-                  ? userPref.teammatePlatform
+                tempPref && tempPref.teammate_platform
+                  ? tempPref.teammate_platform
                   : []
               }
-              onChange={handleTeammatePlatformChange}
+              onChange={handleteammate_platformChange}
             />
-            <AgeRangeSelector
+            <age_rangeSelector
               label="Between what ages are your ideal teammates?"
-              minAge={userPref && userPref.ageRange ? userPref.ageRange[0] : 18}
-              maxAge={
-                userPref && userPref.ageRange ? userPref.ageRange[1] : 100
+              minAge={
+                tempPref && tempPref.age_range ? tempPref.age_range[0] : 18
               }
-              ageRange={userPref.ageRange as number[]}
-              onChange={handleAgeRangeChange}
+              maxAge={
+                tempPref && tempPref.age_range ? tempPref.age_range[1] : 100
+              }
+              age_range={tempPref.age_range as number[]}
+              onChange={handleage_rangeChange}
             />
             <VoiceSelector
-              isVoice={userPref && userPref.voice ? userPref?.voice : false}
+              isVoice={tempPref && tempPref.voice ? tempPref?.voice : false}
               onChange={handleVoiceClick}
             />
             <Button
-              onClick={handleSaveClick}
+              onClick={onSubmitClick}
               variant="contained"
               size="medium"
               sx={{
@@ -178,7 +186,7 @@ const EditGamingPreferencesSection = () => {
                 },
               }}
             >
-              Save
+              {buttonLabel}
             </Button>
           </Box>
         </Grid>

@@ -171,10 +171,10 @@ const AccountPage = () => {
                 <MyDivider />
                 <Typography variant="body1">
                   <strong>Age Range:</strong>{" "}
-                  {user.preferences?.ageRange &&
-                    user.preferences?.ageRange[0] +
+                  {user.preferences?.age_range &&
+                    user.preferences?.age_range[0] +
                       " - " +
-                      user.preferences?.ageRange[1]}
+                      user.preferences?.age_range[1]}
                 </Typography>
                 <MyDivider />
                 <Box

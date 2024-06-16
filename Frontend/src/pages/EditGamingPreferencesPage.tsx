@@ -6,25 +6,41 @@ import PlatformSelector from "../components/PreferencesComponents/PlatformSelect
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
 import SoloOrGroupSelector from "../components/PreferencesComponents/SoloOrGroupSelector";
 import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
-import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
+import age_rangeSelector from "../components/PreferencesComponents/age_rangeSelector";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import EditGamingPreferencesSection from "../components/EditGamingPreferencesSection";
+import { updateUser } from "../api/api.endpoints";
+import { UserPreferences } from "../api/types";
 
 const EditGamingPreferencesPage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const handleSaveClick = () => { };
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+  const { user } = authContext;
 
-  // if (!authContext) {
-  //   return <div>Loading...</div>;
-  // }
+  // const [pref, setPref] = useState<UserPreferences>(user.preferences);
 
-  // const { user } = authContext;
+  const handleSaveClick = () => {
+    // user.preferences = pref;
+    // console.log(user.preferences);
+    // updateUser(user);
+    // setPref(user?.preferences);
+    // console.log(pref);
+  };
 
-  return <EditGamingPreferencesSection />;
+  return (
+    <EditGamingPreferencesSection
+      buttonLabel="Save"
+      onSubmitClick={handleSaveClick}
+      // userPref={pref}
+      // setPref={setPref}
+    />
+  );
 };
 
 export default EditGamingPreferencesPage;

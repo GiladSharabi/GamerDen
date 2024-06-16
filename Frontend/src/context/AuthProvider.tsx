@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect, ReactNode, FC } from "react";
-import { User } from "../api/types";
+import { NullUser, User } from "../api/types";
 import { getUser, logout } from "../api/api.endpoints";
 
 interface AuthContextType {
-  user: User | null;
+  user: User;
   AuthLogin: (token: string) => void;
   AuthLogout: () => void;
 }
@@ -11,7 +11,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>(NullUser);
 
   useEffect(() => {
     const authenticateUser = async () => {
@@ -39,7 +39,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const AuthLogout = () => {
     logout();
-    setUser(null);
+    setUser(NullUser);
   };
 
   return (

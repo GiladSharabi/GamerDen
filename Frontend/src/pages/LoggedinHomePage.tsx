@@ -10,12 +10,26 @@ import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
 import SoloOrGroupSelector from "../components/PreferencesComponents/SoloOrGroupSelector";
 import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
-import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
+import age_rangeSelector from "../components/PreferencesComponents/age_rangeSelector";
 import { Platform } from "../api/types";
 import EditGamingPreferencesSection from "../components/EditGamingPreferencesSection";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
 
 const LoggedinHomePage = () => {
-  return <EditGamingPreferencesSection />;
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+  const { user } = authContext;
+  const handleSearch = () => {};
+  return (
+    <EditGamingPreferencesSection
+      buttonLabel="Search"
+      onSubmitClick={handleSearch}
+      // userPref={user.preferences}
+    />
+  );
 };
 
 export default LoggedinHomePage;

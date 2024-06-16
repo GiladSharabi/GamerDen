@@ -50,21 +50,37 @@ export async function createUser(
   res: Response
 ): Promise<userResult> {
   try {
-    const { username } = req.body;
-    const userRes = await getUserByUserName(username);
-    if (userRes.user) {
-      return { error: "User already exists" };
-    }
-    fixUserRequestData(req);
-    const data = req.body;
-    const user = await db.user.create({
-      data: data,
+    const { preferences, ...userData } = req.body;
+
+    const existingUser = await db.user.findUnique({
+      where: { username: userData.username },
     });
 
-    return { user };
-  } catch (e: any) {
-    console.log(e);
-    return { error: "internal server error" };
+    if (existingUser) {
+      return { error: "User already exists" };
+    }
+
+    const { games, ...preferencesData } = preferences;
+
+    const createdUser = await db.user.create({
+      data: {
+        ...userData,
+        preferences: {
+          create: {
+            ...preferencesData,
+            games: undefined,
+          },
+        },
+      },
+      include: {
+        preferences: true,
+      },
+    });
+
+    return { user: createdUser };
+  } catch (error: any) {
+    console.error(error);
+    return { error: "Internal server error" };
   }
 }
 

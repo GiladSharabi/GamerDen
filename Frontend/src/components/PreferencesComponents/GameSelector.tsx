@@ -5,8 +5,8 @@ import { Game } from "../../api/types";
 import { getGames } from "../../api/api.endpoints";
 
 type props = {
-  selectedGames?: Game[];
-  onChange: (newGame: Game | undefined) => void;
+  selectedGames: Game[];
+  onChange: (newGame: Game) => void;
 };
 
 const GameSelector = ({ selectedGames = [], onChange }: props) => {

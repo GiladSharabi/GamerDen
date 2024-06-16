@@ -1,5 +1,5 @@
 import instance from "../api/axios.ts";
-import { UserResult, User, Game } from "../api/types.ts";
+import { UserResult, User, Game, NullUser } from "../api/types.ts";
 
 export async function getUserById(userID: number): Promise<UserResult> {
   try {
@@ -14,7 +14,7 @@ export async function getUserById(userID: number): Promise<UserResult> {
   }
 }
 
-export async function signup(user: Partial<User>) {
+export async function signup(user: User) {
   try {
     const response = await instance.post(`/signup`, user, {
       headers: {
@@ -44,7 +44,7 @@ export async function getUser(token: string) {
   }
 }
 
-export async function updateUser(user: Partial<User>) {
+export async function updateUser(user: User): Promise<UserResult> {
   try {
     const response = await instance.post(`/users/update`, user, {
       headers: {
@@ -97,7 +97,7 @@ export function logout() {
   localStorage.removeItem("accessToken");
 }
 
-export async function getUserByToken(): Promise<User | undefined> {
+export async function getUserByToken(): Promise<User> {
   try {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -106,5 +106,5 @@ export async function getUserByToken(): Promise<User | undefined> {
   } catch (e) {
     console.log("Error in getUserByToken: " + e);
   }
-  return undefined;
+  return NullUser;
 }

@@ -5,22 +5,22 @@ type props = {
   label: string;
   minAge: number;
   maxAge: number;
-  ageRange: number[];
+  age_range: number[];
   onChange: (newValue: number[]) => void;
 };
 
-const AgeRangeSelector = ({
+const age_rangeSelector = ({
   label,
   minAge,
   maxAge,
-  ageRange,
+  age_range,
   onChange,
 }: props) => {
-  const [currentVal, setCurrentVal] = useState<number[]>(ageRange);
+  const [currentVal, setCurrentVal] = useState<number[]>(age_range);
 
   useEffect(() => {
-    ageRange = [...currentVal]; // Update currentVal if ageRange prop changes
-    // onChange(ageRange);
+    age_range = [...currentVal]; // Update currentVal if age_range prop changes
+    // onChange(age_range);
   }, [currentVal]);
 
   const handleChange = (
@@ -37,8 +37,8 @@ const AgeRangeSelector = ({
     // } else {
     //   setCurrentVal([currentVal[0], Math.max(newValue[1], currentVal[0])]);
     // }
-    // ageRange = [...currentVal];
-    // console.log("ageRange: " + ageRange);
+    // age_range = [...currentVal];
+    // console.log("age_range: " + age_range);
   };
 
   const handleCommitChange = (
@@ -74,4 +74,4 @@ const AgeRangeSelector = ({
   );
 };
 
-export default AgeRangeSelector;
+export default age_rangeSelector;

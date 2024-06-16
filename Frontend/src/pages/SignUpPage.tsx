@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Gender, User } from "../api/types";
+import { Gender, NullUser, User } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
 import CountrySelector from "../components/SignUpComponents/CountrySelector";
 import LanguageSelector from "../components/SignUpComponents/LanguagesSelector";
@@ -22,16 +22,9 @@ import { Alert } from "@mui/material";
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User>({
-    username: "",
-    email: "",
-    password: "",
-    dob: new Date(),
-    country: "",
-    gender: Gender.None,
-    languages: [],
-    bio: "",
-  });
+  const [user, setUser] = useState<User>(NullUser);
+  // console.log("userrrrr::::::::::\n " + user.preferences.region);
+  // console.log(JSON.stringify(user, null, 2));
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [hasError, setHasError] = useState<boolean>(false);
@@ -91,6 +84,8 @@ const SignUp = () => {
     }
     try {
       setHasError(false);
+      console.log(JSON.stringify(user, null, 2));
+      // console.log("the user:::::   " + user.preferences);
       const result = await signup(user);
       console.log("signup result: " + result);
       navigate("/login");
@@ -127,10 +122,40 @@ const SignUp = () => {
     <Grid
       container
       component="main"
-      sx={{ height: "100vh", justifyContent: "center", alignItems: "center", overflow: "auto" }}
+      sx={{
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "auto",
+      }}
     >
-      <Grid item xs={12} sm={3.5} component={Paper} elevation={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "50px", marginBottom: "100px", justifyContent: "center", p: 1, background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(5px)", borderRadius: 4 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 4 }}>
+      <Grid
+        item
+        xs={12}
+        sm={3.5}
+        component={Paper}
+        elevation={6}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "50px",
+          marginBottom: "100px",
+          justifyContent: "center",
+          p: 1,
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 4,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: 4,
+          }}
+        >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <PersonAdd />
           </Avatar>
@@ -148,10 +173,22 @@ const SignUp = () => {
               passwordError={passwordError}
               confirmPasswordError={confirmPasswordError}
             />
-            <DatePickerComponent selectedDate={user.dob} onChange={handleDateChange} />
-            <CountrySelector country={user.country} onChange={handleCountryChange} />
-            <LanguageSelector languages={user.languages} onChange={handleLanguageChange} />
-            <BioTextarea bio={user.bio || ""} onChange={(value) => setUser({ ...user, bio: value })} />
+            <DatePickerComponent
+              selectedDate={user.dob}
+              onChange={handleDateChange}
+            />
+            <CountrySelector
+              country={user.country}
+              onChange={handleCountryChange}
+            />
+            <LanguageSelector
+              languages={user.languages}
+              onChange={handleLanguageChange}
+            />
+            <BioTextarea
+              bio={user.bio || ""}
+              onChange={(value) => setUser({ ...user, bio: value })}
+            />
             {hasError ? (
               <Alert variant="filled" severity="error">
                 Please fill all fields.
