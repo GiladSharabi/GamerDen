@@ -44,20 +44,22 @@ export async function getUser(token: string) {
   }
 }
 
-export async function updateUser(user: User): Promise<UserResult> {
+export async function updateUser(user: User) {
   try {
     const response = await instance.post(`/users/update`, user, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    if (response) {
-      console.log(response);
+    if (response.data.accessToken) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      return { success: true, accessToken: response.data.accessToken };
+    } else {
+      return { success: false, error: response.data.error };
     }
-    return response.data;
   } catch (e) {
-    console.error("Error updating user:", e);
-    return { error: "Error in user update" };
+    console.log("Unexpected error in update:", e);
+    return { success: false, error: "Error in update" };
   }
 }
 

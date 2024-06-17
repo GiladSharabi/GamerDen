@@ -3,6 +3,7 @@ import { Gender, User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
 import { connect } from "http2";
+import jwt from "jsonwebtoken";
 
 const saltRounds = 10;
 
@@ -103,11 +104,13 @@ async function getCurrentPreferences(userID: number) {
 }
 
 function formatPreferences(preferences: any) {
-  const { id, userID, ...rest } = preferences;
-  return {
-    ...rest,
-    games: preferences.games.map((game: Game) => ({ id: game.id })),
-  };
+  if (preferences.games) {
+    const { id, userID, ...rest } = preferences;
+    return {
+      ...rest,
+      games: preferences.games.map((game: Game) => ({ id: game.id })),
+    };
+  }
 }
 
 async function updateUserInDatabase(username: string, userData: any, preferencesData: any) {
@@ -135,34 +138,24 @@ async function updateUserInDatabase(username: string, userData: any, preferences
 
 export async function updateUser(req: Request, res: Response) {
   try {
-    console.log(req.body);
     const { preferences, id, iat, ...userData } = req.body;
     const { username } = userData;
-
     const preferencesData = formatPreferences(preferences);
 
-    const currentPreferences = await getCurrentPreferences(id);
-
-    if (currentPreferences) {
-      const disconnectGames = currentPreferences.games.map((game) => ({ id: game.id }));
-    }
-    console.log(preferencesData);
+    await getCurrentPreferences(id);
     const updatedUser = await updateUserInDatabase(username, userData, preferencesData);
+    const accessToken = jwt.sign(updatedUser, process.env.JWT_SECRET_TOKEN as string);
 
-    res.status(200).json(updatedUser);
-    console.log(updatedUser);
+    res.status(200).json({ accessToken: accessToken });
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
-  } finally {
-    await db.$disconnect(); // Disconnect from Prisma client after operation
   }
 }
 
 
 
 function fixUserRequestData(req: Request) {
-
   const { password, preferences } = req.body;
   const data = req.body;
   if (password) {

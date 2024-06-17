@@ -1,3 +1,5 @@
+// src/components/RegionSelector.tsx
+
 import {
   Box,
   FormControl,
@@ -7,17 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import regionsData from "../../regions.json";
+import { Region } from "../../api/types";
 
-type props = {
-  region: string;
-  onChange: (region: string) => void;
+type Props = {
+  region: Region;
+  onChange: (region: Region) => void;
 };
 
-const RegionSelector = ({ region, onChange }: props) => {
-  const [regionsList, setRegionsList] = useState<string[]>([]);
+const RegionSelector = ({ region, onChange }: Props) => {
+  const [regionsList, setRegionsList] = useState<Region[]>([]);
+
   useEffect(() => {
-    setRegionsList(regionsData.regions);
+    const regions = Object.values(Region);
+    setRegionsList(regions);
   }, []);
 
   return (
@@ -27,22 +31,29 @@ const RegionSelector = ({ region, onChange }: props) => {
       </Typography>
       <FormControl>
         <InputLabel id="region-selector-label">Region</InputLabel>
-        <Select
-          sx={{ minWidth: "170px" }}
-          labelId="region-selector-label"
-          id="region-selector"
-          value={region}
-          label="Region"
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-        >
-          {regionsList.map((region) => (
-            <MenuItem key={region} value={region}>
-              {region}
+        {regionsList.length > 0 ? (
+          <Select
+            sx={{ minWidth: "170px" }}
+            labelId="region-selector-label"
+            id="region-selector"
+            value={region}
+            label="Region"
+            onChange={(event) => {
+              onChange(event.target.value as Region);
+            }}
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
+            {regionsList.map((region) => (
+              <MenuItem key={region} value={region}>
+                {region}
+              </MenuItem>
+            ))}
+          </Select>
+        ) : (
+          <Typography>Loading regions...</Typography>
+        )}
       </FormControl>
     </Box>
   );

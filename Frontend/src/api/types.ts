@@ -4,6 +4,20 @@ export enum Gender {
   Female = "Female",
   Both = "Both",
 }
+
+export enum Region {
+  US_EAST = "US East",
+  US_WEST = "US West",
+  EUROPE = "Europe",
+  ASIA_EAST = "Asia East",
+  MIDDLE_EAST = "Middle East",
+  OCEANA = "Oceana",
+  SOUTH_AFRICA = "South Africa",
+  SOUTH_AMERICA = "South America",
+  INDIA = "India",
+}
+
+
 export enum Platform {
   PC = "PC",
   Xbox = "Xbox",

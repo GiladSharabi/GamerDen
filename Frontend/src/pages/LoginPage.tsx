@@ -39,7 +39,7 @@ const LoginPage = () => {
         );
         if (result.success) {
           setHasError(false);
-          AuthLogin(result.accessToken);
+          AuthLogin();
           navigate("/dashboard");
         } else {
           setHasError(true);

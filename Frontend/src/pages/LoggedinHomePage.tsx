@@ -1,8 +1,8 @@
 import { updateUser } from "../api/api.endpoints";
-import { UserPreferences } from "../api/types";
+import { NullUser, UserPreferences } from "../api/types";
 import EditGamingPreferencesSection from "../components/EditGamingPreferencesSection";
 import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const LoggedinHomePage = () => {
   const authContext = useContext(AuthContext);
@@ -10,6 +10,16 @@ const LoggedinHomePage = () => {
     return <div>Loading...</div>;
   }
   const { user, setUser } = authContext;
+  const [isLoading, setisLoading] = useState(true);
+  useEffect(() => {
+    if (user !== NullUser) {
+      setisLoading(false);
+    }
+  }, [user])
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handleSubmit = (tempPreferences: UserPreferences) => {
     const tempUser = { ...user, preferences: tempPreferences };
