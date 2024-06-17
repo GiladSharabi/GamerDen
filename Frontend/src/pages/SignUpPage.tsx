@@ -34,7 +34,7 @@ const SignUp = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
   useEffect(() => {
-    console.log("my user: " + user);
+    console.log("my user: ", user);
   }, [user]);
 
   const today = new Date();

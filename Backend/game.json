@@ -90,14 +90,14 @@
         "name": "The Legend of Zelda: Breath of the Wild"
     },
     {
-        "id": 501,
-        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voh.jpg",
-        "name": "Batman: Arkham City"
-    },
-    {
         "id": 73,
         "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1x7o.jpg",
         "name": "Mass Effect"
+    },
+    {
+        "id": 501,
+        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co1voh.jpg",
+        "name": "Batman: Arkham City"
     },
     {
         "id": 7331,

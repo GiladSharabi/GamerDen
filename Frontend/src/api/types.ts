@@ -22,7 +22,8 @@ export type UserPreferences = {
   platform: Platform[];
   teammate_platform: Platform[];
   preferred_gender: Gender;
-  age_range: number[];
+  min_age: number,
+  max_age: number,
   games: Game[];
 };
 
@@ -52,7 +53,8 @@ export const NullUserPreferences: UserPreferences = {
   voice: false,
   platform: [],
   preferred_gender: Gender.None,
-  age_range: [0, 100],
+  min_age: 18,
+  max_age: 100,
   teammate_platform: [],
   games: [],
 };

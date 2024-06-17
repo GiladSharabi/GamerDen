@@ -10,7 +10,7 @@ type props = {
 const PlatformSelector = ({
   selectedPlatforms = [],
   onChange,
-  label = "",
+  label = "Select teammate Platform",
 }: props) => {
   return (
     <div className="mb-2">

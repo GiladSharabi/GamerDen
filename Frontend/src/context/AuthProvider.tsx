@@ -4,7 +4,8 @@ import { getUser, logout } from "../api/api.endpoints";
 
 interface AuthContextType {
   user: User;
-  AuthLogin: (token: string) => void;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+  AuthLogin: () => void;
   AuthLogout: () => void;
 }
 
@@ -28,10 +29,13 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     authenticateUser();
   }, []);
 
-  const AuthLogin = async (token: string) => {
+  const AuthLogin = async () => {
     try {
-      const userResult = await getUser(token);
-      setUser(userResult);
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const userResult = await getUser(token);
+        setUser(userResult);
+      }
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -42,8 +46,9 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setUser(NullUser);
   };
 
+
   return (
-    <AuthContext.Provider value={{ user, AuthLogin, AuthLogout }}>
+    <AuthContext.Provider value={{ user, setUser, AuthLogin, AuthLogout }}>
       {children}
     </AuthContext.Provider>
   );

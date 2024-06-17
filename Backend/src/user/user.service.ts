@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { Game, PrismaClient, UserPreferences } from "@prisma/client";
 import { Gender, User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
+import { connect } from "http2";
 
 const saltRounds = 10;
 
@@ -35,6 +36,9 @@ export async function getUserByUserName(username: string): Promise<userResult> {
       where: {
         username: username,
       },
+      include: {
+        preferences: true,
+      },
     });
     if (!user) {
       return { error: "No user found" };
@@ -50,6 +54,7 @@ export async function createUser(
   res: Response
 ): Promise<userResult> {
   try {
+    fixUserRequestData(req);
     const { preferences, ...userData } = req.body;
 
     const existingUser = await db.user.findUnique({
@@ -68,12 +73,18 @@ export async function createUser(
         preferences: {
           create: {
             ...preferencesData,
-            games: undefined,
+            games: {
+              connect: games.map((game: any) => ({ id: game.id })),
+            },
           },
         },
       },
       include: {
-        preferences: true,
+        preferences: {
+          include: {
+            games: true,
+          },
+        },
       },
     });
 
@@ -84,38 +95,75 @@ export async function createUser(
   }
 }
 
+async function getCurrentPreferences(userID: number) {
+  return await db.userPreferences.findUnique({
+    where: { userID },
+    include: { games: true },
+  });
+}
+
+function formatPreferences(preferences: any) {
+  const { id, userID, ...rest } = preferences;
+  return {
+    ...rest,
+    games: preferences.games.map((game: Game) => ({ id: game.id })),
+  };
+}
+
+async function updateUserInDatabase(username: string, userData: any, preferencesData: any) {
+  return await db.user.update({
+    where: { username },
+    data: {
+      ...userData,
+      preferences: {
+        update: {
+          ...preferencesData,
+          games: {
+            set: [],
+            connect: preferencesData.games,
+          },
+        },
+      },
+    },
+    include: {
+      preferences: {
+        include: { games: true },
+      },
+    },
+  });
+}
+
 export async function updateUser(req: Request, res: Response) {
   try {
-    const { username, preferences } = req.body;
-    fixUserRequestData(req);
     console.log(req.body);
-    const data = req.body;
-    const user = await db.user.update({
-      where: { username: username },
-      data: {
-        ...data,
-        preferences: preferences
-          ? {
-              upsert: {
-                create: preferences,
-                update: preferences,
-              },
-            }
-          : undefined,
-      },
-      include: {
-        preferences: true,
-      },
-    });
-    res.status(200).json(user);
-  } catch (e: any) {
-    console.log(e);
-    res.status(500).json({ error: "Internal server error" });
+    const { preferences, id, iat, ...userData } = req.body;
+    const { username } = userData;
+
+    const preferencesData = formatPreferences(preferences);
+
+    const currentPreferences = await getCurrentPreferences(id);
+
+    if (currentPreferences) {
+      const disconnectGames = currentPreferences.games.map((game) => ({ id: game.id }));
+    }
+    console.log(preferencesData);
+    const updatedUser = await updateUserInDatabase(username, userData, preferencesData);
+
+    res.status(200).json(updatedUser);
+    console.log(updatedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    await db.$disconnect(); // Disconnect from Prisma client after operation
   }
 }
 
+
+
 function fixUserRequestData(req: Request) {
-  const { password } = req.body;
+
+  const { password, preferences } = req.body;
   const data = req.body;
   if (password) {
     const salt = bcrypt.genSaltSync(saltRounds);

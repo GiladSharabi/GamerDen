@@ -1,7 +1,6 @@
 import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Gender } from "../../api/types";
 type props = {
-  label: string;
   selectedGender: Gender;
   onChange: (gender: Gender) => void;
 };
@@ -9,12 +8,11 @@ type props = {
 const PreferedGenderSelector = ({
   selectedGender = Gender.None,
   onChange,
-  label = "",
 }: props) => {
   return (
     <div className="mb-2">
       <Typography variant="h6" gutterBottom color="white">
-        {label}
+        Which gender do you prefer to play with?
       </Typography>
       <ToggleButtonGroup
         color="primary"

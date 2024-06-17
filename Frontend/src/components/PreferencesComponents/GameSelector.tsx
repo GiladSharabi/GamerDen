@@ -45,7 +45,7 @@ const GameSelector = ({ selectedGames = [], onChange }: props) => {
       (game) => game.name === removedGame
     );
     if (theGame) {
-      console.log("the Game: " + theGame);
+      console.log("the Game: ", theGame);
       onChange(theGame); // delete the game from the selectedGames
       setGamesList([...gamesList, theGame]); // add the removed game (from selectedGames) to the gameList
     }

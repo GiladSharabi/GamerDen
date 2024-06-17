@@ -1,66 +1,33 @@
 import { Slider, Box, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-type props = {
-  label: string;
-  minAge: number;
-  maxAge: number;
-  age_range: number[];
-  onChange: (newValue: number[]) => void;
+type Props = {
+  min_age: number;
+  max_age: number;
+  onChange: (newRange: number[]) => void;
 };
 
-const age_rangeSelector = ({
-  label,
-  minAge,
-  maxAge,
-  age_range,
-  onChange,
-}: props) => {
-  const [currentVal, setCurrentVal] = useState<number[]>(age_range);
+const AgeRangeSelector = ({ min_age, max_age, onChange }: Props) => {
+  const [currentRange, setCurrentRange] = useState<[number, number]>([min_age, max_age]);
 
-  useEffect(() => {
-    age_range = [...currentVal]; // Update currentVal if age_range prop changes
-    // onChange(age_range);
-  }, [currentVal]);
-
-  const handleChange = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number
-  ) => {
-    if (!Array.isArray(newValue)) {
-      return;
+  const handleChange = (_event: Event, newValues: number | number[]) => {
+    if (Array.isArray(newValues)) {
+      setCurrentRange(newValues as [number, number]);
+      onChange(newValues as [number, number]);
     }
-    setCurrentVal(newValue);
-    // if (activeThumb === 0) {
-    //   setCurrentVal([Math.min(newValue[0], currentVal[1]), currentVal[1]]);
-    // } else {
-    //   setCurrentVal([currentVal[0], Math.max(newValue[1], currentVal[0])]);
-    // }
-    // age_range = [...currentVal];
-    // console.log("age_range: " + age_range);
-  };
-
-  const handleCommitChange = (
-    event: React.SyntheticEvent | Event,
-    newValue: number | number[]
-  ) => {
-    // console.log(newValue);
-    onChange(newValue as number[]);
   };
 
   return (
     <Box>
       <Typography variant="h6" gutterBottom color="white">
-        {label}
+        Between what ages are your ideal teammates?
       </Typography>
       <Slider
-        value={currentVal}
+        value={currentRange}
         onChange={handleChange}
-        // onChangeCommitted={handleCommitChange}
         valueLabelDisplay="auto"
-        min={minAge}
-        max={maxAge}
+        min={18}
+        max={100}
         disableSwap
         sx={{
           width: 400,
@@ -74,4 +41,4 @@ const age_rangeSelector = ({
   );
 };
 
-export default age_rangeSelector;
+export default AgeRangeSelector;

@@ -10,12 +10,11 @@ import { useEffect, useState } from "react";
 import regionsData from "../../regions.json";
 
 type props = {
-  label: string;
   region: string;
   onChange: (region: string) => void;
 };
 
-const RegionSelector = ({ label, region, onChange }: props) => {
+const RegionSelector = ({ region, onChange }: props) => {
   const [regionsList, setRegionsList] = useState<string[]>([]);
   useEffect(() => {
     setRegionsList(regionsData.regions);
@@ -24,7 +23,7 @@ const RegionSelector = ({ label, region, onChange }: props) => {
   return (
     <Box sx={{ minWidth: 120 }}>
       <Typography variant="h6" gutterBottom color="white">
-        {label}
+        Select Region
       </Typography>
       <FormControl>
         <InputLabel id="region-selector-label">Region</InputLabel>
