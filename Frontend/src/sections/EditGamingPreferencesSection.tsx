@@ -2,7 +2,7 @@ import { Box, Grid, Button, ThemeProvider } from "@mui/material";
 import GameSelector from "../components/PreferencesComponents/GameSelector";
 import theme from "../components/Theme";
 import { useState, useContext } from "react";
-import { Gender, UserPreferences, Game, Platform } from "../api/types";
+import { Gender, UserPreferences, Game, Platform, Region } from "../api/types";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
 import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
 import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
@@ -27,7 +27,8 @@ const EditGamingPreferencesSection = ({
     return <div>Loading...</div>;
   }
 
-  const [tempPreferences, setTempPreferences] = useState<UserPreferences>(userPref);
+  const [tempPreferences, setTempPreferences] =
+    useState<UserPreferences>(userPref);
 
   const handleGamesChange = (newGame: Game) => {
     setTempPreferences((prev) => ({
@@ -72,7 +73,7 @@ const EditGamingPreferencesSection = ({
     }));
   };
 
-  const handleRegionChange = (selectedRegion: string) => {
+  const handleRegionChange = (selectedRegion: Region) => {
     setTempPreferences((prev) => ({
       ...prev,
       region: selectedRegion,
@@ -93,55 +94,64 @@ const EditGamingPreferencesSection = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container className="flex justify-start mt-10 ml-5">
-        <Grid>
-          <Box
-            bgcolor="background.default"
-            p={2}
-            borderRadius={4}
-            display="flex flex-column"
-            flexDirection="column"
+      <Grid container className="flex justify-center mt-10 ml-5">
+        <Box
+          bgcolor="background.default"
+          p={2}
+          borderRadius={4}
+          display="flex flex-column"
+          flexDirection="column"
+        >
+          <GameSelector
+            selectedGames={tempPreferences.games}
+            onChange={handleGamesChange}
+          />
+          <PlatformSelector
+            label="Select Platform"
+            selectedPlatforms={tempPreferences.platform}
+            onChange={handlePlatformChange}
+          />
+          <RegionSelector
+            region={tempPreferences.region}
+            onChange={handleRegionChange}
+          />
+          <PreferedGenderSelector
+            selectedGender={tempPreferences.preferred_gender}
+            onChange={handleGenderChange}
+          />
+          <PlatformSelector
+            label="Select teammate Platform"
+            selectedPlatforms={tempPreferences.teammate_platform}
+            onChange={handleTeammatePlatformChange}
+          />
+          <AgeRangeSelector
+            min_age={tempPreferences.min_age}
+            max_age={tempPreferences.max_age}
+            onChange={handleAgeRangeChange}
+          />
+          <VoiceSelector
+            isVoice={tempPreferences.voice}
+            onChange={handleVoiceClick}
+          />
+          <Button
+            onClick={handleButtonClick}
+            variant="contained"
+            size="medium"
+            sx={{
+              width: "wrap",
+              backgroundColor: "#555555",
+              color: "#BBBBBB",
+              border: "1px solid transparent",
+              "&:hover": {
+                color: "white",
+                backgroundColor: "#222222",
+                border: "1px solid white",
+              },
+            }}
           >
-            <GameSelector
-              selectedGames={tempPreferences.games}
-              onChange={handleGamesChange}
-            />
-            <PlatformSelector
-              label="Select Platform"
-              selectedPlatforms={tempPreferences.platform}
-              onChange={handlePlatformChange}
-            />
-            <RegionSelector
-              region={tempPreferences.region}
-              onChange={handleRegionChange}
-            />
-            <PreferedGenderSelector
-              selectedGender={tempPreferences.preferred_gender}
-              onChange={handleGenderChange}
-            />
-            <PlatformSelector
-              label="Select teammate Platform"
-              selectedPlatforms={tempPreferences.teammate_platform}
-              onChange={handleTeammatePlatformChange}
-            />
-            <AgeRangeSelector
-              min_age={tempPreferences.min_age}
-              max_age={tempPreferences.max_age}
-              onChange={handleAgeRangeChange}
-            />
-            <VoiceSelector
-              isVoice={tempPreferences.voice}
-              onChange={handleVoiceClick}
-            />
-            <Button
-              onClick={handleButtonClick}
-              variant="contained"
-              size="medium"
-            >
-              {buttonLabel}
-            </Button>
-          </Box>
-        </Grid>
+            {buttonLabel}
+          </Button>
+        </Box>
       </Grid>
     </ThemeProvider>
   );

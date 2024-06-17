@@ -1,44 +1,40 @@
-import React, { useState } from "react";
-import { Box, Grid, Button } from "@mui/material";
-import { IoSearch } from "react-icons/io5";
-import GameSelector from "../components/PreferencesComponents/GameSelector";
-import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
-import RegionSelector from "../components/PreferencesComponents/RegionSelector";
-import SoloOrGroupSelector from "../components/PreferencesComponents/SoloOrGroupSelector";
-import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
-import age_rangeSelector from "../components/PreferencesComponents/age_rangeSelector";
+import EditGamingPreferencesSection from "../sections/EditGamingPreferencesSection";
 import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import EditGamingPreferencesSection from "../components/EditGamingPreferencesSection";
+import { useContext, useEffect, useState } from "react";
+import { NullUser, UserPreferences } from "../api/types";
 import { updateUser } from "../api/api.endpoints";
-import { UserPreferences } from "../api/types";
+import { useNavigate } from "react-router-dom";
 
 const EditGamingPreferencesPage = () => {
   const navigate = useNavigate();
-
   const authContext = useContext(AuthContext);
   if (!authContext) {
     return <div>Loading...</div>;
   }
-  const { user } = authContext;
+  const { user, setUser } = authContext;
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    if (user !== NullUser) {
+      setIsLoading(false);
+    }
+  }, [user]);
 
-  // const [pref, setPref] = useState<UserPreferences>(user.preferences);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  const handleSaveClick = () => {
-    // user.preferences = pref;
-    // console.log(user.preferences);
-    // updateUser(user);
-    // setPref(user?.preferences);
-    // console.log(pref);
+  const handleSaveClick = (tempPreferences: UserPreferences) => {
+    const tempUser = { ...user, preferences: tempPreferences };
+    setUser(tempUser);
+    updateUser(tempUser);
+    navigate("/account");
   };
 
   return (
     <EditGamingPreferencesSection
       buttonLabel="Save"
       onSubmitClick={handleSaveClick}
-      // userPref={pref}
-      // setPref={setPref}
+      userPref={user.preferences}
     />
   );
 };

@@ -1,11 +1,12 @@
 import { TextareaAutosize, Box, Typography } from "@mui/material";
 
 type BioTextareaProps = {
+  labelColor?: string;
   bio: string;
   onChange: (value: string) => void;
 };
 
-const BioTextarea = ({ bio, onChange }: BioTextareaProps) => {
+const BioTextarea = ({ bio, onChange, labelColor }: BioTextareaProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length <= 255) {
@@ -15,7 +16,11 @@ const BioTextarea = ({ bio, onChange }: BioTextareaProps) => {
 
   return (
     <Box sx={{ width: "100%", marginBottom: 2, mt: 2 }}>
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography
+        variant="subtitle1"
+        gutterBottom
+        color={labelColor ?? labelColor}
+      >
         Bio (Optional)
       </Typography>
       <TextareaAutosize

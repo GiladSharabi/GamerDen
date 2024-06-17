@@ -3,8 +3,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 type DatePickerComponentProps = {
-  selectedDate: Date;
-  onChange: (date: Date | null) => void;
+  selectedDate?: Date;
+  onChange: (date: Date) => void;
 };
 
 const DatePickerComponent = ({
@@ -16,10 +16,13 @@ const DatePickerComponent = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+        value={selectedDate ? dayjs(selectedDate) : null}
         label="Enter birthday"
         maxDate={maxDate}
         format="DD/MM/YYYY"
-        onChange={(newDate) => onChange(newDate ? newDate.toDate() : null)}
+        onChange={(newDate) =>
+          onChange(newDate ? newDate.toDate() : new Date(0))
+        }
       />
     </LocalizationProvider>
   );

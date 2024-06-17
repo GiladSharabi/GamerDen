@@ -30,19 +30,12 @@ const UserDetails = ({
   passwordError = "",
   confirmPasswordError = "",
 }: UserDetailsProps) => {
-  // const [usernameError, setUsernameError] = useState<string>("");
-  // const [emailError, setEmailError] = useState<string>("");
-  // const [passwordError, setPasswordError] = useState<string>("");
-  // const [isUsernameError, seIstUsernameError] = useState<boolean>(false);
-  // const [isEmailError, setIsEmailError] = useState<boolean>(false);
-  // const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
   return (
     <Box>
       <TextField
         error={!(usernameError === "")}
         helperText={usernameError}
         margin="normal"
-        // required
         fullWidth
         id="username"
         label="Username"
@@ -56,7 +49,6 @@ const UserDetails = ({
         error={!(emailError === "")}
         helperText={emailError}
         margin="normal"
-        // required
         fullWidth
         id="email"
         label="Email Address"
@@ -69,7 +61,6 @@ const UserDetails = ({
         error={!(passwordError === "")}
         helperText={passwordError}
         margin="normal"
-        // required
         fullWidth
         name="password"
         label="Password"
@@ -83,7 +74,6 @@ const UserDetails = ({
         error={!(confirmPasswordError === "")}
         helperText={confirmPasswordError}
         margin="normal"
-        // required
         fullWidth
         name="confirmPassword"
         label="Confirm Password"

@@ -42,9 +42,9 @@ const RegionSelector = ({ region, onChange }: Props) => {
               onChange(event.target.value as Region);
             }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
+            {/* <MenuItem value="">
+              <em>Select Region</em>
+            </MenuItem> */}
             {regionsList.map((region) => (
               <MenuItem key={region} value={region}>
                 {region}

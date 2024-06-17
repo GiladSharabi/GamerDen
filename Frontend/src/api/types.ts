@@ -6,6 +6,7 @@ export enum Gender {
 }
 
 export enum Region {
+  None = "None",
   US_EAST = "US East",
   US_WEST = "US West",
   EUROPE = "Europe",
@@ -16,7 +17,6 @@ export enum Region {
   SOUTH_AMERICA = "South America",
   INDIA = "India",
 }
-
 
 export enum Platform {
   PC = "PC",
@@ -31,13 +31,13 @@ export type Game = {
 };
 
 export type UserPreferences = {
-  region: string;
+  region: Region;
   voice: boolean;
   platform: Platform[];
   teammate_platform: Platform[];
   preferred_gender: Gender;
-  min_age: number,
-  max_age: number,
+  min_age: number;
+  max_age: number;
   games: Game[];
 };
 
@@ -63,7 +63,7 @@ export type UserResult = {
 };
 
 export const NullUserPreferences: UserPreferences = {
-  region: "",
+  region: Region.None,
   voice: false,
   platform: [],
   preferred_gender: Gender.None,

@@ -1,13 +1,6 @@
-import {
-  Avatar,
-  CssBaseline,
-  Paper,
-  Box,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Avatar, Paper, Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Gender, NullUser, User } from "../api/types";
+import { NullUser, User } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
 import CountrySelector from "../components/SignUpComponents/CountrySelector";
 import LanguageSelector from "../components/SignUpComponents/LanguagesSelector";
@@ -21,10 +14,7 @@ import { Alert } from "@mui/material";
 
 const SignUp = () => {
   const navigate = useNavigate();
-
   const [user, setUser] = useState<User>(NullUser);
-  // console.log("userrrrr::::::::::\n " + user.preferences.region);
-  // console.log(JSON.stringify(user, null, 2));
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [hasError, setHasError] = useState<boolean>(false);
@@ -55,8 +45,8 @@ const SignUp = () => {
     setUser({ ...user, languages });
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setUser({ ...user, dob: date || new Date() });
+  const handleDateChange = (date: Date) => {
+    setUser({ ...user, dob: date });
   };
 
   const handleSubmit = async () => {
@@ -85,37 +75,12 @@ const SignUp = () => {
     try {
       setHasError(false);
       console.log(JSON.stringify(user, null, 2));
-      // console.log("the user:::::   " + user.preferences);
       const result = await signup(user);
       console.log("signup result: " + result);
       navigate("/login");
     } catch (e) {
       console.log("Error in signup" + e);
     }
-
-    // console.log(user);
-    // if (
-    //   user.username &&
-    //   user.email &&
-    //   user.password &&
-    //   (user.dob.getFullYear() !== today.getFullYear() ||
-    //     user.dob.getMonth() !== today.getMonth() ||
-    //     user.dob.getDate() !== today.getDate()) &&
-    //   user.country &&
-    //   user.gender !== Gender.None &&
-    //   user.languages.length !== 0
-    // ) {
-    //   try {
-    //     setHasError(false);
-    //     const result = await signup(user);
-    //     navigate("/login");
-    //     // console.log(user);
-    //   } catch (e) {
-    //     console.log("Error signup: " + e);
-    //   }
-    // } else {
-    //   setHasError(true);
-    // }
   };
 
   return (

@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import LoggedinHomePage from "./pages/LoggedinHomePage";
 import AccountPage from "./pages/AccountPage";
 import EditGamingPreferences from "./pages/EditGamingPreferencesPage";
+import EditPersonalDetailsPage from "./pages/EditPersonalDetailsPage";
 import Background from "./components/Background";
 import NavBar from "./components/NavBar/NavBar";
 
@@ -19,10 +20,10 @@ const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/account" element={<AccountPage />} />
-          {/* <Route
-          path="/edit-personal-details"
-          element={<EditPersonalDetails />}
-        /> */}
+          <Route
+            path="/edit-personal-details"
+            element={<EditPersonalDetailsPage />}
+          />
           <Route
             path="/edit-gaming-preferences"
             element={<EditGamingPreferences />}
