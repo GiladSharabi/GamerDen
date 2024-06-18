@@ -101,6 +101,7 @@ const EditGamingPreferencesSection = ({
           borderRadius={4}
           display="flex flex-column"
           flexDirection="column"
+          sx={{ width: "600px" }}
         >
           <GameSelector
             selectedGames={tempPreferences.games}

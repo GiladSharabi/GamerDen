@@ -152,6 +152,7 @@ const SignUp = () => {
             />
             <BioTextarea
               bio={user.bio || ""}
+              textColor="black"
               onChange={(value) => setUser({ ...user, bio: value })}
             />
             {hasError ? (

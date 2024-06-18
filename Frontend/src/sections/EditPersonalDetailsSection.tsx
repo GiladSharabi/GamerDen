@@ -12,7 +12,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import theme from "../components/Theme";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User } from "../api/types";
 import { Person } from "@mui/icons-material";
 import MyDivider from "../components/MyDivider";
@@ -34,6 +34,10 @@ const EditPersonalDetailsSection = ({
   onSaveClick,
 }: Props) => {
   const [tempUser, setTempUser] = useState<User>(user);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    console.log(tempUser);
+  }, [tempUser]);
 
   const [hasError, setHasError] = useState<boolean>(false);
   const [usernameError, setUsernameError] = useState<string>("");
@@ -42,13 +46,8 @@ const EditPersonalDetailsSection = ({
   const today = new Date();
 
   const handleUserChange = (name: keyof User, value: string) => {
-    // console.log("name: " + name + " value: " + value);
     setTempUser({ ...tempUser, [name]: value });
   };
-
-  // const handleCountryChange = (value: string) => {
-  //   setTempUser({ ...tempUser, country: value });
-  // };
 
   const handleLanguageChange = (languages: string[]) => {
     setTempUser({ ...tempUser, languages });
@@ -87,6 +86,21 @@ const EditPersonalDetailsSection = ({
     onSaveClick(tempUser);
   };
 
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setTempUser({ ...tempUser, avatar: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container className="flex justify-center mt-10 ">
@@ -98,19 +112,29 @@ const EditPersonalDetailsSection = ({
           display="flex"
           flexDirection="column"
           marginBottom={10}
+          sx={{ width: "600px" }}
         >
           <Box display="flex" justifyContent="center" mb={2}>
-            <Avatar sx={{ width: 150, height: 150 }}>
-              {tempUser.avatar ? (
-                <Box
-                  component="img"
-                  src={`${tempUser.avatar}`}
-                  sx={{ width: "100%", height: "100%" }}
-                />
-              ) : (
-                <Person sx={{ width: "95%", height: "95%" }} />
-              )}
-            </Avatar>
+            <label htmlFor="avatar-upload" style={{ cursor: "pointer" }}>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              <Avatar sx={{ width: 150, height: 150, cursor: "pointer" }}>
+                {tempUser.avatar ? (
+                  <Box
+                    component="img"
+                    src={`${tempUser.avatar}`}
+                    sx={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  <Person sx={{ width: "95%", height: "95%" }} />
+                )}
+              </Avatar>
+            </label>
           </Box>
           <MyDivider />
           {/* the box under the avatar */}
@@ -185,7 +209,26 @@ const EditPersonalDetailsSection = ({
             <BioTextarea
               bio={tempUser.bio ? tempUser.bio : ""}
               onChange={handleBioChange}
+              textColor="white"
             ></BioTextarea>
+            <Button
+              onClick={handleSaveClick}
+              variant="contained"
+              size="medium"
+              sx={{
+                width: "wrap",
+                backgroundColor: "#555555",
+                color: "#BBBBBB",
+                border: "1px solid transparent",
+                "&:hover": {
+                  color: "white",
+                  backgroundColor: "#222222",
+                  border: "1px solid white",
+                },
+              }}
+            >
+              {buttonLabel}
+            </Button>
           </Box>
         </Box>
       </Grid>
