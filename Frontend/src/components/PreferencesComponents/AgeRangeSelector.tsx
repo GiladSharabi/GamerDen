@@ -1,14 +1,31 @@
 import { Slider, Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
+  useUserRange: boolean;
   min_age: number;
   max_age: number;
   onChange: (newRange: number[]) => void;
 };
 
-const AgeRangeSelector = ({ min_age, max_age, onChange }: Props) => {
-  const [currentRange, setCurrentRange] = useState<[number, number]>([min_age, max_age]);
+const AgeRangeSelector = ({
+  useUserRange,
+  min_age,
+  max_age,
+  onChange,
+}: Props) => {
+  const [currentRange, setCurrentRange] = useState<[number, number]>([
+    min_age,
+    max_age,
+  ]);
+
+  useEffect(() => {
+    if (useUserRange) {
+      setCurrentRange([min_age, max_age]);
+    } else {
+      setCurrentRange([18, 100]);
+    }
+  }, [useUserRange]);
 
   const handleChange = (_event: Event, newValues: number | number[]) => {
     if (Array.isArray(newValues)) {

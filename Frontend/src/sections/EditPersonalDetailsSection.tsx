@@ -43,8 +43,6 @@ const EditPersonalDetailsSection = ({
   const [usernameError, setUsernameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
 
-  const today = new Date();
-
   const handleUserChange = (name: keyof User, value: string) => {
     setTempUser({ ...tempUser, [name]: value });
   };
@@ -95,7 +93,41 @@ const EditPersonalDetailsSection = ({
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setTempUser({ ...tempUser, avatar: reader.result as string });
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          if (ctx) {
+            const maxWidth = 150;
+            const maxHeight = 150;
+            let { width, height } = img;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const resizedImage = canvas.toDataURL("image/jpeg", 0.7); // Adjust the quality if needed
+            setTempUser({ ...tempUser, avatar: resizedImage });
+          } else {
+            console.error(
+              "2D context not supported or canvas already initialized"
+            );
+          }
+        };
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -139,19 +171,6 @@ const EditPersonalDetailsSection = ({
           <MyDivider />
           {/* the box under the avatar */}
           <Box>
-            <TextField
-              error={!(usernameError === "")}
-              helperText={usernameError}
-              margin="normal"
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={tempUser.username}
-              onChange={(e) => handleUserChange("username", e.target.value)}
-            />
             <TextField
               error={!(emailError === "")}
               helperText={emailError}

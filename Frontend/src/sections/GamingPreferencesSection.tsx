@@ -37,8 +37,10 @@ const GamingPreferencesSection = () => {
           {/* {user.preferences ? ( */}
           <>
             <Typography variant="body1">
-              <strong>Games:</strong> {user.preferences.games?.join(", ")}
+              <strong>Games:</strong>{" "}
+              {user.preferences.games?.map((game) => game.name).join(", ")}
             </Typography>
+
             <MyDivider />
             <Typography variant="body1">
               <strong>Platform:</strong> {user.preferences.platform.join(", ")}

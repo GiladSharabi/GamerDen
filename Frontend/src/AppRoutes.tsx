@@ -9,6 +9,7 @@ import EditGamingPreferences from "./pages/EditGamingPreferencesPage";
 import EditPersonalDetailsPage from "./pages/EditPersonalDetailsPage";
 import Background from "./components/Background";
 import NavBar from "./components/NavBar/NavBar";
+import ProfilePage from "./pages/ProfilePage";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const AppRoutes = () => {
             element={<EditGamingPreferences />}
           />
           <Route path="/dashboard" element={<LoggedinHomePage />} />
+          {/* <Route path="/profile/{user}" element={ProfilePage} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

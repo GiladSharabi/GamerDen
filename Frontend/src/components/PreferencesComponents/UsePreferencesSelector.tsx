@@ -1,16 +1,18 @@
 import { FormControlLabel, Checkbox, Box, Typography } from "@mui/material";
 
 type props = {
-  isVoice: boolean | undefined;
+  isUse: boolean | undefined;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const VoiceSelector = ({ isVoice = undefined, onChange }: props) => {
+const VoiceSelector = ({ isUse = false, onChange }: props) => {
   return (
     <Box marginBottom={2} sx={{ width: "100%" }}>
       <FormControlLabel
-        control={<Checkbox checked={isVoice} onChange={onChange} />}
-        label={<Typography color="textPrimary">Voice</Typography>}
+        control={<Checkbox checked={isUse} onChange={onChange} />}
+        label={
+          <Typography color="textPrimary">Use My Gaming Preferences</Typography>
+        }
       ></FormControlLabel>
     </Box>
   );

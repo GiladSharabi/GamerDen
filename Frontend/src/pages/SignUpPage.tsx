@@ -52,6 +52,9 @@ const SignUp = () => {
   const handleSubmit = async () => {
     if (!user.username) {
       setUsernameError("Please enter Username.");
+      // else if (user.username exist) {
+
+      // }
     } else {
       setUsernameError("");
     }
