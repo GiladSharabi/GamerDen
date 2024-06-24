@@ -45,6 +45,7 @@ export type User = {
   email: string;
   password: string;
   username: string;
+  discord: string;
   dob: Date;
   created_at?: Date;
   country: string;
@@ -77,6 +78,7 @@ export const NullUser: User = {
   email: "",
   password: "",
   username: "",
+  discord: "",
   dob: new Date(0),
   created_at: new Date(),
   country: "",

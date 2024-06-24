@@ -51,17 +51,20 @@ const SearchPartnersSection = ({
 
   const handleUseGamingPrefClick = () => {
     setUseGamingPres(!useGamingPref);
-    if (useGamingPref) {
-      setTempPreferences(NullUserPreferences);
-    } else {
-      setTempPreferences(userPref);
-    }
-    // console.log(tempPreferences);
   };
 
   useEffect(() => {
-    console.log(tempPreferences);
-  }, [tempPreferences]);
+    console.log(useGamingPref);
+    if (useGamingPref === true) {
+      setTempPreferences(userPref);
+    } else {
+      setTempPreferences(NullUserPreferences);
+    }
+  }, [useGamingPref]);
+
+  // useEffect(() => {
+  //   console.log(tempPreferences);
+  // }, [tempPreferences]);
 
   const handleVoiceClick = () => {
     setTempPreferences((prev) => ({

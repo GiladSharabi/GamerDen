@@ -21,7 +21,8 @@ const AccountPage = () => {
       }}
     >
       <PersonalDetailsSection />
-      <Typography variant="h6" color="white" fontSize={40} marginRight={2}>
+
+      <Typography variant="h6" color="white" fontSize={40}>
         Gaming Preferences
       </Typography>
       <GamingPreferencesSection />

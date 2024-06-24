@@ -25,7 +25,7 @@ type CardProps = {
 const UserCard = ({ username, rating, bio, games, avatarUrl }: CardProps) => {
   return (
     <ThemeProvider theme={theme}>
-      <Card >
+      <Card>
         <CardContent>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
@@ -119,7 +119,7 @@ const UserCard = ({ username, rating, bio, games, avatarUrl }: CardProps) => {
           </Box>
         </CardContent>
       </Card>
-    </ThemeProvider >
+    </ThemeProvider>
   );
 };
 

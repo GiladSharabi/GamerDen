@@ -99,8 +99,8 @@ const EditPersonalDetailsSection = ({
           const ctx = canvas.getContext("2d");
 
           if (ctx) {
-            const maxWidth = 150;
-            const maxHeight = 150;
+            const maxWidth = 180;
+            const maxHeight = 180;
             let { width, height } = img;
 
             if (width > height) {

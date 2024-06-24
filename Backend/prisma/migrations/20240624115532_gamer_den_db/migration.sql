@@ -8,6 +8,7 @@ CREATE TYPE "Platform" AS ENUM ('PC', 'Xbox', 'Playstation');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
+    "discord" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "dob" TIMESTAMP(3) NOT NULL,

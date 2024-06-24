@@ -1,6 +1,6 @@
 import { Avatar, Paper, Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { NullUser, User } from "../api/types";
+import { NullUser, User, Gender } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
 import CountrySelector from "../components/SignUpComponents/CountrySelector";
 import LanguageSelector from "../components/SignUpComponents/LanguagesSelector";
@@ -15,25 +15,37 @@ import { Alert } from "@mui/material";
 const SignUp = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>(NullUser);
-
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [hasError, setHasError] = useState<boolean>(false);
+
+  const [hasError, setHasError] = useState<boolean>(true);
   const [usernameError, setUsernameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
+  const [discordError, setDiscordError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
+  const [genderError, setGenderError] = useState<string>("");
+  const [countryError, setCountryError] = useState<string>("");
+  const [languageError, setLanguageError] = useState<string>("");
 
-  useEffect(() => {
-    console.log("my user: ", user);
-  }, [user]);
-
-  const today = new Date();
+  // useEffect(() => {
+  //   const error: boolean = usernameError !== "";
+  //   console.log("error: " + error);
+  // }, [
+  //   usernameError,
+  //   emailError,
+  //   discordError,
+  //   passwordError,
+  //   confirmPasswordError,
+  //   genderError,
+  //   countryError,
+  //   languageError,
+  // ]);
 
   const handleUserChange = (name: keyof User, value: string) => {
     setUser({ ...user, [name]: value });
   };
 
-  const handleConfirmPasswordChanage = (value: string) => {
+  const handleConfirmPasswordChange = (value: string) => {
     setConfirmPassword(value);
   };
 
@@ -49,42 +61,113 @@ const SignUp = () => {
     setUser({ ...user, dob: date });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!user.username) {
-      setUsernameError("Please enter Username.");
-      // else if (user.username exist) {
-
-      // }
+      setUsernameError("Please Enter Username.");
     } else {
       setUsernameError("");
     }
     if (!user.email) {
-      setEmailError("Please enter Email.");
+      setEmailError("Please Enter Email.");
     } else {
       setEmailError("");
     }
+    if (!user.discord) {
+      setDiscordError("Please Enter Discord Username");
+    } else {
+      setDiscordError("");
+    }
     if (!user.password) {
-      setPasswordError("Please enter Password.");
+      setPasswordError("Please Enter Password.");
     } else {
       setPasswordError("");
     }
     if (!confirmPassword) {
-      setConfirmPasswordError("Please enter Confirm Password.");
+      setConfirmPasswordError("Please Enter Confirm Password.");
     } else if (confirmPassword !== user.password) {
-      setConfirmPasswordError("Passwords does not match!");
+      setConfirmPasswordError("Passwords Do Not Match!");
     } else {
       setConfirmPasswordError("");
     }
-    try {
-      setHasError(false);
-      console.log(JSON.stringify(user, null, 2));
-      const result = await signup(user);
-      console.log("signup result: " + result);
-      navigate("/login");
-    } catch (e) {
-      console.log("Error in signup" + e);
+    if (user.gender === Gender.None) {
+      setGenderError("Please Select Gender");
+    } else {
+      setGenderError("");
     }
+    if (user.country === "") {
+      setCountryError("Please Select Country");
+    } else {
+      setCountryError("");
+    }
+    if (user.languages.length === 0) {
+      setLanguageError("Please Select At Least 1 Language");
+    } else {
+      setLanguageError("");
+    }
+    // const error: boolean =
+    //   !!usernameError ||
+    //   !!emailError ||
+    //   !!discordError ||
+    //   !!passwordError ||
+    //   !!confirmPasswordError ||
+    //   !!genderError ||
+    //   !!countryError ||
+    //   !!languageError;
+    // console.log("error: " + error);
+    // setHasError(error);
+    // if (hasError === false) {
+    //   try {
+    //     // const result = await signup(user);
+    //     // console.log("signup result: " + result);
+    //     // navigate("/login");
+    //   } catch (e) {
+    //     console.log("Error in signup" + e);
+    //   }
+    // }
   };
+
+  useEffect(() => {
+    const error =
+      !!usernameError ||
+      !!emailError ||
+      !!discordError ||
+      !!passwordError ||
+      !!confirmPasswordError ||
+      !!genderError ||
+      !!countryError ||
+      !!languageError;
+    // console.log("error: " + error);
+    setHasError(error);
+  }, [
+    usernameError,
+    emailError,
+    discordError,
+    passwordError,
+    confirmPasswordError,
+    genderError,
+    countryError,
+    languageError,
+  ]);
+
+  // useEffect(() => {
+  //   console.log("hasError: " + hasError);
+  //   const handleSignup = async () => {
+  //     if (hasError === false) {
+  //       try {
+  //         const result = await signup(user);
+  //         console.log("signup result: " + result);
+  //         navigate("/login");
+  //       } catch (e) {
+  //         console.log("Error in signup" + e);
+  //       }
+  //     }
+  //   };
+  //   if (hasError === true) {
+  //     return;
+  //   } else {
+  //     handleSignup();
+  //   }
+  // }, [hasError]);
 
   return (
     <Grid
@@ -135,11 +218,13 @@ const SignUp = () => {
               user={user}
               confirmPassword={confirmPassword}
               onChange={handleUserChange}
-              onConfirmPasswordChange={handleConfirmPasswordChanage}
+              onConfirmPasswordChange={handleConfirmPasswordChange}
               usernameError={usernameError}
               emailError={emailError}
+              discordError={discordError}
               passwordError={passwordError}
               confirmPasswordError={confirmPasswordError}
+              genderError={genderError}
             />
             <DatePickerComponent
               selectedDate={user.dob}
@@ -148,23 +233,18 @@ const SignUp = () => {
             <CountrySelector
               country={user.country}
               onChange={handleCountryChange}
+              countryError={countryError}
             />
             <LanguageSelector
               languages={user.languages}
               onChange={handleLanguageChange}
+              languageError={languageError}
             />
             <BioTextarea
               bio={user.bio || ""}
               textColor="black"
               onChange={(value) => setUser({ ...user, bio: value })}
             />
-            {hasError ? (
-              <Alert variant="filled" severity="error">
-                Please fill all fields.
-              </Alert>
-            ) : (
-              <></>
-            )}
             <SubmitButton onClick={handleSubmit} />
           </Box>
         </Box>

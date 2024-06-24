@@ -65,14 +65,14 @@
         "name": "Mass Effect 2"
     },
     {
-        "id": 231,
-        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co7q89.jpg",
-        "name": "Half-Life"
-    },
-    {
         "id": 538,
         "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co2n12.jpg",
         "name": "BioShock Infinite"
+    },
+    {
+        "id": 231,
+        "cover": "//images.igdb.com/igdb/image/upload/t_logo_med/co7q89.jpg",
+        "name": "Half-Life"
     },
     {
         "id": 25076,

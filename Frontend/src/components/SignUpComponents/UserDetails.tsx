@@ -16,8 +16,10 @@ type UserDetailsProps = {
   onConfirmPasswordChange: (value: string) => void;
   usernameError: string;
   emailError: string;
+  discordError: string;
   passwordError: string;
   confirmPasswordError: string;
+  genderError: string;
 };
 
 const UserDetails = ({
@@ -27,8 +29,10 @@ const UserDetails = ({
   onConfirmPasswordChange,
   usernameError = "",
   emailError = "",
+  discordError = "",
   passwordError = "",
   confirmPasswordError = "",
+  genderError,
 }: UserDetailsProps) => {
   return (
     <Box>
@@ -58,6 +62,18 @@ const UserDetails = ({
         onChange={(e) => onChange("email", e.target.value)}
       />
       <TextField
+        error={!(discordError === "")}
+        helperText={discordError}
+        margin="normal"
+        fullWidth
+        id="discord"
+        label="Discord"
+        name="discord"
+        autoComplete="discord"
+        value={user.discord}
+        onChange={(e) => onChange("discord", e.target.value)}
+      />
+      <TextField
         error={!(passwordError === "")}
         helperText={passwordError}
         margin="normal"
@@ -84,10 +100,15 @@ const UserDetails = ({
         onChange={(e) => onConfirmPasswordChange(e.target.value)}
       />
       <FormControl component="fieldset" margin="normal">
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography
+          variant="subtitle1"
+          gutterBottom
+          color={genderError === "" ? "black" : "red"}
+        >
           Gender
         </Typography>
         <RadioGroup
+          sx={{ marginBottom: 2 }}
           aria-label="gender"
           name="gender"
           value={user.gender}
@@ -95,13 +116,23 @@ const UserDetails = ({
         >
           <FormControlLabel
             value={Gender.Male}
-            control={<Radio />}
+            control={
+              <Radio sx={{ color: genderError === "" ? "default" : "red" }} />
+            }
             label="Male"
+            sx={{
+              color: genderError === "" ? "default" : "red",
+            }}
           />
           <FormControlLabel
             value={Gender.Female}
-            control={<Radio />}
+            control={
+              <Radio sx={{ color: genderError === "" ? "default" : "red" }} />
+            }
             label="Female"
+            sx={{
+              color: genderError === "" ? "default" : "red",
+            }}
           />
         </RadioGroup>
       </FormControl>

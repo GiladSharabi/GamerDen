@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography, Button } from "@mui/material";
+import { Avatar, Box, Typography, Button, Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import { Gender } from "../api/types";
@@ -7,6 +7,7 @@ import { FaMicrophone } from "react-icons/fa";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import { MdModeEditOutline } from "react-icons/md";
+import { FaDiscord } from "react-icons/fa";
 
 const PersonalDetailsSection = () => {
   const authContext = useContext(AuthContext);
@@ -32,6 +33,12 @@ const PersonalDetailsSection = () => {
     }
     return age;
   };
+  function getRating(): number {
+    if (user.rating && user.rating_count) {
+      return user.rating / user.rating_count;
+    }
+    return 0;
+  }
 
   const handleEditPersonalDetails = () => {
     navigate("/edit-personal-details");
@@ -46,10 +53,10 @@ const PersonalDetailsSection = () => {
         flexDirection: "row",
         flexWrap: "wrap",
         p: 2,
-        marginBottom: 4,
+        marginBottom: 1,
       }}
     >
-      <Avatar sx={{ width: 150, height: 150, mr: 2 }}>
+      <Avatar sx={{ width: 180, height: 180, mr: 2 }}>
         {user.avatar ? (
           <Box
             component="img"
@@ -61,7 +68,7 @@ const PersonalDetailsSection = () => {
         )}
       </Avatar>
 
-      <Box>
+      <Box marginRight={2}>
         {/* the Box of the details next to the photo */}
         <Typography variant="h6" color="white" fontSize={40}>
           {user.username}
@@ -97,18 +104,41 @@ const PersonalDetailsSection = () => {
           </Typography>
           <Typography color="white">{user?.country}</Typography>
         </Box>
+        {/* languages box */}
         <Box
+          marginBottom={1}
           sx={{
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
             flexDirection: "row",
-            flexWrap: "wrap",
-            paddingRight: 2,
+            flexWrap: "nowrap",
           }}
         >
-          <FaMicrophone className="mr-1" size={18} color="white" />
+          <FaMicrophone className="mr-2" size={18} color="white" />
           <Typography color="white">{user.languages.join(", ")}</Typography>
+        </Box>
+        {/* discord box */}
+        <Box
+          marginBottom={1}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexDirection: "row",
+            flexWrap: "nowrap",
+          }}
+        >
+          <FaDiscord className="mr-2" size={18} color="white" />
+          <Typography color="white">{user.discord}</Typography>
+        </Box>
+        <Box>
+          <Rating
+            name="user-rating"
+            value={getRating()}
+            precision={0.1}
+            readOnly
+          />
         </Box>
       </Box>
       <Button

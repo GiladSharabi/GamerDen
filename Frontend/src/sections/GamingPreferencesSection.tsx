@@ -23,7 +23,7 @@ const GamingPreferencesSection = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid sx={{ marginTop: 4, width: "50%" }}>
+      <Grid sx={{ marginTop: 4, width: "50%", marginBottom: 10 }}>
         {/* the Grid of the user gaming preferences */}
 
         <Box

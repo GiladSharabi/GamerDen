@@ -6,9 +6,14 @@ import { languages as LanguageListing } from "../../languages.json";
 type LanguageSelectorProps = {
   languages: string[];
   onChange: (languages: string[]) => void;
+  languageError?: string;
 };
 
-const LanguageSelector = ({ languages, onChange }: LanguageSelectorProps) => {
+const LanguageSelector = ({
+  languages,
+  onChange,
+  languageError = "",
+}: LanguageSelectorProps) => {
   const [allLanguages, setAllLanguages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,7 +39,17 @@ const LanguageSelector = ({ languages, onChange }: LanguageSelectorProps) => {
         options={allLanguages}
         freeSolo
         renderInput={(params) => (
-          <TextField {...params} label="Select Language" />
+          <TextField
+            {...params}
+            label="Select Language"
+            error={Boolean(languageError)}
+            helperText={languageError}
+            sx={{
+              "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                borderColor: languageError === "" ? "default" : "red",
+              },
+            }}
+          />
         )}
         onChange={(event, value) => value && handleAddLanguage(value)}
       />
