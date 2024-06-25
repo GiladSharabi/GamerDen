@@ -54,17 +54,12 @@ const SearchPartnersSection = ({
   };
 
   useEffect(() => {
-    console.log(useGamingPref);
     if (useGamingPref === true) {
       setTempPreferences(userPref);
     } else {
       setTempPreferences(NullUserPreferences);
     }
   }, [useGamingPref]);
-
-  // useEffect(() => {
-  //   console.log(tempPreferences);
-  // }, [tempPreferences]);
 
   const handleVoiceClick = () => {
     setTempPreferences((prev) => ({

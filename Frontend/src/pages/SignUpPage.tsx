@@ -10,7 +10,6 @@ import SubmitButton from "../components/SignUpComponents/SubmitButton";
 import { PersonAdd } from "@mui/icons-material";
 import { signup } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
-import { Alert } from "@mui/material";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -26,20 +25,6 @@ const SignUp = () => {
   const [genderError, setGenderError] = useState<string>("");
   const [countryError, setCountryError] = useState<string>("");
   const [languageError, setLanguageError] = useState<string>("");
-
-  // useEffect(() => {
-  //   const error: boolean = usernameError !== "";
-  //   console.log("error: " + error);
-  // }, [
-  //   usernameError,
-  //   emailError,
-  //   discordError,
-  //   passwordError,
-  //   confirmPasswordError,
-  //   genderError,
-  //   countryError,
-  //   languageError,
-  // ]);
 
   const handleUserChange = (name: keyof User, value: string) => {
     setUser({ ...user, [name]: value });
@@ -62,112 +47,99 @@ const SignUp = () => {
   };
 
   const handleSubmit = () => {
+    let error = false;
     if (!user.username) {
       setUsernameError("Please Enter Username.");
+      error = true;
     } else {
       setUsernameError("");
     }
     if (!user.email) {
       setEmailError("Please Enter Email.");
+      error = true;
     } else {
       setEmailError("");
     }
     if (!user.discord) {
-      setDiscordError("Please Enter Discord Username");
+      setDiscordError("Please Enter Discord Username.");
+      error = true;
     } else {
       setDiscordError("");
     }
     if (!user.password) {
       setPasswordError("Please Enter Password.");
+      error = true;
     } else {
       setPasswordError("");
     }
     if (!confirmPassword) {
       setConfirmPasswordError("Please Enter Confirm Password.");
+      error = true;
     } else if (confirmPassword !== user.password) {
       setConfirmPasswordError("Passwords Do Not Match!");
+      error = true;
     } else {
       setConfirmPasswordError("");
     }
     if (user.gender === Gender.None) {
-      setGenderError("Please Select Gender");
+      setGenderError("Please Select Gender.");
+      error = true;
     } else {
       setGenderError("");
     }
     if (user.country === "") {
-      setCountryError("Please Select Country");
+      setCountryError("Please Select Country.");
+      error = true;
     } else {
       setCountryError("");
     }
     if (user.languages.length === 0) {
-      setLanguageError("Please Select At Least 1 Language");
+      setLanguageError("Please Select At Least 1 Language.");
+      error = true;
     } else {
       setLanguageError("");
     }
-    // const error: boolean =
-    //   !!usernameError ||
-    //   !!emailError ||
-    //   !!discordError ||
-    //   !!passwordError ||
-    //   !!confirmPasswordError ||
-    //   !!genderError ||
-    //   !!countryError ||
-    //   !!languageError;
-    // console.log("error: " + error);
-    // setHasError(error);
-    // if (hasError === false) {
-    //   try {
-    //     // const result = await signup(user);
-    //     // console.log("signup result: " + result);
-    //     // navigate("/login");
-    //   } catch (e) {
-    //     console.log("Error in signup" + e);
-    //   }
-    // }
+    setHasError(error);
   };
 
-  useEffect(() => {
-    const error =
-      !!usernameError ||
-      !!emailError ||
-      !!discordError ||
-      !!passwordError ||
-      !!confirmPasswordError ||
-      !!genderError ||
-      !!countryError ||
-      !!languageError;
-    // console.log("error: " + error);
-    setHasError(error);
-  }, [
-    usernameError,
-    emailError,
-    discordError,
-    passwordError,
-    confirmPasswordError,
-    genderError,
-    countryError,
-    languageError,
-  ]);
-
   // useEffect(() => {
-  //   console.log("hasError: " + hasError);
-  //   const handleSignup = async () => {
-  //     if (hasError === false) {
-  //       try {
-  //         const result = await signup(user);
-  //         console.log("signup result: " + result);
-  //         navigate("/login");
-  //       } catch (e) {
-  //         console.log("Error in signup" + e);
-  //       }
-  //     }
-  //   };
-  //   if (hasError === true) {
-  //     return;
-  //   } else {
-  //     handleSignup();
-  //   }
-  // }, [hasError]);
+  //   const error =
+  //     !!usernameError ||
+  //     !!emailError ||
+  //     !!discordError ||
+  //     !!passwordError ||
+  //     !!confirmPasswordError ||
+  //     !!genderError ||
+  //     !!countryError ||
+  //     !!languageError;
+  //   // console.log("error: " + error);
+  //   setHasError(error);
+  // }, [
+  //   usernameError,
+  //   emailError,
+  //   discordError,
+  //   passwordError,
+  //   confirmPasswordError,
+  //   genderError,
+  //   countryError,
+  //   languageError,
+  // ]);
+
+  useEffect(() => {
+    // console.log("hasError: " + hasError);
+    const handleSignup = async () => {
+      if (!hasError) {
+        try {
+          const result = await signup(user);
+          console.log("signup result: " + result);
+          navigate("/login");
+        } catch (e) {
+          console.log("Error in signup" + e);
+        }
+      }
+    };
+    handleSignup();
+  }, [hasError]);
 
   return (
     <Grid
