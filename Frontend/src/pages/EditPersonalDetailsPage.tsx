@@ -15,6 +15,7 @@ const EditPersonalDetailsPage = () => {
 
   const { user, setUser } = authContext;
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (user !== NullUser) {
       setIsLoading(false);

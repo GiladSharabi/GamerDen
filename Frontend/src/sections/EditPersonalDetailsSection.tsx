@@ -33,6 +33,7 @@ const EditPersonalDetailsSection = ({
   buttonLabel,
   onSaveClick,
 }: Props) => {
+
   const [tempUser, setTempUser] = useState<User>(user);
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -136,7 +137,6 @@ const EditPersonalDetailsSection = ({
   return (
     <ThemeProvider theme={theme}>
       <Grid container className="flex justify-center mt-10 ">
-        {/* the box that contains all the elements */}
         <Box
           bgcolor="background.default"
           p={2}
@@ -226,7 +226,7 @@ const EditPersonalDetailsSection = ({
               onChange={handleLanguageChange}
             ></LanguageSelector>
             <BioTextarea
-              bio={tempUser.bio ? tempUser.bio : ""}
+              bio={tempUser.bio}
               onChange={handleBioChange}
               textColor="white"
             ></BioTextarea>
@@ -234,17 +234,6 @@ const EditPersonalDetailsSection = ({
               onClick={handleSaveClick}
               variant="contained"
               size="medium"
-              sx={{
-                width: "wrap",
-                backgroundColor: "#555555",
-                color: "#BBBBBB",
-                border: "1px solid transparent",
-                "&:hover": {
-                  color: "white",
-                  backgroundColor: "#222222",
-                  border: "1px solid white",
-                },
-              }}
             >
               {buttonLabel}
             </Button>

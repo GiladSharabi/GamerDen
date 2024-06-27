@@ -13,10 +13,11 @@ import {
 import UsePreferencesSelector from "../components/PreferencesComponents/UsePreferencesSelector";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
 import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
-import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
+import PreferredGenderSelector from "../components/PreferencesComponents/PreferredGenderSelector";
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
 import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
 import { AuthContext } from "../context/AuthProvider";
+import { BsJustify } from "react-icons/bs";
 
 type Props = {
   buttonLabel: string;
@@ -116,15 +117,10 @@ const SearchPartnersSection = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container className="flex justify-center mt-10 ml-5">
+      <Grid container className="flex justify-center mt-10 ml-5 mb-10">
         <Box
-          bgcolor="background.default"
-          p={2}
-          borderRadius={4}
-          display="flex flex-column"
-          flexDirection="column"
-          sx={{ width: "600px" }}
-        >
+          style={{ backgroundColor: theme.palette.background.default }}
+          className="p-4 rounded-lg">
           <UsePreferencesSelector
             isUse={useGamingPref}
             onChange={handleUseGamingPrefClick}
@@ -142,7 +138,7 @@ const SearchPartnersSection = ({
             region={tempPreferences.region}
             onChange={handleRegionChange}
           />
-          <PreferedGenderSelector
+          <PreferredGenderSelector
             selectedGender={tempPreferences.preferred_gender}
             onChange={handleGenderChange}
           />
@@ -161,24 +157,15 @@ const SearchPartnersSection = ({
             isVoice={tempPreferences.voice}
             onChange={handleVoiceClick}
           />
-          <Button
-            onClick={handleButtonClick}
-            variant="contained"
-            size="medium"
-            sx={{
-              width: "wrap",
-              backgroundColor: "#555555",
-              color: "#BBBBBB",
-              border: "1px solid transparent",
-              "&:hover": {
-                color: "white",
-                backgroundColor: "#222222",
-                border: "1px solid white",
-              },
-            }}
-          >
-            {buttonLabel}
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+            <Button
+              onClick={handleButtonClick}
+              variant="contained"
+              size="medium"
+            >
+              {buttonLabel}
+            </Button>
+          </Box>
         </Box>
       </Grid>
     </ThemeProvider>

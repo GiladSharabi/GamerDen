@@ -1,7 +1,6 @@
 import { Box, Grid, Typography, Button, ThemeProvider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import theme from "../components/Theme";
-import MyDivider from "../components/MyDivider";
 import { MdModeEditOutline } from "react-icons/md";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";

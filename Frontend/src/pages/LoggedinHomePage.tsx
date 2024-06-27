@@ -29,7 +29,6 @@ const LoggedinHomePage = () => {
 
   return (
     <Box>
-      {" "}
       <SearchPartnersSection
         buttonLabel="Search"
         onSubmitClick={handleSubmit}

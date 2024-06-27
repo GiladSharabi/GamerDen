@@ -24,55 +24,43 @@ const NavBarLoggedin = () => {
     <ThemeProvider theme={theme}>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link
-                to={"/dashboard"}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
+          <IconButton>
+            <Typography variant="h6">
+              <Link to="/">
                 GamerDen
               </Link>
             </Typography>
           </IconButton>
           <div style={{ flexGrow: 1 }} />
-          <Link
-            to={"/dashboard"}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <IconButton color="inherit" aria-label="home">
+
+          <Link to={"/dashboard"}>
+            <IconButton>
               <HomeIcon />
-              <Typography variant="body1" sx={{ ml: 1 }}>
+              <Typography sx={{ ml: 1 }}>
                 Home
               </Typography>
             </IconButton>
           </Link>
 
           <>
-            <Link
-              to="/account"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <IconButton color="inherit" aria-label="profile">
+            <Link to="/account">
+              <IconButton>
                 <AccountCircleIcon />
-                <Typography variant="body1" sx={{ ml: 1 }}>
+                <Typography sx={{ ml: 1 }}>
                   Profile
                 </Typography>
               </IconButton>
             </Link>
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              <IconButton
-                color="inherit"
-                aria-label="logout"
-                onClick={() => {
-                  AuthLogout();
-                }}
-              >
+
+            <Link to="/">
+              <IconButton onClick={() => { AuthLogout() }} >
                 <MdLogout />
-                <Typography variant="body1" sx={{ ml: 1 }}>
+                <Typography sx={{ ml: 1 }}>
                   Logout
                 </Typography>
               </IconButton>
             </Link>
+
           </>
         </Toolbar>
       </AppBar>

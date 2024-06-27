@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography, Button, Rating } from "@mui/material";
+import { Avatar, Box, Typography, Button, Rating, ThemeProvider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import { Gender } from "../api/types";
@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
+import theme from "../components/Theme";
 
 const PersonalDetailsSection = () => {
   const authContext = useContext(AuthContext);
@@ -45,121 +46,65 @@ const PersonalDetailsSection = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        p: 2,
-        marginBottom: 1,
-      }}
-    >
-      <Avatar sx={{ width: 180, height: 180, mr: 2 }}>
-        {user.avatar ? (
-          <Box
-            component="img"
-            src={`${user.avatar}`}
-            sx={{ width: "100%", height: "100%" }}
-          />
-        ) : (
-          <Person sx={{ width: "95%", height: "95%" }} />
-        )}
-      </Avatar>
-
-      <Box marginRight={2}>
-        <Typography variant="h6" color="white" fontSize={40}>
-          {user.username}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="white"
-          fontSize={18}
-          marginBottom={1}
-        >
-          {user.bio}
-        </Typography>
-
-        {/* the Box of the gender,age,country */}
-        <Box
-          marginBottom={1}
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            paddingRight: 2,
-          }}
-        >
-          {user.gender === Gender.Male ? (
-            <IoMdMale color="blue" size={20} className="mr-2" />
+    <ThemeProvider theme={theme}>
+      <Box className="flex justify-start items-center flex-row flex-wrap p-2 mb-1">
+        <Avatar sx={{ width: 180, height: 180, mr: 2 }}>
+          {user.avatar ? (
+            <Box component="img" src={`${user.avatar}`} className="w-full h-full" />
           ) : (
-            <IoMdFemale color="pink" size={20} className="mr-2" />
+            <Person sx={{ width: "95%", height: "95%" }} />
           )}
-          <Typography color="white" marginRight={1}>
-            {calculateAge(user.dob)}
+        </Avatar>
+
+        <Box marginRight={2}>
+          <Typography variant="h6" fontSize={40}>
+            {user.username}
           </Typography>
-          <Typography color="white">{user?.country}</Typography>
+          <Typography variant="body2" className="text-white text-[18px] mb-2">
+            {user.bio}
+          </Typography>
+
+          {/* the Box of the gender,age,country */}
+          <Box className="flex justify-start items-center flex-row flex-wrap pr-2 mb-2">
+            {user.gender === Gender.Male ? (
+              <IoMdMale color="blue" size={20} className="mr-2" />
+            ) : (
+              <IoMdFemale color="pink" size={20} className="mr-2" />
+            )}
+            <Typography color="white" marginRight={1}>
+              {calculateAge(user.dob)}
+            </Typography>
+            <Typography color="white">{user?.country}</Typography>
+          </Box>
+          {/* languages box */}
+          <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
+            <FaMicrophone className="mr-2" size={18} color="white" />
+            <Typography color="white">{user.languages.join(", ")}</Typography>
+          </Box>
+          {/* discord box */}
+          <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
+            <FaDiscord className="mr-2" size={18} color="white" />
+            <Typography color="white">{user.discord}</Typography>
+          </Box>
+          <Box>
+            <Rating
+              name="user-rating"
+              value={getRating()}
+              precision={0.1}
+              readOnly
+            />
+          </Box>
         </Box>
-        {/* languages box */}
-        <Box
-          marginBottom={1}
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flexDirection: "row",
-            flexWrap: "nowrap",
-          }}
+        <Button
+          startIcon={<MdModeEditOutline />}
+          variant="contained"
+          size="medium"
+          onClick={handleEditPersonalDetails}
         >
-          <FaMicrophone className="mr-2" size={18} color="white" />
-          <Typography color="white">{user.languages.join(", ")}</Typography>
-        </Box>
-        {/* discord box */}
-        <Box
-          marginBottom={1}
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flexDirection: "row",
-            flexWrap: "nowrap",
-          }}
-        >
-          <FaDiscord className="mr-2" size={18} color="white" />
-          <Typography color="white">{user.discord}</Typography>
-        </Box>
-        <Box>
-          <Rating
-            name="user-rating"
-            value={getRating()}
-            precision={0.1}
-            readOnly
-          />
-        </Box>
+          Edit
+        </Button>
       </Box>
-      <Button
-        startIcon={<MdModeEditOutline />}
-        variant="contained"
-        size="medium"
-        onClick={handleEditPersonalDetails}
-        sx={{
-          width: "wrap",
-          backgroundColor: "#555555",
-          color: "#BBBBBB",
-          border: "1px solid transparent",
-          "&:hover": {
-            color: "white",
-            backgroundColor: "#222222",
-            border: "1px solid white",
-          },
-        }}
-      >
-        Edit
-      </Button>
-    </Box>
+    </ThemeProvider>
   );
 };
 

@@ -51,7 +51,7 @@ export type User = {
   country: string;
   gender: Gender;
   languages: string[];
-  bio?: string;
+  bio: string;
   avatar?: string;
   rating?: number;
   rating_count?: number;

@@ -213,7 +213,7 @@ const SignUp = () => {
               languageError={languageError}
             />
             <BioTextarea
-              bio={user.bio || ""}
+              bio={user.bio}
               textColor="black"
               onChange={(value) => setUser({ ...user, bio: value })}
             />

@@ -3,8 +3,6 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
 import jwt from "jsonwebtoken";
-import { create } from "domain";
-
 const saltRounds = 10;
 
 const db = new PrismaClient();
@@ -55,7 +53,6 @@ async function checkExistingUser(userData: any): Promise<UserResult | undefined>
     return { usernameError: "Username already exists" };
   }
 
-  console.log("wahat userexists");
   const existingEmail = await db.user.findUnique({
     where: { email: userData.email },
   });
@@ -109,7 +106,6 @@ export async function createUser(
         },
       },
     });
-    console.log("after created");
     return { user: createdUser };
 
   } catch (error: any) {
@@ -134,15 +130,15 @@ export async function updateUser(req: Request, res: Response) {
     const { username, email } = userData;
 
     const emailExists = await db.user.findUnique({ where: { email } });
-    if (emailExists) {
+    if (emailExists && emailExists.email !== email) {
       res.status(400).json({ error: "Email already Exists" });
       return;
     }
 
+    console.log(preferences.games);
+    preferences.games.map((game: Game) => console.log(game.id));
+
     const updatedUser = await db.user.update({
-      omit: {
-        id: true,
-      },
       where: { username },
       data: {
         ...userData,
@@ -151,7 +147,7 @@ export async function updateUser(req: Request, res: Response) {
             ...preferences,
             games: {
               set: [],
-              connect: preferences.games.map((game: Game) => ({ id })),
+              connect: preferences.games.map((game: Game) => ({ id: game.id }))
             },
           },
         },

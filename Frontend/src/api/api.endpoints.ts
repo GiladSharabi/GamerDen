@@ -34,7 +34,6 @@ export async function getUser(token: string) {
 }
 
 export async function updateUser(user: User) {
-  console.log(user);
   try {
     const response = await instance.post(`/users/update`, user, {
       headers: {

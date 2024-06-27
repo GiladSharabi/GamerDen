@@ -18,6 +18,7 @@ const BioTextarea = ({ bio, onChange, textColor }: BioTextareaProps) => {
     <Box sx={{ width: "100%", marginBottom: 2, mt: 2 }}>
       <Typography
         gutterBottom
+        color={textColor}
       >
         Bio (Optional)
       </Typography>

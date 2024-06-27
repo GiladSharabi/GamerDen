@@ -16,8 +16,9 @@ const GameSelector = ({ selectedGames = [], onChange }: props) => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        setAllGames(await getGames());
-        setGamesList(await getGames());
+        const games = await getGames();
+        setAllGames(games);
+        setGamesList(games.filter(game => !selectedGames.some(selectedGame => selectedGame.id === game.id)));
 
       } catch (error) {
         console.error("Error fetching games:", error);

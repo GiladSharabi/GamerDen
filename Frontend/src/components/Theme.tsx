@@ -16,6 +16,13 @@ const theme = createTheme({
       primary: "#ffffff",
     },
   },
+  typography: {
+    fontFamily: "Arial",
+    h6: {
+      fontWeight: 200,
+      color: "white",
+    },
+  }
 });
 
 export default theme;

@@ -9,42 +9,43 @@ const NavBarLoggedout = () => {
       <AppBar position="sticky">
         <Toolbar className="flex justify-between">
           <Grid className="flex items-center">
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Typography variant="h6" component="div">
-                <Link
-                  to="/"
-                  className="no-underline text-inherit"
-                >
+            <IconButton >
+              <Typography variant="h6">
+                <Link to="/">
                   GamerDen
                 </Link>
               </Typography>
             </IconButton>
           </Grid>
           <Grid className="flex items-center">
-            <Link to="/" className="no-underline text-inherit">
-              <IconButton color="inherit" aria-label="home">
+
+            <Link to="/">
+              <IconButton>
                 <HomeIcon />
-                <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                <Typography sx={{ marginLeft: 1 }}>
                   Home
                 </Typography>
               </IconButton>
             </Link>
-            <Link to="/login" className="no-underline text-inherit">
-              <IconButton color="inherit" aria-label="sign-in">
+
+            <Link to="/login">
+              <IconButton>
                 <Login />
-                <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                <Typography sx={{ marginLeft: 1 }}>
                   Sign In
                 </Typography>
               </IconButton>
             </Link>
-            <Link to="/sign-up" className="no-underline text-inherit">
-              <IconButton color="inherit" aria-label="sign-up">
+
+            <Link to="/sign-up">
+              <IconButton>
                 <Edit />
-                <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                <Typography sx={{ marginLeft: 1 }}>
                   Sign Up
                 </Typography>
               </IconButton>
             </Link>
+
           </Grid>
         </Toolbar>
       </AppBar>

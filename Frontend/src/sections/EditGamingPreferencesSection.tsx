@@ -5,7 +5,7 @@ import { useState, useContext } from "react";
 import { Gender, UserPreferences, Game, Platform, Region } from "../api/types";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
 import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
-import PreferedGenderSelector from "../components/PreferencesComponents/PreferedGenderSelector";
+import PreferredGenderSelector from "../components/PreferencesComponents/PreferredGenderSelector";
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
 import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
 import { AuthContext } from "../context/AuthProvider";
@@ -117,7 +117,7 @@ const EditGamingPreferencesSection = ({
             region={tempPreferences.region}
             onChange={handleRegionChange}
           />
-          <PreferedGenderSelector
+          <PreferredGenderSelector
             selectedGender={tempPreferences.preferred_gender}
             onChange={handleGenderChange}
           />

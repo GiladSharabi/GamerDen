@@ -1,4 +1,5 @@
-import { FormControlLabel, Checkbox, Box, Typography } from "@mui/material";
+import { FormControlLabel, Checkbox, Box, Typography, ThemeProvider } from "@mui/material";
+import theme from "../Theme";
 
 type props = {
   isUse: boolean;
@@ -7,14 +8,16 @@ type props = {
 
 const VoiceSelector = ({ isUse = false, onChange }: props) => {
   return (
-    <Box marginBottom={2} sx={{ width: "100%" }}>
-      <FormControlLabel
-        control={<Checkbox checked={isUse} onChange={onChange} />}
-        label={
-          <Typography color="textPrimary">Use My Gaming Preferences</Typography>
-        }
-      ></FormControlLabel>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box marginBottom={2} sx={{ width: "100%" }}>
+        <FormControlLabel
+          control={<Checkbox checked={isUse} onChange={onChange} />}
+          label={
+            <Typography color="textPrimary">Use My Gaming Preferences</Typography>
+          }
+        ></FormControlLabel>
+      </Box>
+    </ThemeProvider>
   );
 };
 

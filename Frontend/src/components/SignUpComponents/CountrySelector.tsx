@@ -19,7 +19,9 @@ const CountrySelector = ({
   onChange,
   countryError = "",
 }: CountrySelectorProps) => {
+
   const [countries, setCountries] = useState<string[]>([]);
+
   useEffect(() => {
     setCountries(CountriesListing);
   }, []);
