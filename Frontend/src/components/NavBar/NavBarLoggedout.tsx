@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, IconButton, Typography, ThemeProvider } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Typography, ThemeProvider, Grid } from "@mui/material";
 import { Home as HomeIcon, Login, Edit } from "@mui/icons-material";
 import theme from "../Theme";
 
@@ -8,7 +8,7 @@ const NavBarLoggedout = () => {
     <ThemeProvider theme={theme}>
       <AppBar position="sticky">
         <Toolbar className="flex justify-between">
-          <div className="flex items-center">
+          <Grid className="flex items-center">
             <IconButton edge="start" color="inherit" aria-label="menu">
               <Typography variant="h6" component="div">
                 <Link
@@ -19,8 +19,8 @@ const NavBarLoggedout = () => {
                 </Link>
               </Typography>
             </IconButton>
-          </div>
-          <div className="flex items-center">
+          </Grid>
+          <Grid className="flex items-center">
             <Link to="/" className="no-underline text-inherit">
               <IconButton color="inherit" aria-label="home">
                 <HomeIcon />
@@ -45,7 +45,7 @@ const NavBarLoggedout = () => {
                 </Typography>
               </IconButton>
             </Link>
-          </div>
+          </Grid>
         </Toolbar>
       </AppBar>
     </ThemeProvider >

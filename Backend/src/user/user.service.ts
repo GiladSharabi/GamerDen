@@ -55,6 +55,7 @@ async function checkExistingUser(userData: any): Promise<UserResult | undefined>
     return { usernameError: "Username already exists" };
   }
 
+  console.log("wahat userexists");
   const existingEmail = await db.user.findUnique({
     where: { email: userData.email },
   });
@@ -74,6 +75,7 @@ export async function createUser(
     const { preferences, ...userData } = req.body;
 
     const userExistsError = await checkExistingUser(userData);
+
     if (userExistsError?.usernameError || userExistsError?.emailError) {
       return userExistsError;
     }
@@ -107,7 +109,7 @@ export async function createUser(
         },
       },
     });
-
+    console.log("after created");
     return { user: createdUser };
 
   } catch (error: any) {
@@ -129,7 +131,13 @@ function fixCreateUserData(req: Request) {
 export async function updateUser(req: Request, res: Response) {
   try {
     const { preferences, id, iat, ...userData } = req.body;
-    const { username } = userData;
+    const { username, email } = userData;
+
+    const emailExists = await db.user.findUnique({ where: { email } });
+    if (emailExists) {
+      res.status(400).json({ error: "Email already Exists" });
+      return;
+    }
 
     const updatedUser = await db.user.update({
       omit: {

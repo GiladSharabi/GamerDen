@@ -17,9 +17,7 @@ const BioTextarea = ({ bio, onChange, textColor }: BioTextareaProps) => {
   return (
     <Box sx={{ width: "100%", marginBottom: 2, mt: 2 }}>
       <Typography
-        variant="subtitle1"
         gutterBottom
-        color={textColor ?? textColor}
       >
         Bio (Optional)
       </Typography>
@@ -27,16 +25,8 @@ const BioTextarea = ({ bio, onChange, textColor }: BioTextareaProps) => {
         placeholder="Type your biography here..."
         value={bio}
         onChange={handleChange}
-        style={{
-          width: "100%",
-          resize: "none",
-          padding: "8px",
-          border: "1px solid #ccc",
-          borderColor: "gray",
-          borderRadius: "4px",
-          color: textColor,
-          backgroundColor: "transparent",
-        }}
+        className="w-full resize-none p-2 border border-gray-300 rounded-md text-gray-800"
+
       />
     </Box>
   );

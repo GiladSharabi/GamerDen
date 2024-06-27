@@ -69,7 +69,6 @@ const PersonalDetailsSection = () => {
       </Avatar>
 
       <Box marginRight={2}>
-        {/* the Box of the details next to the photo */}
         <Typography variant="h6" color="white" fontSize={40}>
           {user.username}
         </Typography>
@@ -82,7 +81,7 @@ const PersonalDetailsSection = () => {
           {user.bio}
         </Typography>
 
-        {/* the Box of the gender,age,counry */}
+        {/* the Box of the gender,age,country */}
         <Box
           marginBottom={1}
           sx={{

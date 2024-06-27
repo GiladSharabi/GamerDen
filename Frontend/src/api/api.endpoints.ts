@@ -41,12 +41,13 @@ export async function updateUser(user: User) {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
+    const responseError = response.data.error;
+    if (responseError) {
+      return { success: false, error: responseError };
+    }
     if (response.data.accessToken) {
       localStorage.setItem("accessToken", response.data.accessToken);
       return { success: true, accessToken: response.data.accessToken };
-    } else {
-      return { success: false, error: response.data.error };
     }
   } catch (e) {
     console.log("Unexpected error in update:", e);

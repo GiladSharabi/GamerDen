@@ -1,4 +1,4 @@
-import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
 import { Gender } from "../../api/types";
 type props = {
   selectedGender: Gender;
@@ -9,8 +9,12 @@ const PreferedGenderSelector = ({
   selectedGender = Gender.None,
   onChange,
 }: props) => {
+
+  const genderValues = Object.values(Gender);
+  const filteredGenderValues = genderValues.filter(value => value !== Gender.None);
+
   return (
-    <div className="mb-2">
+    <Grid className="mb-2">
       <Typography variant="h6" gutterBottom color="white">
         Which gender do you prefer to play with?
       </Typography>
@@ -25,11 +29,9 @@ const PreferedGenderSelector = ({
         }}
         aria-label="Platform"
       >
-        <ToggleButton value={Gender.Male}>Male</ToggleButton>
-        <ToggleButton value={Gender.Female}>Female</ToggleButton>
-        <ToggleButton value={Gender.Both}>Both</ToggleButton>
+        {filteredGenderValues.map((gender) => <ToggleButton value={gender}>{gender}</ToggleButton>)}
       </ToggleButtonGroup>
-    </div>
+    </Grid>
   );
 };
 export default PreferedGenderSelector;

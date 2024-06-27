@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TextField, Chip } from "@mui/material";
+import { TextField, Chip, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { languages as LanguageListing } from "../../languages.json";
 
@@ -34,7 +34,7 @@ const LanguageSelector = ({
   };
 
   return (
-    <div className="mt-2">
+    <Box className="mt-2">
       <Autocomplete
         options={allLanguages}
         freeSolo
@@ -44,16 +44,11 @@ const LanguageSelector = ({
             label="Select Language"
             error={Boolean(languageError)}
             helperText={languageError}
-            sx={{
-              "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                borderColor: languageError === "" ? "default" : "red",
-              },
-            }}
           />
         )}
         onChange={(event, value) => value && handleAddLanguage(value)}
       />
-      <div>
+      <Box marginTop={1}>
         {languages.map((language) => (
           <Chip
             key={language}
@@ -61,13 +56,11 @@ const LanguageSelector = ({
             onDelete={() => handleRemoveLanguage(language)}
             variant="outlined"
             color="primary"
-            sx={{
-              margin: "0.5rem 0",
-            }}
+            style={{ margin: '2px' }}
           />
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box >
   );
 };
 

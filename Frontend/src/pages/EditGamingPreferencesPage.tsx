@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { NullUser, UserPreferences } from "../api/types";
 import { updateUser } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const EditGamingPreferencesPage = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const EditGamingPreferencesPage = () => {
   }
   const { user, setUser } = authContext;
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (user !== NullUser) {
       setIsLoading(false);
@@ -20,7 +22,7 @@ const EditGamingPreferencesPage = () => {
   }, [user]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const handleSaveClick = (tempPreferences: UserPreferences) => {

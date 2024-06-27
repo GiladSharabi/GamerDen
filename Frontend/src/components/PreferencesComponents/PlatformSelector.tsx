@@ -1,6 +1,7 @@
-import { Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
 import { MouseEvent } from "react";
 import { Platform } from "../../api/types";
+
 type props = {
   label: string;
   selectedPlatforms: Platform[];
@@ -12,8 +13,11 @@ const PlatformSelector = ({
   onChange,
   label = "Select teammate Platform",
 }: props) => {
+
+  const platformValues = Object.values(Platform);
+
   return (
-    <div className="mb-2">
+    <Grid className="mb-2">
       <Typography variant="h6" gutterBottom color="white">
         {label}
       </Typography>
@@ -24,11 +28,14 @@ const PlatformSelector = ({
         onChange={(event, newValue) => onChange(event, newValue)}
         aria-label="Platform"
       >
-        <ToggleButton value={Platform.Playstation}>Playstation</ToggleButton>
-        <ToggleButton value={Platform.Xbox}>Xbox</ToggleButton>
-        <ToggleButton value={Platform.PC}>PC</ToggleButton>
+        {platformValues.map((platform) => (
+          <ToggleButton key={platform} value={platform}>
+            {platform}
+          </ToggleButton>
+        ))}
+
       </ToggleButtonGroup>
-    </div>
+    </Grid>
   );
 };
 export default PlatformSelector;

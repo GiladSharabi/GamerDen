@@ -8,6 +8,8 @@ type Props = {
   onChange: (newRange: number[]) => void;
 };
 
+const ageRange = { minAge: 18, maxAge: 100 };
+
 const AgeRangeSelector = ({
   useUserRange,
   min_age,
@@ -23,7 +25,7 @@ const AgeRangeSelector = ({
     if (useUserRange) {
       setCurrentRange([min_age, max_age]);
     } else {
-      setCurrentRange([18, 100]);
+      setCurrentRange([ageRange.minAge, ageRange.maxAge]);
     }
   }, [useUserRange, min_age, max_age]);
 
@@ -37,22 +39,16 @@ const AgeRangeSelector = ({
   return (
     <Box>
       <Typography variant="h6" gutterBottom color="white">
-        Between what ages are your ideal teammates?
+        What is the age range of your ideal teammates?
       </Typography>
       <Slider
         value={currentRange}
         onChange={handleChange}
         valueLabelDisplay="auto"
-        min={18}
-        max={100}
+        min={ageRange.minAge}
+        max={ageRange.maxAge}
         disableSwap
-        sx={{
-          width: 400,
-          "& .MuiSlider-thumb": {
-            borderRadius: "10px",
-            width: "6px",
-          },
-        }}
+        sx={{ width: 400 }}
       />
     </Box>
   );

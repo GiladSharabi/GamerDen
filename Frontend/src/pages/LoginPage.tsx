@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
-  CssBaseline,
   Paper,
   Box,
   Grid,
@@ -16,12 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
+import Loading from "../components/Loading";
 
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   const { AuthLogin } = authContext;

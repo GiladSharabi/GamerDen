@@ -38,12 +38,12 @@
         "China",
         "Colombia",
         "Comoros",
-        "Congo (Congo-Brazzaville)",
+        "Congo",
         "Costa Rica",
         "Croatia",
         "Cuba",
         "Cyprus",
-        "Czechia (Czech Republic)",
+        "Czechia",
         "Democratic Republic of the Congo",
         "Denmark",
         "Djibouti",
@@ -117,7 +117,7 @@
         "Montenegro",
         "Morocco",
         "Mozambique",
-        "Myanmar (formerly Burma)",
+        "Myanmar",
         "Namibia",
         "Nauru",
         "Nepal",
@@ -127,7 +127,7 @@
         "Niger",
         "Nigeria",
         "North Korea",
-        "North Macedonia (formerly Macedonia)",
+        "North Macedonia",
         "Norway",
         "Oman",
         "Pakistan",
@@ -194,4 +194,4 @@
         "Zambia",
         "Zimbabwe"
     ]
-  }
+}

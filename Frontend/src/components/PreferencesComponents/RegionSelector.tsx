@@ -1,5 +1,3 @@
-// src/components/RegionSelector.tsx
-
 import {
   Box,
   FormControl,
@@ -25,26 +23,21 @@ const RegionSelector = ({ region, onChange }: Props) => {
   }, []);
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <Typography variant="h6" gutterBottom color="white">
+    <Box sx={{ minWidth: 120, marginBottom: 1 }}>
+      <Typography variant="h6" marginBottom={1} color="white">
         Select Region
       </Typography>
       <FormControl>
-        <InputLabel id="region-selector-label">Region</InputLabel>
+        <InputLabel> Region </InputLabel>
         {regionsList.length > 0 ? (
           <Select
             sx={{ minWidth: "170px" }}
-            labelId="region-selector-label"
-            id="region-selector"
             value={region}
             label="Region"
             onChange={(event) => {
               onChange(event.target.value as Region);
             }}
           >
-            {/* <MenuItem value="">
-              <em>Select Region</em>
-            </MenuItem> */}
             {regionsList.map((region) => (
               <MenuItem key={region} value={region}>
                 {region}

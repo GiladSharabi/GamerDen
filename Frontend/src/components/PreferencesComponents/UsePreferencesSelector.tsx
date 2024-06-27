@@ -1,7 +1,7 @@
 import { FormControlLabel, Checkbox, Box, Typography } from "@mui/material";
 
 type props = {
-  isUse: boolean | undefined;
+  isUse: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

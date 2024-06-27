@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { Box } from "@mui/material";
 
 type BackgroundProps = {
   children: ReactNode;
@@ -6,7 +7,7 @@ type BackgroundProps = {
 
 const Background: React.FC<BackgroundProps> = ({ children }) => {
   return (
-    <div
+    <Box
       style={{
         backgroundImage: `url('./src/assets/images/background-black.jpg')`,
         backgroundSize: "cover",
@@ -15,7 +16,7 @@ const Background: React.FC<BackgroundProps> = ({ children }) => {
       }}
     >
       {children}
-    </div>
+    </Box>
   );
 };
 

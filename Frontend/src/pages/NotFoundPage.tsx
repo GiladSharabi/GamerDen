@@ -1,12 +1,13 @@
 import { Container, Typography, Link } from '@mui/material';
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
+import Loading from '../components/Loading';
 
 const NotFoundPage = () => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   const { user } = authContext;

@@ -15,6 +15,8 @@ const GamingPreferencesSection = () => {
 
   const { user } = authContext;
 
+  const { preferences } = user;
+
   const navigate = useNavigate();
 
   const handleEditGamingPreferences = () => {
@@ -23,9 +25,10 @@ const GamingPreferencesSection = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid sx={{ marginTop: 4, width: "50%", marginBottom: 10 }}>
-        {/* the Grid of the user gaming preferences */}
-
+      <Grid sx={{ width: "25%", marginBottom: 10 }}>
+        <Typography align="center" variant="h6" color="white" fontSize={30}>
+          My Preferences
+        </Typography>
         <Box
           color={theme.palette.text.primary}
           bgcolor="background.default"
@@ -34,66 +37,47 @@ const GamingPreferencesSection = () => {
           display="flex"
           flexDirection="column"
         >
-          {/* {user.preferences ? ( */}
           <>
-            <Typography variant="body1">
-              <strong>Games:</strong>{" "}
-              {user.preferences.games?.map((game) => game.name).join(", ")}
-            </Typography>
+            <Grid className="space-y-2">
+              <Typography variant="body1" className="text-lg">
+                <strong>Games:</strong>{" "}
+                {preferences.games?.map((game: any) => game.name).join(", ")}
+              </Typography>
 
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Platform:</strong> {user.preferences.platform.join(", ")}
-            </Typography>
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Region:</strong> {user.preferences.region}
-            </Typography>
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Preferred Gender:</strong>{" "}
-              {user.preferences.preferred_gender}
-            </Typography>
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Teammate Platform:</strong>{" "}
-              {user.preferences.teammate_platform.join(", ")}
-            </Typography>
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Voice:</strong> {user.preferences.voice ? "Yes" : "No"}
-            </Typography>
-            <MyDivider />
-            <Typography variant="body1">
-              <strong>Age Range: </strong>{" "}
-              {user.preferences.min_age + " - " + user.preferences.max_age}
-            </Typography>
-            <MyDivider />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                paddingRight: 2,
-              }}
-            >
+              <Typography variant="body1" className="text-lg">
+                <strong>Platform:</strong> {preferences.platform.join(", ")}
+              </Typography>
+
+              <Typography variant="body1" className="text-lg">
+                <strong>Region:</strong> {preferences.region}
+              </Typography>
+
+              <Typography variant="body1" className="text-lg">
+                <strong>Preferred Gender:</strong>{" "}
+                {preferences.preferred_gender}
+              </Typography>
+
+              <Typography variant="body1" className="text-lg">
+                <strong>Teammate Platform:</strong>{" "}
+                {preferences.teammate_platform.join(", ")}
+              </Typography>
+
+              <Typography variant="body1" className="text-lg">
+                <strong>Voice:</strong> {preferences.voice ? "Yes" : "No"}
+              </Typography>
+
+              <Typography variant="body1" className="text-lg">
+                <strong>Age Range:</strong>{" "}
+                {user.preferences.min_age + " - " + user.preferences.max_age}
+              </Typography>
+            </Grid>
+
+            <Box>
               <Button
                 startIcon={<MdModeEditOutline />}
                 variant="contained"
                 size="medium"
-                sx={{
-                  width: "wrap",
-                  backgroundColor: "#555555",
-                  color: "#BBBBBB",
-                  border: "1px solid transparent",
-                  "&:hover": {
-                    color: "white",
-                    backgroundColor: "#222222",
-                    border: "1px solid white",
-                  },
-                }}
+                style={{ marginTop: 10 }}
                 onClick={handleEditGamingPreferences}
               >
                 Edit

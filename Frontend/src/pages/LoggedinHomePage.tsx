@@ -1,14 +1,15 @@
-import { updateUser } from "../api/api.endpoints";
 import { NullUser, UserPreferences } from "../api/types";
 import SearchPartnersSection from "../sections/SearchPartnersSection";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 import UserCards from "../components/UserCards";
+import { Box, CircularProgress } from "@mui/material";
+import Loading from "../components/Loading";
 
 const LoggedinHomePage = () => {
   const authContext = useContext(AuthContext);
   if (!authContext) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
   const { user, setUser } = authContext;
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +20,7 @@ const LoggedinHomePage = () => {
   }, [user]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   const handleSubmit = (tempPreferences: UserPreferences) => {
@@ -27,7 +28,7 @@ const LoggedinHomePage = () => {
   };
 
   return (
-    <>
+    <Box>
       {" "}
       <SearchPartnersSection
         buttonLabel="Search"
@@ -35,7 +36,7 @@ const LoggedinHomePage = () => {
         userPref={user.preferences}
       />
       <UserCards />
-    </>
+    </Box>
   );
 };
 

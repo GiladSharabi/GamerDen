@@ -39,6 +39,7 @@ const EditGamingPreferencesSection = ({
     }));
   };
 
+
   const handleVoiceClick = () => {
     setTempPreferences((prev) => ({
       ...prev,

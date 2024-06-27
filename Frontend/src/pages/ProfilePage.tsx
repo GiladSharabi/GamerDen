@@ -9,17 +9,9 @@ const ProfilePage = () => {
   // todo: getuserbyusername
 
   return (
-    <Grid
-      sx={{
-        alignItems: "start",
-        p: 2,
-      }}
-    >
+    <Grid>
       <PersonalDetailsSection />
 
-      <Typography variant="h6" color="white" fontSize={40}>
-        Gaming Preferences
-      </Typography>
       <GamingPreferencesSection />
     </Grid>
   );

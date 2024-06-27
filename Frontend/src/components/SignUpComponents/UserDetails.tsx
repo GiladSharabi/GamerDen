@@ -34,6 +34,10 @@ const UserDetails = ({
   confirmPasswordError = "",
   genderError,
 }: UserDetailsProps) => {
+
+  const genderValues = Object.values(Gender);
+  const filteredGenderValues = genderValues.filter(value => value !== Gender.None && value !== Gender.Both);
+
   return (
     <Box>
       <TextField
@@ -41,10 +45,7 @@ const UserDetails = ({
         helperText={usernameError}
         margin="normal"
         fullWidth
-        id="username"
         label="Username"
-        name="username"
-        autoComplete="username"
         autoFocus
         value={user.username}
         onChange={(e) => onChange("username", e.target.value)}
@@ -54,10 +55,7 @@ const UserDetails = ({
         helperText={emailError}
         margin="normal"
         fullWidth
-        id="email"
         label="Email Address"
-        name="email"
-        autoComplete="email"
         value={user.email}
         onChange={(e) => onChange("email", e.target.value)}
       />
@@ -66,10 +64,7 @@ const UserDetails = ({
         helperText={discordError}
         margin="normal"
         fullWidth
-        id="discord"
         label="Discord"
-        name="discord"
-        autoComplete="discord"
         value={user.discord}
         onChange={(e) => onChange("discord", e.target.value)}
       />
@@ -78,11 +73,7 @@ const UserDetails = ({
         helperText={passwordError}
         margin="normal"
         fullWidth
-        name="password"
         label="Password"
-        type="password"
-        id="password"
-        autoComplete="new-password"
         value={user.password}
         onChange={(e) => onChange("password", e.target.value)}
       />
@@ -91,11 +82,7 @@ const UserDetails = ({
         helperText={confirmPasswordError}
         margin="normal"
         fullWidth
-        name="confirmPassword"
         label="Confirm Password"
-        type="password"
-        id="confirmPassword"
-        autoComplete="new-password"
         value={confirmPassword}
         onChange={(e) => onConfirmPasswordChange(e.target.value)}
       />
@@ -107,33 +94,22 @@ const UserDetails = ({
         >
           Gender
         </Typography>
+
         <RadioGroup
           sx={{ marginBottom: 2 }}
-          aria-label="gender"
-          name="gender"
           value={user.gender}
           onChange={(e) => onChange("gender", e.target.value)}
         >
-          <FormControlLabel
-            value={Gender.Male}
+          {filteredGenderValues.map((gender: Gender) => <FormControlLabel
+            value={gender}
             control={
               <Radio sx={{ color: genderError === "" ? "default" : "red" }} />
             }
-            label="Male"
+            label={gender}
             sx={{
               color: genderError === "" ? "default" : "red",
             }}
-          />
-          <FormControlLabel
-            value={Gender.Female}
-            control={
-              <Radio sx={{ color: genderError === "" ? "default" : "red" }} />
-            }
-            label="Female"
-            sx={{
-              color: genderError === "" ? "default" : "red",
-            }}
-          />
+          />)}
         </RadioGroup>
       </FormControl>
     </Box>
