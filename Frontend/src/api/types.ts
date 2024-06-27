@@ -58,9 +58,12 @@ export type User = {
   preferences: UserPreferences;
 };
 
+
 export type UserResult = {
   user?: User;
   error?: string;
+  emailError?: string;
+  usernameError?: string;
 };
 
 export const NullUserPreferences: UserPreferences = {

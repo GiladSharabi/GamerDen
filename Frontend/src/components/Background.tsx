@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-interface BackgroundProps {
+type BackgroundProps = {
   children: ReactNode;
 }
 

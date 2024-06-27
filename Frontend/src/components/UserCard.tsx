@@ -11,11 +11,10 @@ import {
 } from "@mui/material";
 import { Rating } from "@mui/material";
 import { Chat, Gamepad, Person } from "@mui/icons-material";
-import { Game, User, Gender } from "../api/types";
+import { User, Gender } from "../api/types";
 import theme from "./Theme";
 import { useState } from "react";
 import { FaDiscord } from "react-icons/fa";
-import { RiFileCopyLine } from "react-icons/ri";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 
 type CardProps = {

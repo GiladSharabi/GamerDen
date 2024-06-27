@@ -5,7 +5,7 @@ import {
     getGameByName
 } from "./game.service";
 
-export const gameRouter = express.Router();
+const gameRouter = express.Router();
 
 gameRouter.get("/id/:id", getGameByID);
 gameRouter.get("/:limit?", getAllGames);

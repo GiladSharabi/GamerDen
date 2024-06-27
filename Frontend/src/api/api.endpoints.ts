@@ -1,26 +1,17 @@
 import instance from "../api/axios.ts";
-import { UserResult, User, Game, NullUser } from "../api/types.ts";
+import { User, Game, NullUser, UserResult } from "../api/types.ts";
 
-export async function getUserById(userID: number): Promise<UserResult> {
-  try {
-    const response = await instance.get(`/users/id/${userID}`);
-    const user: User = response.data;
-    if (!user) {
-      return { error: "User doesn't exist, Please try again" };
-    }
-    return { user };
-  } catch (e: any) {
-    return { error: "An error occurred while fetching user data" };
-  }
-}
-
-export async function signup(user: User) {
+export async function signup(user: User): Promise<UserResult> {
   try {
     const response = await instance.post(`/signup`, user, {
       headers: {
         "Content-Type": "application/json",
       },
     });
+    const errorResult = response.data.error;
+    if (errorResult) {
+      return errorResult.emailError || errorResult.usernameError || errorResult.error;
+    }
     return response.data;
   } catch (e: any) {
     console.log("Error during signup:", e);
@@ -35,9 +26,7 @@ export async function getUser(token: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.data) {
-      return response.data;
-    }
+    return response.data;
   } catch (e: any) {
     console.log("Get user Error:", e);
     return { error: "Error in login" };
@@ -45,12 +34,14 @@ export async function getUser(token: string) {
 }
 
 export async function updateUser(user: User) {
+  console.log(user);
   try {
     const response = await instance.post(`/users/update`, user, {
       headers: {
         "Content-Type": "application/json",
       },
     });
+    console.log(response.data);
     if (response.data.accessToken) {
       localStorage.setItem("accessToken", response.data.accessToken);
       return { success: true, accessToken: response.data.accessToken };

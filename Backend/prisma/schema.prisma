@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -34,16 +35,17 @@ model UserPreferences {
   preferred_gender  Gender     @default(None)
   min_age           Int        @default(18)
   max_age           Int        @default(100)
+  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            Int        @unique
   games             Game[]     @relation("UserPreferencesGames")
-  user              User       @relation(fields: [userID], references: [id])
-  userID            Int        @unique
 }
 
 model Game {
-  id              Int               @id @default(autoincrement())
-  name            String
-  cover           String
-  userPreferences UserPreferences[] @relation("UserPreferencesGames")
+  id                Int              @id @default(autoincrement())
+  name              String
+  cover             String
+  userPreferencesId Int?
+  userPreferences   UserPreferences? @relation(fields: [userPreferencesId], references: [id], name: "UserPreferencesGames")
 }
 
 enum Gender {

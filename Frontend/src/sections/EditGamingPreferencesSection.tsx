@@ -126,6 +126,7 @@ const EditGamingPreferencesSection = ({
             onChange={handleTeammatePlatformChange}
           />
           <AgeRangeSelector
+            useUserRange={true}
             min_age={tempPreferences.min_age}
             max_age={tempPreferences.max_age}
             onChange={handleAgeRangeChange}

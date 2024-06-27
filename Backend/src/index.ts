@@ -2,11 +2,14 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import dotenvexpand from "dotenv-expand";
-import { gameRouter } from "./game/game.router";
+import gameRouter from "./game/game.router";
 import userRouter from "./user/user.router";
 import { createUser, getUserByUserName } from "./user/user.service";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import seedDB from "./game/game.seed";
+
+seedDB();
 
 export default bcrypt;
 
@@ -65,8 +68,9 @@ app.post("/api/login", async (req: Request, res: Response) => {
 app.post("/api/signup", async (req: Request, res: Response) => {
     try {
         const userRes = await createUser(req, res);
-        if (userRes.error) {
-            return res.status(401).json({ error: userRes.error });
+        const userExistsError = userRes.emailError || userRes.usernameError || userRes.error;
+        if (userExistsError) {
+            return res.status(401).json({ error: userExistsError });
         }
         if (!userRes.user) {
             return res.status(500).json({ error: "unknown error" });

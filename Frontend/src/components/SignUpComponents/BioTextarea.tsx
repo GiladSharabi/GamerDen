@@ -36,7 +36,6 @@ const BioTextarea = ({ bio, onChange, textColor }: BioTextareaProps) => {
           borderRadius: "4px",
           color: textColor,
           backgroundColor: "transparent",
-          // backgroundColor: textColor === "white" ? "transparent" : "white",
         }}
       />
     </Box>

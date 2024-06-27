@@ -1,15 +1,13 @@
 import { Grid, Typography } from "@mui/material";
-import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
 import GamingPreferencesSection from "../sections/GamingPreferencesSection";
 import PersonalDetailsSection from "../sections/PersonalDetailsSection";
-import { User } from "../api/types";
+import { useParams } from 'react-router-dom';
 
-type Props = {
-  userClicked: User;
-};
+const ProfilePage = () => {
+  const { username } = useParams();
 
-const ProfilePage = ({ userClicked }: Props) => {
+  // todo: getuserbyusername
+
   return (
     <Grid
       sx={{

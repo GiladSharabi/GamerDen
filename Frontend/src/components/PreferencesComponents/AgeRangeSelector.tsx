@@ -25,7 +25,7 @@ const AgeRangeSelector = ({
     } else {
       setCurrentRange([18, 100]);
     }
-  }, [useUserRange]);
+  }, [useUserRange, min_age, max_age]);
 
   const handleChange = (_event: Event, newValues: number | number[]) => {
     if (Array.isArray(newValues)) {
