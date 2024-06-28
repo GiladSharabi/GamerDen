@@ -77,7 +77,7 @@ export async function createUser(
       return userExistsError;
     }
 
-    fixCreateUserData(req);
+    fixCreateUserData(userData);
 
     const { games, ...preferencesData } = preferences;
 
@@ -116,14 +116,14 @@ export async function createUser(
   }
 }
 
-function fixCreateUserData(req: Request) {
-  const { password } = req.body;
-  const data = req.body;
+function fixCreateUserData(userData: any) {
+  const { password } = userData;
   if (password) {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
-    data.password = hash;
+    userData.password = hash;
   }
+
 }
 
 export async function updateUser(req: Request, res: Response): Promise<void> {

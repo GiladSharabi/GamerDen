@@ -13,7 +13,7 @@ const EditGamingPreferencesSection = ({ buttonLabel, onSubmitClick, userPref }: 
       buttonLabel={buttonLabel}
       onSubmitClick={onSubmitClick}
       userPref={userPref}
-      useGamingPref={true}
+      useExistingPreferences={false}
     />
   );
 };

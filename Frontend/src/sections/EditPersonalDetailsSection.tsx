@@ -40,7 +40,7 @@ const EditPersonalDetailsSection = ({
 
 
   const genderValues = Object.values(Gender);
-  const filteredGenderValues = genderValues.filter(value => value !== Gender.None);
+  const filteredGenderValues = genderValues.filter(value => value !== Gender.None && value !== Gender.Both);
 
   const [usernameError, setUsernameError] = useState<string>("");
 
@@ -149,11 +149,10 @@ const EditPersonalDetailsSection = ({
             </label>
           </Box>
           <MyDivider />
-          {/* the box under the avatar */}
           <Box>
             <TextField
-              error={!!emailError} // Use emailError to determine if there's an error
-              helperText={emailError} // Display the emailError message
+              error={!!emailError}
+              helperText={emailError}
               margin="normal"
               fullWidth
               id="email"
@@ -165,30 +164,23 @@ const EditPersonalDetailsSection = ({
             />
 
             <FormControl component="fieldset" margin="normal">
-              <Typography variant="subtitle1" color={"white"} gutterBottom>
+              <Typography gutterBottom>
                 Gender
               </Typography>
 
               <RadioGroup
-                color="white"
-                aria-label="gender"
                 name="gender"
                 value={tempUser.gender}
                 onChange={(e) => handleChange("gender", e.target.value)}
                 sx={{ marginBottom: 1 }}
               >
-                <FormControlLabel
-                  value={Gender.Male}
-                  control={<Radio />}
-                  label="Male"
-                  sx={{ color: "white" }}
-                />
-                <FormControlLabel
-                  value={Gender.Female}
-                  control={<Radio />}
-                  label="Female"
-                  sx={{ color: "white" }}
-                />
+                {filteredGenderValues.map((gender: Gender, index) =>
+                  <FormControlLabel
+                    key={index}
+                    value={gender}
+                    control={<Radio />}
+                    label={gender}
+                  />)}
               </RadioGroup>
             </FormControl>
             <Box margin="normal">
@@ -208,7 +200,6 @@ const EditPersonalDetailsSection = ({
             <BioTextarea
               bio={tempUser.bio}
               onChange={(value) => handleChange("bio", value)}
-              textColor="white"
             ></BioTextarea>
             <Button
               onClick={handleSaveClick}

@@ -3,11 +3,8 @@ import GameSelector from "../components/PreferencesComponents/GameSelector";
 import theme from "../components/Theme";
 import { useState, useEffect } from "react";
 import {
-    Gender,
     UserPreferences,
     Game,
-    Platform,
-    Region,
     NullUserPreferences,
 } from "../api/types";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
@@ -15,22 +12,41 @@ import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
 import PreferredGenderSelector from "../components/PreferencesComponents/PreferredGenderSelector";
 import RegionSelector from "../components/PreferencesComponents/RegionSelector";
 import AgeRangeSelector from "../components/PreferencesComponents/AgeRangeSelector";
+import UsePreferencesSelector from "../components/PreferencesComponents/UsePreferencesSelector";
 
 type Props = {
     buttonLabel: string;
     onSubmitClick: (userPreferences: UserPreferences) => void;
     userPref: UserPreferences;
-    useGamingPref?: boolean;
+    useExistingPreferences?: boolean;
+    useExistingButton?: boolean;
 };
 
 const PreferencesSection = ({
     buttonLabel,
     onSubmitClick,
     userPref,
-    useGamingPref = true,
+    useExistingPreferences = true,
+    useExistingButton = true,
 }: Props) => {
+
     const [tempPreferences, setTempPreferences] =
         useState<UserPreferences>(userPref);
+
+    const [useGamingPreferences, setUseGamingPreferences] = useState<boolean>(useExistingPreferences);
+
+    const handleUseGamingPrefClick = () => {
+        setUseGamingPreferences(!useGamingPreferences);
+    };
+
+    useEffect(() => {
+        if (useGamingPreferences) {
+            setTempPreferences(userPref);
+        } else {
+            setTempPreferences(NullUserPreferences);
+        }
+    }, [useGamingPreferences]);
+
 
     const handleGamesChange = (newGame: Game) => {
         setTempPreferences((prev) => ({
@@ -58,8 +74,6 @@ const PreferencesSection = ({
         }));
     };
 
-
-
     const handleAgeRangeChange = (newRange: number[]) => {
         setTempPreferences((prevState) => ({
             ...prevState,
@@ -71,14 +85,6 @@ const PreferencesSection = ({
     const handleButtonClick = () => {
         onSubmitClick(tempPreferences);
     };
-
-    useEffect(() => {
-        if (useGamingPref === true) {
-            setTempPreferences(userPref);
-        } else {
-            setTempPreferences(NullUserPreferences);
-        }
-    }, [useGamingPref]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -93,12 +99,16 @@ const PreferencesSection = ({
                         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
                     }}
                 >
-                    {useGamingPref && (
-                        <GameSelector
-                            selectedGames={tempPreferences.games}
-                            onChange={handleGamesChange}
+                    {useExistingButton && (
+                        <UsePreferencesSelector
+                            isUse={useGamingPreferences}
+                            onChange={handleUseGamingPrefClick}
                         />
                     )}
+                    <GameSelector
+                        selectedGames={tempPreferences.games}
+                        onChange={handleGamesChange}
+                    />
                     <PlatformSelector
                         label="Select Platform"
                         selectedPlatforms={tempPreferences.platform}
@@ -112,15 +122,14 @@ const PreferencesSection = ({
                         selectedGender={tempPreferences.preferred_gender}
                         onChange={(gender) => handlePreferenceChange('preferred_gender', gender)}
                     />
-                    {useGamingPref && (
-                        <PlatformSelector
-                            label="Select teammate Platforms"
-                            selectedPlatforms={tempPreferences.teammate_platform}
-                            onChange={(event, newPlatform) => handlePreferenceChange('teammate_platform', newPlatform)}
-                        />
-                    )}
+
+                    <PlatformSelector
+                        label="Select teammate Platforms"
+                        selectedPlatforms={tempPreferences.teammate_platform}
+                        onChange={(event, newPlatform) => handlePreferenceChange('teammate_platform', newPlatform)}
+                    />
                     <AgeRangeSelector
-                        useUserRange={useGamingPref}
+                        useUserRange={useExistingPreferences}
                         min_age={tempPreferences.min_age}
                         max_age={tempPreferences.max_age}
                         onChange={handleAgeRangeChange}

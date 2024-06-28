@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { blue, green } from '@mui/material/colors';
+import { blue, green, red } from '@mui/material/colors';
 
 // Extend the Palette interface to include the custom color
 declare module '@mui/material/styles' {
@@ -21,9 +21,7 @@ declare module '@mui/material/AppBar' {
 const theme = createTheme({
   palette: {
     primary: {
-      light: blue[300],
       main: blue[500],
-      dark: blue[700],
     },
     secondary: {
       main: '#000000',

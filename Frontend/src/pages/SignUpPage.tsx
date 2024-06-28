@@ -116,7 +116,6 @@ const SignUp = () => {
               />
               <BioTextarea
                 bio={user.bio}
-                textColor="black"
                 onChange={(value) => handleUserChange("bio", value)}
               />
               <SubmitButton onClick={handleSubmit} />

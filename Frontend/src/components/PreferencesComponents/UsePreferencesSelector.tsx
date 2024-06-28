@@ -6,7 +6,7 @@ type props = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const VoiceSelector = ({ isUse = false, onChange }: props) => {
+const UsePreferencesSelector = ({ isUse = false, onChange }: props) => {
   return (
     <ThemeProvider theme={theme}>
       <Box marginBottom={2} sx={{ width: "100%" }}>
@@ -21,4 +21,4 @@ const VoiceSelector = ({ isUse = false, onChange }: props) => {
   );
 };
 
-export default VoiceSelector;
+export default UsePreferencesSelector;
