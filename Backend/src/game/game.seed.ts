@@ -91,7 +91,7 @@ async function seedDatabase(gameHeaders: any): Promise<void> {
 
 async function resetGameTable() {
     await db.$executeRaw`DELETE FROM "Game"`;
-    // reset auto-increment sequence -- for repeated database restarts when testing
+    // reset auto-increment - for repeated database restarts when testing
     await db.$executeRaw`ALTER SEQUENCE "Game_id_seq" RESTART WITH 1`;
 }
 

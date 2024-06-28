@@ -3,7 +3,7 @@ import SearchPartnersSection from "../sections/SearchPartnersSection";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 import UserCards from "../components/UserCards";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import Loading from "../components/Loading";
 
 const LoggedinHomePage = () => {

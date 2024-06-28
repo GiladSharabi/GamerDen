@@ -64,7 +64,7 @@ const GameSelector = ({ selectedGames = [], onChange }: props) => {
             onDelete={(event) => {
               handleRemove(game.name);
             }}
-            variant="outlined"
+            variant="filled"
             color="primary"
             style={{ margin: '2px' }}
           />

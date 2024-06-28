@@ -26,43 +26,28 @@ type Props = {
   user: User;
   buttonLabel: string;
   onSaveClick: (updatedUser: User) => void;
+  emailError: string;
 };
 
 const EditPersonalDetailsSection = ({
   user,
   buttonLabel,
   onSaveClick,
+  emailError,
 }: Props) => {
-
   const [tempUser, setTempUser] = useState<User>(user);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    console.log(tempUser);
-  }, [tempUser]);
 
-  const [hasError, setHasError] = useState<boolean>(false);
+
+  const genderValues = Object.values(Gender);
+  const filteredGenderValues = genderValues.filter(value => value !== Gender.None);
+
   const [usernameError, setUsernameError] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
 
-  const handleUserChange = (name: keyof User, value: string) => {
+  const handleChange = (name: keyof User, value: any) => {
     setTempUser({ ...tempUser, [name]: value });
   };
 
-  const handleLanguageChange = (languages: string[]) => {
-    setTempUser({ ...tempUser, languages });
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    setTempUser({ ...tempUser, dob: date || new Date() });
-  };
-
-  const handleCountryChange = (value: string) => {
-    setTempUser({ ...tempUser, country: value });
-  };
-
-  const handleBioChange = (value: string) => {
-    setTempUser({ ...tempUser, bio: value });
-  };
   const handleSubmit = async () => {
     if (!tempUser.username) {
       setUsernameError("Please enter Username.");
@@ -70,14 +55,9 @@ const EditPersonalDetailsSection = ({
       setUsernameError("");
     }
     if (!tempUser.email) {
-      setEmailError("Please enter Email.");
+      handleChange("email", "Please enter Email.");
     } else {
-      setEmailError("");
-    }
-    try {
-      setHasError(false);
-    } catch (e) {
-      console.log("Error in update personal details " + e);
+      handleChange("email", "");
     }
   };
 
@@ -136,7 +116,7 @@ const EditPersonalDetailsSection = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container className="flex justify-center mt-10 ">
+      <Grid container className="flex justify-center mt-10">
         <Box
           bgcolor="background.default"
           p={2}
@@ -172,8 +152,8 @@ const EditPersonalDetailsSection = ({
           {/* the box under the avatar */}
           <Box>
             <TextField
-              error={!(emailError === "")}
-              helperText={emailError}
+              error={!!emailError} // Use emailError to determine if there's an error
+              helperText={emailError} // Display the emailError message
               margin="normal"
               fullWidth
               id="email"
@@ -181,7 +161,7 @@ const EditPersonalDetailsSection = ({
               name="email"
               autoComplete="email"
               value={tempUser.email}
-              onChange={(e) => handleUserChange("email", e.target.value)}
+              onChange={(e) => handleChange("email", e.target.value)}
             />
 
             <FormControl component="fieldset" margin="normal">
@@ -194,7 +174,7 @@ const EditPersonalDetailsSection = ({
                 aria-label="gender"
                 name="gender"
                 value={tempUser.gender}
-                onChange={(e) => handleUserChange("gender", e.target.value)}
+                onChange={(e) => handleChange("gender", e.target.value)}
                 sx={{ marginBottom: 1 }}
               >
                 <FormControlLabel
@@ -214,20 +194,20 @@ const EditPersonalDetailsSection = ({
             <Box margin="normal">
               <DatePickerComponent
                 selectedDate={tempUser.dob}
-                onChange={handleDateChange}
+                onChange={(date) => handleChange("dob", date || new Date())}
               />
             </Box>
             <CountrySelector
               country={tempUser.country}
-              onChange={handleCountryChange}
+              onChange={(value) => handleChange("country", value)}
             ></CountrySelector>
             <LanguageSelector
               languages={tempUser.languages}
-              onChange={handleLanguageChange}
+              onChange={(languages) => handleChange("languages", languages)}
             ></LanguageSelector>
             <BioTextarea
               bio={tempUser.bio}
-              onChange={handleBioChange}
+              onChange={(value) => handleChange("bio", value)}
               textColor="white"
             ></BioTextarea>
             <Button

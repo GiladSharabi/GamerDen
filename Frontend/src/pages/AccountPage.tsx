@@ -12,10 +12,8 @@ const AccountPage = () => {
     return <Loading />
   }
 
-  const { user } = authContext;
-
   return (
-    <Grid className="items-start p-2">
+    <Grid className="items-center p-2">
       <PersonalDetailsSection />
       <GamingPreferencesSection />
     </Grid >

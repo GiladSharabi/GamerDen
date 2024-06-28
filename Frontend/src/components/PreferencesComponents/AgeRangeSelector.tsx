@@ -39,7 +39,7 @@ const AgeRangeSelector = ({
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <Typography variant="h6" gutterBottom>
+        <Typography gutterBottom>
           What is the age range of your ideal teammates?
         </Typography>
         <Slider
@@ -49,7 +49,6 @@ const AgeRangeSelector = ({
           min={ageRange.minAge}
           max={ageRange.maxAge}
           disableSwap
-          sx={{ width: 400 }}
         />
       </Box>
     </ThemeProvider>

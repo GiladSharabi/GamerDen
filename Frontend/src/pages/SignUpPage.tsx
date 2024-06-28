@@ -1,5 +1,5 @@
-import { Avatar, Paper, Box, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Avatar, Box, Grid, ThemeProvider, Typography } from "@mui/material";
+import { useState } from "react";
 import { NullUser, User, Gender } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
 import CountrySelector from "../components/SignUpComponents/CountrySelector";
@@ -10,218 +10,121 @@ import SubmitButton from "../components/SignUpComponents/SubmitButton";
 import { PersonAdd } from "@mui/icons-material";
 import { signup } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
+import theme from "../components/Theme";
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email regex
+const usernameRegex = /^.{6,}$/; // at least 6 characters
+const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // at least 8 characters, 1 number, 1 special char
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>(NullUser);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const [hasError, setHasError] = useState<boolean>(true);
-  const [usernameError, setUsernameError] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [discordError, setDiscordError] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const [genderError, setGenderError] = useState<string>("");
-  const [countryError, setCountryError] = useState<string>("");
-  const [languageError, setLanguageError] = useState<string>("");
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    discord: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
+    country: "",
+    languages: ""
+  });
 
-  const handleUserChange = (name: keyof User, value: string) => {
+  const handleUserChange = (name: keyof User, value: string | Date | string[]) => {
     setUser({ ...user, [name]: value });
   };
 
-  const handleConfirmPasswordChange = (value: string) => {
-    setConfirmPassword(value);
-  };
-
-  const handleCountryChange = (value: string) => {
-    setUser({ ...user, country: value });
-  };
-
-  const handleLanguageChange = (languages: string[]) => {
-    setUser({ ...user, languages });
-  };
-
-  const handleDateChange = (date: Date) => {
-    setUser({ ...user, dob: date });
-  };
-
-  const handleSubmit = () => {
-    let error = false;
-    if (!user.username) {
-      setUsernameError("Please Enter Username.");
-      error = true;
-    } else {
-      setUsernameError("");
-    }
-    if (!user.email) {
-      setEmailError("Please Enter Email.");
-      error = true;
-    } else {
-      setEmailError("");
-    }
-    if (!user.discord) {
-      setDiscordError("Please Enter Discord Username.");
-      error = true;
-    } else {
-      setDiscordError("");
-    }
-    if (!user.password) {
-      setPasswordError("Please Enter Password.");
-      error = true;
-    } else {
-      setPasswordError("");
-    }
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please Enter Confirm Password.");
-      error = true;
-    } else if (confirmPassword !== user.password) {
-      setConfirmPasswordError("Passwords Do Not Match!");
-      error = true;
-    } else {
-      setConfirmPasswordError("");
-    }
-    if (user.gender === Gender.None) {
-      setGenderError("Please Select Gender.");
-      error = true;
-    } else {
-      setGenderError("");
-    }
-    if (user.country === "") {
-      setCountryError("Please Select Country.");
-      error = true;
-    } else {
-      setCountryError("");
-    }
-    if (user.languages.length === 0) {
-      setLanguageError("Please Select At Least 1 Language.");
-      error = true;
-    } else {
-      setLanguageError("");
-    }
-    setHasError(error);
-  };
-
-  // useEffect(() => {
-  //   const error =
-  //     !!usernameError ||
-  //     !!emailError ||
-  //     !!discordError ||
-  //     !!passwordError ||
-  //     !!confirmPasswordError ||
-  //     !!genderError ||
-  //     !!countryError ||
-  //     !!languageError;
-  //   // console.log("error: " + error);
-  //   setHasError(error);
-  // }, [
-  //   usernameError,
-  //   emailError,
-  //   discordError,
-  //   passwordError,
-  //   confirmPasswordError,
-  //   genderError,
-  //   countryError,
-  //   languageError,
-  // ]);
-
-  useEffect(() => {
-    // console.log("hasError: " + hasError);
-    const handleSignup = async () => {
-      if (!hasError) {
-        try {
-          const result = await signup(user);
-          console.log("signup result: " + result);
-          navigate("/login");
-        } catch (e) {
-          console.log("Error in signup" + e);
-        }
-      }
+  const validateFields = () => {
+    const newErrors = {
+      username: usernameRegex.test(user.username) ? "" : "Username must be at least 6 characters long.",
+      email: user.email && emailRegex.test(user.email) ? "" : "Please enter a valid email.",
+      discord: user.discord ? "" : "Please enter Discord username.",
+      password: user.password && passwordRegex.test(user.password) ? "" : "Password must be at least 8 characters long and contain at least one number and one special character.",
+      confirmPassword: confirmPassword ? "" : "Please enter confirm password.",
+      gender: user.gender !== Gender.None ? "" : "Please select gender.",
+      country: user.country ? "" : "Please select country.",
+      languages: user.languages.length ? "" : "Please select at least 1 language.",
     };
-    handleSignup();
-  }, [hasError]);
+
+    if (confirmPassword && confirmPassword !== user.password) {
+      newErrors.confirmPassword = "Passwords do not match!";
+    }
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === "");
+  };
+
+  const handleSubmit = async () => {
+    if (validateFields()) {
+      try {
+        const result = await signup(user);
+        if (result.error || result.emailError || result.usernameError) {
+          setErrors(errors => ({
+            ...errors,
+            email: result.emailError || "",
+            username: result.usernameError || "",
+            form: result.error || ""
+          }));
+        } else {
+          navigate("/login");
+        }
+      } catch (e) {
+        console.log("Error in signup:", e);
+        setErrors(errors => ({ ...errors, form: "Error in signup" }));
+      }
+    }
+  };
 
   return (
-    <Grid
-      container
-      component="main"
-      sx={{
-        height: "100vh",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "auto",
-      }}
-    >
-      <Grid
-        item
-        xs={12}
-        sm={3.5}
-        component={Paper}
-        elevation={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "50px",
-          marginBottom: "100px",
-          justifyContent: "center",
-          p: 1,
-          background: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(5px)",
-          borderRadius: 4,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            p: 4,
-          }}
+    <ThemeProvider theme={theme}>
+      <Box className="min-h-screen flex justify-center items-center overflow-auto">
+        <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-lg w-full mt-10 mb-20"
+          style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <PersonAdd />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
-            <UserDetails
-              user={user}
-              confirmPassword={confirmPassword}
-              onChange={handleUserChange}
-              onConfirmPasswordChange={handleConfirmPasswordChange}
-              usernameError={usernameError}
-              emailError={emailError}
-              discordError={discordError}
-              passwordError={passwordError}
-              confirmPasswordError={confirmPasswordError}
-              genderError={genderError}
-            />
-            <DatePickerComponent
-              selectedDate={user.dob}
-              onChange={handleDateChange}
-            />
-            <CountrySelector
-              country={user.country}
-              onChange={handleCountryChange}
-              countryError={countryError}
-            />
-            <LanguageSelector
-              languages={user.languages}
-              onChange={handleLanguageChange}
-              languageError={languageError}
-            />
-            <BioTextarea
-              bio={user.bio}
-              textColor="black"
-              onChange={(value) => setUser({ ...user, bio: value })}
-            />
-            <SubmitButton onClick={handleSubmit} />
+          <Box className="flex flex-col items-center p-8">
+            <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+              <PersonAdd />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign Up
+            </Typography>
+            <Box component="form" sx={{ mt: 3 }}>
+
+              <UserDetails
+                user={user}
+                confirmPassword={confirmPassword}
+                onChange={handleUserChange}
+                onConfirmPasswordChange={setConfirmPassword}
+                errors={errors}
+              />
+
+              <DatePickerComponent
+                selectedDate={user.dob}
+                onChange={(date) => handleUserChange("dob", date)}
+              />
+              <CountrySelector
+                country={user.country}
+                onChange={(country) => handleUserChange("country", country)}
+                countryError={errors.country}
+              />
+              <LanguageSelector
+                languages={user.languages}
+                onChange={(languages) => handleUserChange("languages", languages)}
+                languageError={errors.languages}
+              />
+              <BioTextarea
+                bio={user.bio}
+                textColor="black"
+                onChange={(value) => handleUserChange("bio", value)}
+              />
+              <SubmitButton onClick={handleSubmit} />
+            </Box>
           </Box>
-        </Box>
-      </Grid>
-    </Grid>
+        </Grid>
+      </Box>
+    </ThemeProvider>
   );
 };
 

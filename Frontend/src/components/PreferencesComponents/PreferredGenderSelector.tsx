@@ -17,16 +17,29 @@ const PreferredGenderSelector = ({
   return (
     <ThemeProvider theme={theme}>
       <Grid className="mb-2">
-        <Typography variant="h6" gutterBottom >
+        <Typography gutterBottom >
           Which gender do you prefer to play with?
         </Typography>
         <ToggleButtonGroup
           color="primary"
           value={selectedGender}
           exclusive
+          fullWidth
           onChange={(event, newGender) => { onChange(newGender) }}
         >
-          {filteredGenderValues.map((gender, i) => <ToggleButton key={i} value={gender}>{gender}</ToggleButton>)}
+          {filteredGenderValues.map((gender, i) =>
+            <ToggleButton
+              key={i}
+              value={gender}
+              sx={{
+                '&.Mui-selected': {
+                  backgroundColor: theme.palette.primary.main,
+                  color: '#fff',
+                },
+              }}
+            >
+              {gender}
+            </ToggleButton>)}
         </ToggleButtonGroup>
       </Grid>
     </ThemeProvider>

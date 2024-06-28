@@ -7,15 +7,16 @@ import {
   Grid,
   Typography,
   TextField,
+  ThemeProvider,
 } from "@mui/material";
 import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { login } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
-import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
 import Loading from "../components/Loading";
+import { AuthContext } from "../context/AuthProvider";
+import theme from "../components/Theme";
 
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
@@ -23,14 +24,15 @@ const LoginPage = () => {
   if (!authContext) {
     return <Loading />
   }
-
   const { AuthLogin } = authContext;
 
   const [hasError, setHasError] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const handleClick = async () => {
+
+  const handleLogin = async () => {
     try {
       if (usernameRef.current && passwordRef.current) {
         const result = await login(
@@ -43,123 +45,76 @@ const LoginPage = () => {
           navigate("/dashboard");
         } else {
           setHasError(true);
-          console.log("Failed in login: " + result.error);
         }
       }
     } catch (e) {
-      console.log("Error Signin: " + e);
+      console.log("Error Signin: ", e);
     }
   };
 
   return (
-    <Grid
-      container
-      component="main"
-      sx={{
-        height: "100vh",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Grid
-        item
-        xs={12}
-        sm={3.5}
-        component={Paper}
-        elevation={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          p: 1,
-          background: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(5px)",
-          borderRadius: 4,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            p: 4,
-          }}
+    <ThemeProvider theme={theme}>
+      <Box className="min-h-screen flex justify-center items-center">
+        <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-md w-full"
+          style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 1, width: "80%" }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              inputRef={usernameRef}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              inputRef={passwordRef}
-            />
-            {hasError ? (
-              <Alert severity="error" sx={{ width: "100%" }}>
-                Invalid Username or Password. Please try again.
-              </Alert>
-            ) : (
-              <></>
-            )}
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleClick}
-            >
-              Sign In
-            </Button>
-            <Grid
-              container
-              sx={{ justifyContent: "flex-start", alignItems: "center" }}
-            >
-              <Typography variant="body2">
-                Don't have an account?&nbsp;
-                <Link to="/sign-up" style={{ textDecoration: "none" }}>
-                  <span
-                    style={{
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                    }}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.style.textDecoration = "underline")
-                    }
-                    onMouseOut={(e) =>
-                      (e.currentTarget.style.textDecoration = "none")
-                    }
-                  >
+          <Box className="flex flex-col items-center w-full">
+            <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" noValidate sx={{ mt: 1, width: "80%" }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+                inputRef={usernameRef}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                inputRef={passwordRef}
+              />
+              {hasError && (
+                <Alert severity="error" sx={{ width: "100%", mt: 2 }}>
+                  Invalid Username or Password.
+                </Alert>
+              )}
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleLogin}
+              >
+                Sign In
+              </Button>
+              <Grid container sx={{ justifyContent: "flex-start", alignItems: "center", marginBottom: 2 }}>
+                <Typography variant="body2">
+                  Don't have an account?&nbsp;
+                  <Link to="/sign-up" style={{ textDecoration: "none", fontWeight: "bold", cursor: "pointer" }}>
                     Sign Up
-                  </span>
-                </Link>
-              </Typography>
-            </Grid>
+                  </Link>
+                </Typography>
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Grid>
-    </Grid>
+        </Grid>
+      </Box>
+    </ThemeProvider>
   );
 };
 

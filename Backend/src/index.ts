@@ -69,15 +69,23 @@ app.post("/api/signup", async (req: Request, res: Response) => {
     try {
         const userRes = await createUser(req, res);
         const userExistsError = userRes.emailError || userRes.usernameError || userRes.error;
+
         if (userExistsError) {
-            return res.status(401).json({ error: userExistsError });
+            return res.status(401).json({
+                error: "User exists error",
+                emailError: userRes.emailError,
+                usernameError: userRes.usernameError,
+            });
         }
+
         if (!userRes.user) {
-            return res.status(500).json({ error: "unknown error" });
+            return res.status(500).json({ error: "Unknown error" });
         }
+
         const user = userRes.user;
-        return res.status(201).json(`user with id: ${user.id} and username: ${user.username} was created`);
+        return res.status(201).json({ user });
     } catch (error) {
+        console.error("Error in signup:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 });

@@ -27,7 +27,7 @@ const RegionSelector = ({ region, onChange }: Props) => {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ minWidth: 120, marginBottom: 1 }}>
-        <Typography variant="h6" marginBottom={1}>
+        <Typography marginBottom={1}>
           Select Region
         </Typography>
         <FormControl>

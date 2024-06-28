@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, ReactNode, FC } from "react";
 import { NullUser, User } from "../api/types";
 import { getUser, logout } from "../api/api.endpoints";
+import Loading from "../components/Loading";
 
 interface AuthContextType {
   user: User;
@@ -13,6 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>(NullUser);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const authenticateUser = async () => {
@@ -23,9 +25,14 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           setUser(userResult);
         } catch (error) {
           console.error("Error fetching user data:", error);
+        } finally {
+          setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     };
+
     authenticateUser();
   }, []);
 
@@ -46,6 +53,9 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setUser(NullUser);
   };
 
+  if (loading) {
+    return <Loading />; // Show loading indicator while fetching user data
+  }
 
   return (
     <AuthContext.Provider value={{ user, setUser, AuthLogin, AuthLogout }}>

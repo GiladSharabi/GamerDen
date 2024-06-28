@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
 import jwt from "jsonwebtoken";
+
 const saltRounds = 10;
 
 const db = new PrismaClient();
@@ -12,6 +13,7 @@ type UserResult = {
   usernameError?: string;
   emailError?: string;
   user?: User;
+  accessToken?: string;
 };
 
 export async function getUserByUserName(username: string): Promise<UserResult> {
@@ -39,7 +41,7 @@ export async function getUserByUserName(username: string): Promise<UserResult> {
       return { error: "No user found" };
     }
     return { user };
-  } catch (e: any) {
+  } catch (error: any) {
     return { error: "Internal server error" };
   }
 }
@@ -68,14 +70,14 @@ export async function createUser(
   res: Response
 ): Promise<UserResult> {
   try {
-    fixCreateUserData(req);
     const { preferences, ...userData } = req.body;
-
     const userExistsError = await checkExistingUser(userData);
 
     if (userExistsError?.usernameError || userExistsError?.emailError) {
       return userExistsError;
     }
+
+    fixCreateUserData(req);
 
     const { games, ...preferencesData } = preferences;
 
@@ -124,19 +126,29 @@ function fixCreateUserData(req: Request) {
   }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updateUser(req: Request, res: Response): Promise<void> {
   try {
     const { preferences, id, iat, ...userData } = req.body;
     const { username, email } = userData;
 
-    const emailExists = await db.user.findUnique({ where: { email } });
-    if (emailExists && emailExists.email !== email) {
-      res.status(400).json({ error: "Email already Exists" });
+    const existingUser = await db.user.findUnique({
+      where: { username },
+    });
+
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
       return;
     }
 
-    console.log(preferences.games);
-    preferences.games.map((game: Game) => console.log(game.id));
+    if (email !== existingUser.email) {
+      const existingEmail = await db.user.findUnique({
+        where: { email: userData.email },
+      });
+      if (existingEmail) {
+        res.status(400).json({ emailError: "Email already exists" });
+        return;
+      }
+    }
 
     const updatedUser = await db.user.update({
       where: { username },
@@ -147,7 +159,7 @@ export async function updateUser(req: Request, res: Response) {
             ...preferences,
             games: {
               set: [],
-              connect: preferences.games.map((game: Game) => ({ id: game.id }))
+              connect: preferences.games.map((game: any) => ({ id: game.id })),
             },
           },
         },
@@ -170,8 +182,8 @@ export async function updateUser(req: Request, res: Response) {
 
     const accessToken = jwt.sign(updatedUser, process.env.JWT_SECRET_TOKEN as string);
 
-    res.status(200).json({ accessToken: accessToken });
-  } catch (error) {
+    res.status(200).json({ user: updatedUser, accessToken });
+  } catch (error: any) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }

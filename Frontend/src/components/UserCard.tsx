@@ -8,14 +8,14 @@ import {
   Grid,
   Typography,
   ThemeProvider,
+  Rating
 } from "@mui/material";
-import { Rating } from "@mui/material";
 import { Chat, Gamepad, Person } from "@mui/icons-material";
+import { FaDiscord } from "react-icons/fa";
+import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { User, Gender } from "../api/types";
 import theme from "./Theme";
 import { useState } from "react";
-import { FaDiscord } from "react-icons/fa";
-import { IoMdMale, IoMdFemale } from "react-icons/io";
 
 type CardProps = {
   user: User;
@@ -33,100 +33,71 @@ const UserCard = ({ user }: CardProps) => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
     return age;
   };
-  function getRating(): number {
-    if (user.rating && user.rating_count) {
-      return user.rating / user.rating_count;
-    }
-    return 0;
-  }
+
+  const getRating = (): number => {
+    return user.rating && user.rating_count ? user.rating / user.rating_count : 0;
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Card>
+      <Card
+        sx={{
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 4,
+          width: "325px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+        }}
+      >
         <CardContent>
           <Grid container spacing={2} alignItems="center">
-            <Grid item marginRight={1}>
-              {/* grid of the avatar */}
+            <Grid item>
               <Link to={`/profile/${user.username}`}>
                 <Avatar>
-                  {user.avatar ? (
-                    <Box component="img" src={`${user.avatar}`} />
-                  ) : (
-                    <Person />
-                  )}
+                  {user.avatar ? <img src={`${user.avatar}`} alt="Avatar" /> : <Person />}
                 </Avatar>
               </Link>
             </Grid>
-            <Grid>
-              {/* grid of the username */}
-              <Typography
-                variant="h6"
-                color="primary"
-                align="left"
-                sx={{ mt: 2, ml: 1 }}
-              >
+            <Grid item xs={9}>
+              <Typography variant="h6" color="primary">
                 <Link to={`/profile/${user.username}`} className="no-underline">
                   {user.username}
                 </Link>
               </Typography>
-              <Box
-                // {/* the Box of the gender,age,counry */}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  height: "100%",
-                }}
-              >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 {user.gender === Gender.Male ? (
-                  <IoMdMale color="blue" size={20} className="mr-2" />
+                  <IoMdMale color="blue" size={20} className="mr-1" />
                 ) : (
-                  <IoMdFemale color="pink" size={20} className="mr-2" />
+                  <IoMdFemale color="pink" size={20} className="mr-1" />
                 )}
-                <Typography color="white" marginRight={1}>
-                  {calculateAge(user.dob)}
-                </Typography>
-                <Typography color="white">{user?.country}</Typography>
+                <Typography>{calculateAge(user.dob)}</Typography>
+                <Typography sx={{ ml: 1 }}>{user.country}</Typography>
               </Box>
             </Grid>
           </Grid>
           <Box mt={2}>
             <Typography variant="body1">
-              <strong>Bio:</strong> {user.bio ? user.bio : "No bio available"}
+              <strong>Bio:</strong> {user.bio || "No bio available"}
             </Typography>
           </Box>
           <Box mt={2}>
             <Grid container spacing={1} alignItems="center">
-              <Grid item>
-                <Gamepad />
-              </Grid>
+              <Grid item><Gamepad /></Grid>
               <Grid item>
                 <Typography variant="body1" color="primary">
-                  <strong>Games:</strong>
+                  Games:
                 </Typography>
               </Grid>
             </Grid>
             <Grid container mt={1} spacing={1} justifyContent="start">
               {user.preferences.games.slice(0, 4).map((game, index) => (
                 <Grid item key={index}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <img
                       className="game-image mb-2 mr-2"
                       src={game.cover}
@@ -139,34 +110,13 @@ const UserCard = ({ user }: CardProps) => {
               ))}
             </Grid>
           </Box>
-          <Box mt={2}>
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Grid item>
-                <Typography
-                  variant="body1"
-                  color="primary"
-                  sx={{ fontWeight: "bold" }}
-                >
-                  User Rating:
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Rating
-                  name="user-rating"
-                  value={getRating()}
-                  precision={0.1}
-                  readOnly
-                />
-              </Grid>
-            </Grid>
-          </Box>
           <Box mt={2} textAlign="center">
-            {/* start chatting box */}
+            <Rating
+              name="user-rating"
+              value={getRating()}
+              precision={0.1}
+              readOnly
+            />
             {chatClick ? (
               <Box
                 display="flex"
@@ -178,12 +128,8 @@ const UserCard = ({ user }: CardProps) => {
                 color="text.primary"
                 sx={{ mt: 2 }}
               >
-                <FaDiscord className="mr-2" style={{ fontSize: "1.5rem" }} />
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  sx={{ fontSize: "1.25rem" }}
-                >
+                <FaDiscord style={{ fontSize: "1.5rem", marginRight: "0.5rem" }} />
+                <Typography variant="body1" fontWeight="bold">
                   {user.discord}
                 </Typography>
               </Box>
@@ -193,7 +139,7 @@ const UserCard = ({ user }: CardProps) => {
                 color="primary"
                 startIcon={<Chat />}
                 onClick={handleStartChatClick}
-                sx={{ color: theme.palette.text.primary }}
+                sx={{ mt: 2 }}
               >
                 Start Chatting
               </Button>

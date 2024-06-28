@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import { Gender } from "../api/types";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
-import { FaMicrophone } from "react-icons/fa";
+import { FaLanguage } from "react-icons/fa";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
+import Loading from "../components/Loading";
 import theme from "../components/Theme";
 
 const PersonalDetailsSection = () => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const { user } = authContext;
@@ -34,6 +35,7 @@ const PersonalDetailsSection = () => {
     }
     return age;
   };
+
   function getRating(): number {
     if (user.rating && user.rating_count) {
       return user.rating / user.rating_count;
@@ -47,8 +49,19 @@ const PersonalDetailsSection = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className="flex justify-start items-center flex-row flex-wrap p-2 mb-1">
-        <Avatar sx={{ width: 180, height: 180, mr: 2 }}>
+      <Box
+        className="flex justify-center items-center flex-row flex-wrap p-4"
+        sx={{
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+          p: 2,
+          mb: 1,
+          width: "600px"
+        }}
+      >
+        <Avatar sx={{ width: 100, height: 100, mr: 2 }}>
           {user.avatar ? (
             <Box component="img" src={`${user.avatar}`} className="w-full h-full" />
           ) : (
@@ -60,31 +73,31 @@ const PersonalDetailsSection = () => {
           <Typography variant="h6" fontSize={40}>
             {user.username}
           </Typography>
-          <Typography variant="body2" className="text-white text-[18px] mb-2">
+          <Typography variant="body2" marginBottom={2}>
             {user.bio}
           </Typography>
 
           {/* the Box of the gender,age,country */}
           <Box className="flex justify-start items-center flex-row flex-wrap pr-2 mb-2">
             {user.gender === Gender.Male ? (
-              <IoMdMale color="blue" size={20} className="mr-2" />
+              <IoMdMale color="blue" size={30} className="mr-2" />
             ) : (
-              <IoMdFemale color="pink" size={20} className="mr-2" />
+              <IoMdFemale color="pink" size={30} className="mr-2" />
             )}
-            <Typography color="white" marginRight={1}>
+            <Typography marginRight={1}>
               {calculateAge(user.dob)}
             </Typography>
-            <Typography color="white">{user?.country}</Typography>
+            <Typography >{user?.country}</Typography>
           </Box>
           {/* languages box */}
           <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
-            <FaMicrophone className="mr-2" size={18} color="white" />
-            <Typography color="white">{user.languages.join(", ")}</Typography>
+            <FaLanguage className="mr-2" size={30} />
+            <Typography >{user.languages.join(", ")}</Typography>
           </Box>
           {/* discord box */}
           <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
-            <FaDiscord className="mr-2" size={18} color="white" />
-            <Typography color="white">{user.discord}</Typography>
+            <FaDiscord className="mr-2" size={30} />
+            <Typography >{user.discord}</Typography>
           </Box>
           <Box>
             <Rating
@@ -101,7 +114,7 @@ const PersonalDetailsSection = () => {
           size="medium"
           onClick={handleEditPersonalDetails}
         >
-          Edit
+          Edit Profile
         </Button>
       </Box>
     </ThemeProvider>

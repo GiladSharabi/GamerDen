@@ -9,7 +9,7 @@ const Background: React.FC<BackgroundProps> = ({ children }) => {
   return (
     <Box
       style={{
-        backgroundImage: `url('./src/assets/images/background-black.jpg')`,
+        backgroundImage: `url('./src/assets/images/background1.jpg')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",

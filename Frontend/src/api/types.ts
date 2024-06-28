@@ -64,6 +64,7 @@ export type UserResult = {
   error?: string;
   emailError?: string;
   usernameError?: string;
+  accessToken?: string;
 };
 
 export const NullUserPreferences: UserPreferences = {

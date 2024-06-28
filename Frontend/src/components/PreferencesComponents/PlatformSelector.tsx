@@ -12,7 +12,7 @@ type props = {
 const PlatformSelector = ({
   selectedPlatforms = [],
   onChange,
-  label = "Select teammate Platform",
+  label = "Select teammate Platforms",
 }: props) => {
 
   const platformValues = Object.values(Platform);
@@ -20,17 +20,26 @@ const PlatformSelector = ({
   return (
     <ThemeProvider theme={theme}>
       <Grid className="mb-2">
-        <Typography variant="h6" gutterBottom>
+        <Typography gutterBottom>
           {label}
         </Typography>
         <ToggleButtonGroup
-          color="primary"
+          color="secondary"
           value={selectedPlatforms}
           exclusive={false}
+          fullWidth
           onChange={(event, newValue) => onChange(event, newValue)}
         >
           {platformValues.map((platform) => (
-            <ToggleButton key={platform} value={platform}>
+            <ToggleButton key={platform} value={platform}
+              sx={{
+                '&.Mui-selected': {
+                  backgroundColor: theme.palette.primary.main,
+                  color: '#fff',
+                },
+              }}
+
+            >
               {platform}
             </ToggleButton>
           ))}
