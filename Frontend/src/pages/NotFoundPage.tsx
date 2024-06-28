@@ -1,4 +1,4 @@
-import { Container, Typography, Link } from '@mui/material';
+import { Container, Typography, Link, Box } from '@mui/material';
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import Loading from '../components/Loading';
@@ -13,9 +13,9 @@ const NotFoundPage = () => {
   const { user } = authContext;
 
   return (
-    <div className="bg-gray-100 h-screen flex justify-center items-center">
+    <Box className="bg-gray-100 h-screen flex justify-center items-center">
       <Container>
-        <div className="flex flex-col items-center text-center">
+        <Box className="flex flex-col items-center text-center">
           <Typography variant="h1" className="text-8xl font-bold text-gray-800">
             404
           </Typography>
@@ -25,9 +25,9 @@ const NotFoundPage = () => {
           <Link href={user ? "/dashboard" : "/"} className="mt-4 text-xl text-blue-600 hover:underline">
             Go back home
           </Link>
-        </div>
+        </Box>
       </Container>
-    </div>
+    </Box>
   );
 };
 
