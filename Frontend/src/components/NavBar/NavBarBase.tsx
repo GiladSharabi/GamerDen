@@ -18,17 +18,34 @@ const NavBarBase: React.FC<NavBarBaseProps> = ({ links }) => {
         <ThemeProvider theme={theme}>
             <AppBar color="navbar" position="sticky">
                 <Toolbar>
-                    <IconButton color="primary">
-                        <Typography variant="h6">
+                    <IconButton color="primary"
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '15%',
+                            },
+                        }}
+                    >
+                        <Typography >
                             <Link to="/">GamerDen</Link>
                         </Typography>
-                    </IconButton>
+                    </IconButton >
                     <Grid style={{ flexGrow: 1 }} />
                     {links.map((link, index) => (
-                        <Link key={index} to={link.to} onClick={link.onClick}>
-                            <IconButton color="primary">
+                        <Link
+                            key={index}
+                            to={link.to}
+                            onClick={link.onClick}
+                        >
+                            <IconButton color="primary"
+                                sx={{
+                                    '&:hover': {
+                                        borderRadius: '15%',
+                                    },
+                                }}>
                                 {link.icon}
-                                <Typography sx={{ ml: 1 }}>{link.label}</Typography>
+                                <Typography sx={{ ml: 1 }}>
+                                    {link.label}
+                                </Typography>
                             </IconButton>
                         </Link>
                     ))}

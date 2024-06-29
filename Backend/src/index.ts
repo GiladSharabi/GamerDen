@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import dotenvexpand from "dotenv-expand";
 import gameRouter from "./game/game.router";
 import userRouter from "./user/user.router";
-import { createUser, getUserByUserName } from "./user/user.service";
+import { createUser, fetchUserByUserName } from "./user/user.service";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import seedDB from "./game/game.seed";
@@ -46,7 +46,7 @@ app.get("/api/match", async (req: Request, res: Response) => {
 app.post("/api/login", async (req: Request, res: Response) => {
     const { username, password } = req.body;
     try {
-        const userRes = await getUserByUserName(username);
+        const userRes = await fetchUserByUserName(username);
         if (userRes.error) {
             return res.status(401).json({ error: userRes.error });
         }
@@ -60,7 +60,7 @@ app.post("/api/login", async (req: Request, res: Response) => {
         }
         const accessToken = jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
         return res.json({ accessToken: accessToken });
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -84,7 +84,7 @@ app.post("/api/signup", async (req: Request, res: Response) => {
 
         const user = userRes.user;
         return res.status(201).json({ user });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error in signup:", error);
         return res.status(500).json({ error: "Internal server error" });
     }

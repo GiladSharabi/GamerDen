@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect, ReactNode, FC } from "react";
 import { NullUser, User } from "../api/types";
-import { getUser, logout } from "../api/api.endpoints";
-import Loading from "../components/Loading";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthContextType {
   user: User;
@@ -14,48 +13,28 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>(NullUser);
-  const [loading, setLoading] = useState(true);
+
+
+  function decodeAndSetUser() {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      const decodedUser: User = jwtDecode(token);
+      setUser(decodedUser);
+    }
+  }
 
   useEffect(() => {
-    const authenticateUser = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        try {
-          const userResult = await getUser(token);
-          setUser(userResult);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-      }
-    };
-
-    authenticateUser();
+    decodeAndSetUser();
   }, []);
 
-  const AuthLogin = async () => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        const userResult = await getUser(token);
-        setUser(userResult);
-      }
-    } catch (error) {
-      console.error("Error logging in:", error);
-    }
+  const AuthLogin = () => {
+    decodeAndSetUser();
   };
 
   const AuthLogout = () => {
-    logout();
+    localStorage.removeItem("accessToken");
     setUser(NullUser);
   };
-
-  if (loading) {
-    return <Loading />; // Show loading indicator while fetching user data
-  }
 
   return (
     <AuthContext.Provider value={{ user, setUser, AuthLogin, AuthLogout }}>

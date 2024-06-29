@@ -45,10 +45,11 @@ const AgeRangeSelector = ({
         <Slider
           value={currentRange}
           onChange={handleChange}
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           min={ageRange.minAge}
           max={ageRange.maxAge}
           disableSwap
+          sx={{ marginTop: "30px" }}
         />
       </Box>
     </ThemeProvider>

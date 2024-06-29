@@ -1,4 +1,4 @@
-import { Game, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
@@ -9,19 +9,18 @@ const saltRounds = 10;
 const db = new PrismaClient();
 
 type UserResult = {
+  user?: User;
   error?: string;
   usernameError?: string;
   emailError?: string;
-  user?: User;
   accessToken?: string;
+  existError?: string;
 };
 
-export async function getUserByUserName(username: string): Promise<UserResult> {
+export async function fetchUserByUserName(username: string) {
   try {
     const user = await db.user.findUnique({
-      where: {
-        username: username,
-      },
+      where: { username },
       include: {
         preferences: {
           select: {
@@ -37,14 +36,38 @@ export async function getUserByUserName(username: string): Promise<UserResult> {
         },
       },
     });
+
     if (!user) {
-      return { error: "No user found" };
+      return { existError: "No user found" };
     }
+
     return { user };
   } catch (error: any) {
     return { error: "Internal server error" };
   }
 }
+
+export async function getUserByUsername(req: Request, res: Response) {
+  const { username } = req.params;
+  try {
+    const userRes = await fetchUserByUserName(username);
+    if (userRes.existError) {
+      res.status(200).json({ existError: userRes.existError });
+      return;
+    }
+
+    const { user } = userRes;
+    if (user) {
+      const accessToken = jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
+      res.status(200).json({ accessToken: accessToken });
+      return;
+    }
+    res.status(404).json({ existError: "User does not exist" });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+}
+
 
 async function checkExistingUser(userData: any): Promise<UserResult | undefined> {
 
@@ -111,7 +134,6 @@ export async function createUser(
     return { user: createdUser };
 
   } catch (error: any) {
-    console.error(error);
     return { error: "Internal server error" };
   }
 }
@@ -126,7 +148,7 @@ function fixCreateUserData(userData: any) {
 
 }
 
-export async function updateUser(req: Request, res: Response): Promise<void> {
+export async function updateUser(req: Request, res: Response) {
   try {
     const { preferences, id, iat, ...userData } = req.body;
     const { username, email } = userData;
@@ -150,41 +172,44 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
       }
     }
 
-    const updatedUser = await db.user.update({
-      where: { username },
-      data: {
-        ...userData,
-        preferences: {
-          update: {
-            ...preferences,
-            games: {
-              set: [],
-              connect: preferences.games.map((game: any) => ({ id: game.id })),
-            },
-          },
-        },
-      },
-      include: {
-        preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
-      },
-    });
-
+    const updatedUser = await updateUserInDatabase(username, userData, preferences);
     const accessToken = jwt.sign(updatedUser, process.env.JWT_SECRET_TOKEN as string);
 
-    res.status(200).json({ user: updatedUser, accessToken });
+    res.status(200).json({ accessToken: accessToken });
   } catch (error: any) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+async function updateUserInDatabase(username: string, userData: any, preferences: any) {
+  return await db.user.update({
+    where: { username },
+    data: {
+      ...userData,
+      preferences: {
+        update: {
+          ...preferences,
+          games: {
+            set: [],
+            connect: preferences.games.map((game: any) => ({ id: game.id })),
+          },
+        },
+      },
+    },
+    include: {
+      preferences: {
+        select: {
+          region: true,
+          voice: true,
+          platform: true,
+          teammate_platform: true,
+          preferred_gender: true,
+          min_age: true,
+          max_age: true,
+          games: true,
+        },
+      },
+    },
+  });
 }

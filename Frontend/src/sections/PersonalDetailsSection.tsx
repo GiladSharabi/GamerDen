@@ -85,7 +85,7 @@ const PersonalDetailsSection = () => {
               <IoMdFemale color="pink" size={30} className="mr-2" />
             )}
             <Typography marginRight={1}>
-              {calculateAge(user.dob)}
+              {calculateAge(user.dob ? user.dob : new Date())}
             </Typography>
             <Typography >{user?.country}</Typography>
           </Box>

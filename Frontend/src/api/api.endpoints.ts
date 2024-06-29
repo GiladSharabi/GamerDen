@@ -1,4 +1,5 @@
 import instance from "../api/axios.ts";
+import { jwtDecode } from "jwt-decode";
 import { User, Game, UserResult } from "../api/types.ts";
 
 export async function signup(user: User): Promise<UserResult> {
@@ -26,21 +27,6 @@ export async function signup(user: User): Promise<UserResult> {
   }
 }
 
-
-export async function getUser(token: string) {
-  try {
-    const response = await instance.get("/login", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error: any) {
-    console.log("Get user Error:", error);
-    return { error: "Error in login" };
-  }
-}
-
 export async function updateUser(user: User): Promise<UserResult> {
   try {
     const response = await instance.post(`/users/update`, user, {
@@ -64,7 +50,6 @@ export async function updateUser(user: User): Promise<UserResult> {
     return { error: "Error in user update" };
   }
 }
-
 
 export async function login(username: string, password: string) {
   try {
@@ -97,6 +82,18 @@ export async function getGames(limit?: number): Promise<Game[]> {
   }
 }
 
-export function logout() {
-  localStorage.removeItem("accessToken");
+export async function getUserByUsername(username: string): Promise<UserResult> {
+  try {
+    const response = await instance.get(`/users/${username}`);
+    if (response.data.existError) {
+      return { existError: response.data.existError };
+    }
+    if (response.data.accessToken) {
+      const decodedUser: User = jwtDecode(response.data.accessToken);
+      return { user: decodedUser };
+    }
+    return { error: "Unexpected error" };
+  } catch (error: any) {
+    return { error: error };
+  }
 }
