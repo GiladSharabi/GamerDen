@@ -36,9 +36,10 @@ export async function updateUser(user: User): Promise<UserResult> {
     });
     if (response.data.accessToken) {
       localStorage.setItem("accessToken", response.data.accessToken);
+      const decodedUser: User = jwtDecode(response.data.accessToken);
+      return { user: decodedUser };
     }
-
-    return response.data;
+    return { error: "Unexpected error" };
   } catch (error: any) {
     console.error('Error updating user:', error);
     if (error.response) {
@@ -51,7 +52,7 @@ export async function updateUser(user: User): Promise<UserResult> {
   }
 }
 
-export async function login(username: string, password: string) {
+export async function login(username: string, password: string): Promise<UserResult> {
   try {
     const response = await instance.post("/login", {
       username,
@@ -60,21 +61,17 @@ export async function login(username: string, password: string) {
 
     if (response.data.accessToken) {
       localStorage.setItem("accessToken", response.data.accessToken);
-      return { success: true, accessToken: response.data.accessToken };
-    } else {
-      return { success: false, error: response.data.error };
+      return { accessToken: response.data.accessToken };
     }
+    return { error: response.data.error };
   } catch (error: any) {
-    return { success: false, error: "Error in login" };
+    return { error: "Error in login" };
   }
 }
 
 export async function getGames(limit?: number): Promise<Game[]> {
   try {
     const response = await instance.get(`/games/${limit}`);
-    if (!response) {
-      console.log("error in getgames");
-    }
     return response.data;
   } catch (error: any) {
     console.log("Get games error: ", error);

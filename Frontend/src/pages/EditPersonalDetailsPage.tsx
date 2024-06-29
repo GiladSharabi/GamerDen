@@ -21,7 +21,6 @@ const EditPersonalDetailsPage = () => {
   const handleSaveClick = async (updatedUser: User) => {
     try {
       const result = await updateUser(updatedUser);
-
       if (result.user) {
         setUser(result.user);
         navigate("/account");

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
-  Paper,
   Box,
   Grid,
   Typography,
@@ -39,7 +38,7 @@ const LoginPage = () => {
           usernameRef.current.value,
           passwordRef.current.value
         );
-        if (result.success) {
+        if (result.accessToken) {
           setHasError(false);
           AuthLogin();
           navigate("/dashboard");

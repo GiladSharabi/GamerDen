@@ -1,47 +1,42 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserPreferences } from "@prisma/client";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
 import jwt from "jsonwebtoken";
 
-const saltRounds = 10;
-
 const db = new PrismaClient();
 
-type UserResult = {
-  user?: User;
+type AccessTokenResult = {
+  accessToken?: string;
   error?: string;
   usernameError?: string;
   emailError?: string;
-  accessToken?: string;
-  existError?: string;
+  userNotFoundError?: string;
 };
 
-export async function fetchUserByUserName(username: string) {
+function createAccessToken(user: User): string {
+  return jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
+}
+
+export async function fetchUserByUserName(username: string): Promise<AccessTokenResult> {
   try {
     const user = await db.user.findUnique({
       where: { username },
       include: {
         preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
+          include: { games: true }
+        }
       },
-    });
+    },
+    );
 
     if (!user) {
-      return { existError: "No user found" };
+      return { userNotFoundError: "No user found" };
     }
 
-    return { user };
+    const accessToken = createAccessToken(user);
+    return { accessToken: accessToken };
+
   } catch (error: any) {
     return { error: "Internal server error" };
   }
@@ -51,14 +46,13 @@ export async function getUserByUsername(req: Request, res: Response) {
   const { username } = req.params;
   try {
     const userRes = await fetchUserByUserName(username);
-    if (userRes.existError) {
-      res.status(200).json({ existError: userRes.existError });
+    if (userRes.userNotFoundError) {
+      res.status(200).json({ userNotFoundError: userRes.userNotFoundError });
       return;
     }
 
-    const { user } = userRes;
-    if (user) {
-      const accessToken = jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
+    const { accessToken } = userRes;
+    if (accessToken) {
       res.status(200).json({ accessToken: accessToken });
       return;
     }
@@ -69,7 +63,7 @@ export async function getUserByUsername(req: Request, res: Response) {
 }
 
 
-async function checkExistingUser(userData: any): Promise<UserResult | undefined> {
+async function checkExistingUser(userData: any): Promise<AccessTokenResult | undefined> {
 
   const existingUsername = await db.user.findUnique({
     where: { username: userData.username },
@@ -88,64 +82,54 @@ async function checkExistingUser(userData: any): Promise<UserResult | undefined>
   return undefined;
 }
 
-export async function createUser(
-  req: Request,
-  res: Response
-): Promise<UserResult> {
+export async function createUser(req: Request, res: Response): Promise<AccessTokenResult> {
   try {
     const { preferences, ...userData } = req.body;
-    const userExistsError = await checkExistingUser(userData);
+    const userRes = await checkExistingUser(userData);
 
-    if (userExistsError?.usernameError || userExistsError?.emailError) {
-      return userExistsError;
+    if (userRes?.usernameError || userRes?.emailError) {
+      return { error: "User already exists", usernameError: userRes.usernameError, emailError: userRes.emailError };
     }
 
-    fixCreateUserData(userData);
-
+    encryptPassword(userData);
     const { games, ...preferencesData } = preferences;
 
-    const createdUser = await db.user.create({
-      data: {
-        ...userData,
-        preferences: {
-          create: {
-            ...preferencesData,
-            games: {
-              connect: games,
-            },
-          },
-        },
-      },
-      include: {
-        preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
-      },
-    });
-    return { user: createdUser };
+    const createdUser = await createUserInDatabase(userData, preferencesData);
+    const accessToken = createAccessToken(createdUser);
+
+    return { accessToken: accessToken };
 
   } catch (error: any) {
     return { error: "Internal server error" };
   }
 }
 
-function fixCreateUserData(userData: any) {
+async function createUserInDatabase(userData: User, preferences: UserPreferences): Promise<User> {
+  return await db.user.create({
+    data: {
+      ...userData,
+      preferences: {
+        create: {
+          ...preferences,
+        },
+      },
+    },
+    include: {
+      preferences: {
+        include: { games: true }
+      }
+    },
+  });
+}
+
+function encryptPassword(userData: User) {
   const { password } = userData;
   if (password) {
+    const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
     userData.password = hash;
   }
-
 }
 
 export async function updateUser(req: Request, res: Response) {
@@ -164,7 +148,7 @@ export async function updateUser(req: Request, res: Response) {
 
     if (email !== existingUser.email) {
       const existingEmail = await db.user.findUnique({
-        where: { email: userData.email },
+        where: { email },
       });
       if (existingEmail) {
         res.status(400).json({ emailError: "Email already exists" });
@@ -173,7 +157,7 @@ export async function updateUser(req: Request, res: Response) {
     }
 
     const updatedUser = await updateUserInDatabase(username, userData, preferences);
-    const accessToken = jwt.sign(updatedUser, process.env.JWT_SECRET_TOKEN as string);
+    const accessToken = createAccessToken(updatedUser);
 
     res.status(200).json({ accessToken: accessToken });
   } catch (error: any) {
@@ -183,33 +167,28 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 async function updateUserInDatabase(username: string, userData: any, preferences: any) {
+  const { id, userId, ...preferencesOmitID } = preferences;
+
   return await db.user.update({
     where: { username },
     data: {
       ...userData,
       preferences: {
-        update: {
-          ...preferences,
+        delete: true,
+        create: {
+          ...preferencesOmitID,
           games: {
-            set: [],
-            connect: preferences.games.map((game: any) => ({ id: game.id })),
+            connect: preferencesOmitID.games.map((game: any) => ({ id: game.id })),
           },
         },
       },
     },
     include: {
       preferences: {
-        select: {
-          region: true,
-          voice: true,
-          platform: true,
-          teammate_platform: true,
-          preferred_gender: true,
-          min_age: true,
-          max_age: true,
+        include: {
           games: true,
-        },
-      },
+        }
+      }
     },
   });
 }

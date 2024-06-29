@@ -1,12 +1,11 @@
 
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
-import { User, UserPreferences } from "../api/types";
+import { UserPreferences } from "../api/types";
 import { updateUser } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import PreferencesSection from "../sections/PreferencesSection";
-import { jwtDecode } from "jwt-decode";
 
 const EditGamingPreferencesPage = () => {
   const authContext = useContext(AuthContext);
@@ -23,9 +22,8 @@ const EditGamingPreferencesPage = () => {
       user.preferences = preferences;
       const result = await updateUser(user);
 
-      if (result.accessToken) {
-        const user: User = jwtDecode(result.accessToken);
-        setUser(user);
+      if (result.user) {
+        setUser(result.user);
         navigate("/account");
       }
     } catch (error) {

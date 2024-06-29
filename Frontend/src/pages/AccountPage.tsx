@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import GamingPreferencesSection from "../sections/GamingPreferencesSection";
