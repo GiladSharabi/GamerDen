@@ -7,10 +7,11 @@ const theme = createTheme({
       main: blue[500],
     },
     secondary: {
-      main: blue[900],
+      main: blue[300],
     },
     text: {
-      primary: '#ffffff',
+      primary: '#000000',
+      secondary: '#000000'
     },
   },
 });

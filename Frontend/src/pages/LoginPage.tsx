@@ -99,14 +99,14 @@ const LoginPage = () => {
             >
               Sign In
             </Button>
-            <Grid container sx={{ justifyContent: "flex-start", alignItems: "center", marginBottom: 2 }}>
+            <Box sx={{ justifyContent: "flex-start", alignItems: "center", marginBottom: 2 }}>
               <Typography variant="body2">
                 Don't have an account?&nbsp;
-                <Link to="/sign-up">
+                <Link to="/sign-up" style={{ fontWeight: 'bold' }}>
                   Sign Up
                 </Link>
               </Typography>
-            </Grid>
+            </Box>
           </Box>
         </Box>
       </Grid>
