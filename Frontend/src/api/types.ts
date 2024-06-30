@@ -46,7 +46,7 @@ export type User = {
   password: string;
   username: string;
   discord: string;
-  dob: Date;
+  dob?: Date;
   created_at?: Date;
   country: string;
   gender: Gender;
@@ -58,13 +58,13 @@ export type User = {
   preferences: UserPreferences;
 };
 
-
 export type UserResult = {
   user?: User;
   error?: string;
   emailError?: string;
   usernameError?: string;
   accessToken?: string;
+  existError?: string;
 };
 
 export const NullUserPreferences: UserPreferences = {
@@ -83,8 +83,8 @@ export const NullUser: User = {
   password: "",
   username: "",
   discord: "",
-  dob: new Date(0),
-  created_at: new Date(),
+  dob: undefined,
+  created_at: undefined,
   country: "",
   gender: Gender.None,
   languages: [],

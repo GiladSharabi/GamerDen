@@ -4,15 +4,13 @@ import {
   Grid,
   Typography,
   Button,
-  ThemeProvider,
   FormControl,
   RadioGroup,
   Radio,
   TextField,
   FormControlLabel,
 } from "@mui/material";
-import theme from "../components/Theme";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { User } from "../api/types";
 import { Person } from "@mui/icons-material";
 import MyDivider from "../components/MyDivider";

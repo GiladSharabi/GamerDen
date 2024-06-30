@@ -1,6 +1,5 @@
-import { Box, Grid, Button, ThemeProvider } from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import GameSelector from "../components/PreferencesComponents/GameSelector";
-import theme from "../components/Theme";
 import { useState, useEffect } from "react";
 import { UserPreferences, Game, NullUserPreferences } from "../api/types";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";

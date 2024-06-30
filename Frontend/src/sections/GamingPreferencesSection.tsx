@@ -24,6 +24,7 @@ const GamingPreferencesSection = ({ isEditable }: Props) => {
 
   const { user } = authContext;
   const { preferences } = user;
+  preferences.games = preferences.games || [];
   const navigate = useNavigate();
 
   const handleEditGamingPreferences = () => {

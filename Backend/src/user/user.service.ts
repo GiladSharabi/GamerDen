@@ -1,52 +1,69 @@
-import { Game, PrismaClient } from "@prisma/client";
+import { PrismaClient, UserPreferences } from "@prisma/client";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
 import jwt from "jsonwebtoken";
 
-const saltRounds = 10;
-
 const db = new PrismaClient();
 
-type UserResult = {
+type AccessTokenResult = {
+  accessToken?: string;
   error?: string;
   usernameError?: string;
   emailError?: string;
-  user?: User;
-  accessToken?: string;
+  userNotFoundError?: string;
 };
 
-export async function getUserByUserName(username: string): Promise<UserResult> {
+function createAccessToken(user: User): string {
+  return jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
+}
+
+export async function fetchUserByUserName(username: string): Promise<AccessTokenResult> {
   try {
     const user = await db.user.findUnique({
-      where: {
-        username: username,
-      },
+      where: { username },
       include: {
         preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
+          include: { games: true }
+        }
       },
-    });
+    },
+    );
+
     if (!user) {
-      return { error: "No user found" };
+      return { userNotFoundError: "No user found" };
     }
-    return { user };
+
+    const accessToken = createAccessToken(user);
+    return { accessToken: accessToken };
+
   } catch (error: any) {
     return { error: "Internal server error" };
   }
 }
 
-async function checkExistingUser(userData: any): Promise<UserResult | undefined> {
+export async function getUserByUsername(req: Request, res: Response) {
+  const { username } = req.params;
+  try {
+    const userRes = await fetchUserByUserName(username);
+    if (userRes.userNotFoundError) {
+      res.status(200).json({ userNotFoundError: userRes.userNotFoundError });
+      return;
+    }
+
+    const { accessToken } = userRes;
+    if (accessToken) {
+      res.status(200).json({ accessToken: accessToken });
+      return;
+    }
+    res.status(404).json({ existError: "User does not exist" });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+}
+
+
+async function checkExistingUser(userData: any): Promise<AccessTokenResult | undefined> {
 
   const existingUsername = await db.user.findUnique({
     where: { username: userData.username },
@@ -65,68 +82,57 @@ async function checkExistingUser(userData: any): Promise<UserResult | undefined>
   return undefined;
 }
 
-export async function createUser(
-  req: Request,
-  res: Response
-): Promise<UserResult> {
+export async function createUser(req: Request, res: Response): Promise<AccessTokenResult> {
   try {
     const { preferences, ...userData } = req.body;
-    const userExistsError = await checkExistingUser(userData);
+    const userRes = await checkExistingUser(userData);
 
-    if (userExistsError?.usernameError || userExistsError?.emailError) {
-      return userExistsError;
+    if (userRes?.usernameError || userRes?.emailError) {
+      return { error: "User already exists", usernameError: userRes.usernameError, emailError: userRes.emailError };
     }
 
-    fixCreateUserData(userData);
-
+    encryptPassword(userData);
     const { games, ...preferencesData } = preferences;
 
-    const createdUser = await db.user.create({
-      data: {
-        ...userData,
-        preferences: {
-          create: {
-            ...preferencesData,
-            games: {
-              connect: games,
-            },
-          },
-        },
-      },
-      include: {
-        preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
-      },
-    });
-    return { user: createdUser };
+    const createdUser = await createUserInDatabase(userData, preferencesData);
+    const accessToken = createAccessToken(createdUser);
+
+    return { accessToken: accessToken };
 
   } catch (error: any) {
-    console.error(error);
     return { error: "Internal server error" };
   }
 }
 
-function fixCreateUserData(userData: any) {
+async function createUserInDatabase(userData: User, preferences: UserPreferences): Promise<User> {
+  return await db.user.create({
+    data: {
+      ...userData,
+      preferences: {
+        create: {
+          ...preferences,
+        },
+      },
+    },
+    include: {
+      preferences: {
+        include: { games: true }
+      }
+    },
+  });
+}
+
+function encryptPassword(userData: User) {
   const { password } = userData;
   if (password) {
+    const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
     userData.password = hash;
   }
-
 }
 
-export async function updateUser(req: Request, res: Response): Promise<void> {
+export async function updateUser(req: Request, res: Response) {
   try {
     const { preferences, id, iat, ...userData } = req.body;
     const { username, email } = userData;
@@ -142,7 +148,7 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
 
     if (email !== existingUser.email) {
       const existingEmail = await db.user.findUnique({
-        where: { email: userData.email },
+        where: { email },
       });
       if (existingEmail) {
         res.status(400).json({ emailError: "Email already exists" });
@@ -150,41 +156,39 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
       }
     }
 
-    const updatedUser = await db.user.update({
-      where: { username },
-      data: {
-        ...userData,
-        preferences: {
-          update: {
-            ...preferences,
-            games: {
-              set: [],
-              connect: preferences.games.map((game: any) => ({ id: game.id })),
-            },
-          },
-        },
-      },
-      include: {
-        preferences: {
-          select: {
-            region: true,
-            voice: true,
-            platform: true,
-            teammate_platform: true,
-            preferred_gender: true,
-            min_age: true,
-            max_age: true,
-            games: true,
-          },
-        },
-      },
-    });
+    const updatedUser = await updateUserInDatabase(username, userData, preferences);
+    const accessToken = createAccessToken(updatedUser);
 
-    const accessToken = jwt.sign(updatedUser, process.env.JWT_SECRET_TOKEN as string);
-
-    res.status(200).json({ user: updatedUser, accessToken });
+    res.status(200).json({ accessToken: accessToken });
   } catch (error: any) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+async function updateUserInDatabase(username: string, userData: any, preferences: any) {
+  const { id, userId, ...preferencesOmitID } = preferences;
+
+  return await db.user.update({
+    where: { username },
+    data: {
+      ...userData,
+      preferences: {
+        delete: true,
+        create: {
+          ...preferencesOmitID,
+          games: {
+            connect: preferencesOmitID.games.map((game: any) => ({ id: game.id })),
+          },
+        },
+      },
+    },
+    include: {
+      preferences: {
+        include: {
+          games: true,
+        }
+      }
+    },
+  });
 }

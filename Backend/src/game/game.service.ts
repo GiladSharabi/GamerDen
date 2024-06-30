@@ -14,8 +14,8 @@ export const getAllGames = async (req: Request, res: Response) => {
             },
         });
         res.status(200).json(allGames);
-    } catch (e: any) {
-        res.status(500).json(e);
+    } catch (error: any) {
+        res.status(500).json("Internal server error");
     }
 }
 
@@ -32,8 +32,8 @@ export const getGameByID = async (req: Request, res: Response) => {
         } else {
             res.status(404).json({ error: 'Game not found' });
         }
-    } catch (e: any) {
-        res.status(500).json(e);
+    } catch (error: any) {
+        res.status(500).json("Internal server error");
     }
 }
 
@@ -50,7 +50,7 @@ export const getGameByName = async (req: Request, res: Response) => {
         } else {
             res.status(404).json({ error: 'Game not found' });
         }
-    } catch (e: any) {
-        res.status(500).json(e);
+    } catch (error: any) {
+        res.status(500).json("Internal server error");
     }
 }

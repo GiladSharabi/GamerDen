@@ -1,4 +1,4 @@
-import { Typography, ToggleButton, ToggleButtonGroup, Grid, ThemeProvider } from "@mui/material";
+import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
 import { MouseEvent } from "react";
 import { Platform } from "../../api/types";
 import theme from "../Theme";
@@ -18,35 +18,33 @@ const PlatformSelector = ({
   const platformValues = Object.values(Platform);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid className="mb-2">
-        <Typography gutterBottom>
-          {label}
-        </Typography>
-        <ToggleButtonGroup
-          color="secondary"
-          value={selectedPlatforms}
-          exclusive={false}
-          fullWidth
-          onChange={(event, newValue) => onChange(event, newValue)}
-        >
-          {platformValues.map((platform) => (
-            <ToggleButton key={platform} value={platform}
-              sx={{
-                '&.Mui-selected': {
-                  backgroundColor: theme.palette.primary.main,
-                  color: '#fff',
-                },
-              }}
+    <Grid className="mb-2">
+      <Typography gutterBottom>
+        {label}
+      </Typography>
+      <ToggleButtonGroup
+        color="secondary"
+        value={selectedPlatforms}
+        exclusive={false}
+        fullWidth
+        onChange={(event, newValue) => onChange(event, newValue)}
+      >
+        {platformValues.map((platform) => (
+          <ToggleButton key={platform} value={platform}
+            sx={{
+              '&.Mui-selected': {
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
+              },
+            }}
 
-            >
-              {platform}
-            </ToggleButton>
-          ))}
+          >
+            {platform}
+          </ToggleButton>
+        ))}
 
-        </ToggleButtonGroup>
-      </Grid>
-    </ThemeProvider>
+      </ToggleButtonGroup>
+    </Grid>
   );
 };
 export default PlatformSelector;

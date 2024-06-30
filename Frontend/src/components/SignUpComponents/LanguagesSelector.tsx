@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { TextField, Chip, Box, ThemeProvider } from "@mui/material";
+import { TextField, Chip, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { languages as LanguageListing } from "../../languages.json";
-import theme from "../Theme";
 
 type LanguageSelectorProps = {
   languages: string[];
@@ -35,35 +34,33 @@ const LanguageSelector = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="mt-2">
-        <Autocomplete
-          options={allLanguages}
-          freeSolo
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Language"
-              error={Boolean(languageError)}
-              helperText={languageError}
-            />
-          )}
-          onChange={(event, value) => value && handleAddLanguage(value)}
-        />
-        <Box marginTop={1}>
-          {languages.map((language) => (
-            <Chip
-              key={language}
-              label={language}
-              onDelete={() => handleRemoveLanguage(language)}
-              variant="filled"
-              color="primary"
-              style={{ margin: '2px' }}
-            />
-          ))}
-        </Box>
-      </Box >
-    </ThemeProvider>
+    <Box className="mt-2">
+      <Autocomplete
+        options={allLanguages}
+        freeSolo
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Select Language"
+            error={Boolean(languageError)}
+            helperText={languageError}
+          />
+        )}
+        onChange={(event, value) => value && handleAddLanguage(value)}
+      />
+      <Box marginTop={1}>
+        {languages.map((language) => (
+          <Chip
+            key={language}
+            label={language}
+            onDelete={() => handleRemoveLanguage(language)}
+            variant="filled"
+            color="primary"
+            style={{ margin: '2px' }}
+          />
+        ))}
+      </Box>
+    </Box >
   );
 };
 
