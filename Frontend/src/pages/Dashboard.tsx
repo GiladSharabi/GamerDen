@@ -6,10 +6,10 @@ import UserCards from "../components/UserCards";
 import { Box } from "@mui/material";
 import Loading from "../components/Loading";
 
-const LoggedinHomePage = () => {
+const Dashboard = () => {
   const authContext = useContext(AuthContext);
   if (!authContext) {
-    return <Loading />
+    return <Loading />;
   }
   const { user, setUser } = authContext;
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,7 @@ const LoggedinHomePage = () => {
   }, [user]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   const handleSubmit = (tempPreferences: UserPreferences) => {
@@ -39,4 +39,4 @@ const LoggedinHomePage = () => {
   );
 };
 
-export default LoggedinHomePage;
+export default Dashboard;

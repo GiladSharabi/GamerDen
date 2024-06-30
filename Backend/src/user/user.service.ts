@@ -18,17 +18,18 @@ function createAccessToken(user: User): string {
   return jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
 }
 
-export async function fetchUserByUserName(username: string): Promise<AccessTokenResult> {
+export async function fetchUserByUserName(
+  username: string
+): Promise<AccessTokenResult> {
   try {
     const user = await db.user.findUnique({
       where: { username },
       include: {
         preferences: {
-          include: { games: true }
-        }
+          include: { games: true },
+        },
       },
-    },
-    );
+    });
 
     if (!user) {
       return { userNotFoundError: "No user found" };
@@ -36,7 +37,6 @@ export async function fetchUserByUserName(username: string): Promise<AccessToken
 
     const accessToken = createAccessToken(user);
     return { accessToken: accessToken };
-
   } catch (error: any) {
     return { error: "Internal server error" };
   }
@@ -46,25 +46,25 @@ export async function getUserByUsername(req: Request, res: Response) {
   const { username } = req.params;
   try {
     const userRes = await fetchUserByUserName(username);
-    if (userRes.userNotFoundError) {
-      res.status(200).json({ userNotFoundError: userRes.userNotFoundError });
-      return;
-    }
+    // if (userRes.userNotFoundError) {
+    //   res.status(200).json({ userNotFoundError: userRes.userNotFoundError });
+    //   return;
+    // }
 
     const { accessToken } = userRes;
     if (accessToken) {
       res.status(200).json({ accessToken: accessToken });
       return;
     }
-    res.status(404).json({ existError: "User does not exist" });
+    res.status(200).json({ existError: "User does not exist" });
   } catch (error: any) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-
-async function checkExistingUser(userData: any): Promise<AccessTokenResult | undefined> {
-
+async function checkExistingUser(
+  userData: any
+): Promise<AccessTokenResult | undefined> {
   const existingUsername = await db.user.findUnique({
     where: { username: userData.username },
   });
@@ -82,13 +82,20 @@ async function checkExistingUser(userData: any): Promise<AccessTokenResult | und
   return undefined;
 }
 
-export async function createUser(req: Request, res: Response): Promise<AccessTokenResult> {
+export async function createUser(
+  req: Request,
+  res: Response
+): Promise<AccessTokenResult> {
   try {
     const { preferences, ...userData } = req.body;
     const userRes = await checkExistingUser(userData);
 
     if (userRes?.usernameError || userRes?.emailError) {
-      return { error: "User already exists", usernameError: userRes.usernameError, emailError: userRes.emailError };
+      return {
+        error: "User already exists",
+        usernameError: userRes.usernameError,
+        emailError: userRes.emailError,
+      };
     }
 
     encryptPassword(userData);
@@ -98,13 +105,15 @@ export async function createUser(req: Request, res: Response): Promise<AccessTok
     const accessToken = createAccessToken(createdUser);
 
     return { accessToken: accessToken };
-
   } catch (error: any) {
     return { error: "Internal server error" };
   }
 }
 
-async function createUserInDatabase(userData: User, preferences: UserPreferences): Promise<User> {
+async function createUserInDatabase(
+  userData: User,
+  preferences: UserPreferences
+): Promise<User> {
   return await db.user.create({
     data: {
       ...userData,
@@ -116,8 +125,8 @@ async function createUserInDatabase(userData: User, preferences: UserPreferences
     },
     include: {
       preferences: {
-        include: { games: true }
-      }
+        include: { games: true },
+      },
     },
   });
 }
@@ -156,17 +165,25 @@ export async function updateUser(req: Request, res: Response) {
       }
     }
 
-    const updatedUser = await updateUserInDatabase(username, userData, preferences);
+    const updatedUser = await updateUserInDatabase(
+      username,
+      userData,
+      preferences
+    );
     const accessToken = createAccessToken(updatedUser);
 
     res.status(200).json({ accessToken: accessToken });
   } catch (error: any) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-async function updateUserInDatabase(username: string, userData: any, preferences: any) {
+async function updateUserInDatabase(
+  username: string,
+  userData: any,
+  preferences: any
+) {
   const { id, userId, ...preferencesOmitID } = preferences;
 
   return await db.user.update({
@@ -178,7 +195,9 @@ async function updateUserInDatabase(username: string, userData: any, preferences
         create: {
           ...preferencesOmitID,
           games: {
-            connect: preferencesOmitID.games.map((game: any) => ({ id: game.id })),
+            connect: preferencesOmitID.games.map((game: any) => ({
+              id: game.id,
+            })),
           },
         },
       },
@@ -187,8 +206,8 @@ async function updateUserInDatabase(username: string, userData: any, preferences
       preferences: {
         include: {
           games: true,
-        }
-      }
+        },
+      },
     },
   });
 }

@@ -87,6 +87,7 @@ export async function getGames(limit?: number): Promise<Game[]> {
 export async function getUserByUsername(username: string): Promise<UserResult> {
   try {
     const response = await instance.get(`/users/${username}`);
+    console.log("response: ", response);
     if (response.data.existError) {
       return { existError: response.data.existError };
     }

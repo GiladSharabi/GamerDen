@@ -5,7 +5,7 @@ import Login from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUp from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
-import LoggedinHomePage from "./pages/LoggedinHomePage";
+import Dashboard from "./pages/Dashboard";
 import AccountPage from "./pages/AccountPage";
 import EditGamingPreferencesPage from "./pages/EditGamingPreferencesPage";
 import EditPersonalDetailsPage from "./pages/EditPersonalDetailsPage";
@@ -20,7 +20,7 @@ import theme from "./components/Theme";
 const AppRoutes = () => {
   const authContext = useContext(AuthContext);
   if (!authContext) {
-    return <Loading />
+    return <Loading />;
   }
   const { user } = authContext;
 
@@ -30,20 +30,62 @@ const AppRoutes = () => {
         <NavBar />
         <Box className="overflow-auto h-screen w-screen">
           <Routes>
-            <Route path="/" element={user === NullUser ? <HomePage /> : <Navigate to="/dashboard" />} />
-            <Route path="/login" element={user === NullUser ? <Login /> : <Navigate to="/dashboard" />} />
-            <Route path="/sign-up" element={user === NullUser ? <SignUp /> : <Navigate to="/dashboard" />} />
-            <Route path="/account" element={user === NullUser ? <Navigate to="/login" /> : <AccountPage />} />
+            <Route
+              path="/"
+              element={
+                user === NullUser ? <HomePage /> : <Navigate to="/dashboard" />
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                user === NullUser ? <Login /> : <Navigate to="/dashboard" />
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                user === NullUser ? <SignUp /> : <Navigate to="/dashboard" />
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                user === NullUser ? <Navigate to="/login" /> : <AccountPage />
+              }
+            />
             <Route
               path="/edit-personal-details"
-              element={user === NullUser ? <Navigate to="/login" /> : <EditPersonalDetailsPage />}
+              element={
+                user === NullUser ? (
+                  <Navigate to="/login" />
+                ) : (
+                  <EditPersonalDetailsPage />
+                )
+              }
             />
             <Route
               path="/edit-gaming-preferences"
-              element={user === NullUser ? <Navigate to="/login" /> : <EditGamingPreferencesPage />}
+              element={
+                user === NullUser ? (
+                  <Navigate to="/login" />
+                ) : (
+                  <EditGamingPreferencesPage />
+                )
+              }
             />
-            <Route path="/dashboard" element={user === NullUser ? <Navigate to="/login" /> : <LoggedinHomePage />} />
-            <Route path="/profile/:username" element={user === NullUser ? <Navigate to="/login" /> : <ProfilePage />} />
+            <Route
+              path="/dashboard"
+              element={
+                user === NullUser ? <Navigate to="/login" /> : <Dashboard />
+              }
+            />
+            <Route
+              path="/profile/:username"
+              element={
+                user === NullUser ? <Navigate to="/login" /> : <ProfilePage />
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Box>

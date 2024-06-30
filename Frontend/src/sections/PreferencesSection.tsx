@@ -79,77 +79,71 @@ const PreferencesSection = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container className="flex justify-center mt-10 mb-20">
-        <Box
-          sx={{
-            p: 6,
-            background: "rgba(255, 255, 255, 0.8)",
-            backdropFilter: "blur(5px)",
-            borderRadius: 4,
-            width: "600px",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-          }}
-        >
-          {useExistingButton && (
-            <UsePreferencesSelector
-              isUse={useGamingPreferences}
-              onChange={handleUseGamingPrefClick}
-            />
-          )}
-          <GameSelector
-            selectedGames={tempPreferences.games}
-            onChange={handleGamesChange}
+    <Grid container className="flex justify-center mt-10 mb-20">
+      <Box
+        sx={{
+          p: 6,
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(5px)",
+          borderRadius: 4,
+          width: "600px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        {useExistingButton && (
+          <UsePreferencesSelector
+            isUse={useGamingPreferences}
+            onChange={handleUseGamingPrefClick}
           />
-          <PlatformSelector
-            label="Select Platform"
-            selectedPlatforms={tempPreferences.platform}
-            onChange={(event, newPlatform) =>
-              handlePreferenceChange("platform", newPlatform)
-            }
-          />
-          <RegionSelector
-            region={tempPreferences.region}
-            onChange={(selectedRegion) =>
-              handlePreferenceChange("region", selectedRegion)
-            }
-          />
-          <PreferredGenderSelector
-            selectedGender={tempPreferences.preferred_gender}
-            onChange={(gender) =>
-              handlePreferenceChange("preferred_gender", gender)
-            }
-          />
+        )}
+        <GameSelector
+          selectedGames={tempPreferences.games}
+          onChange={handleGamesChange}
+        />
+        <PlatformSelector
+          label="Select Platform"
+          selectedPlatforms={tempPreferences.platform}
+          onChange={(event, newPlatform) =>
+            handlePreferenceChange("platform", newPlatform)
+          }
+        />
+        <RegionSelector
+          region={tempPreferences.region}
+          onChange={(selectedRegion) =>
+            handlePreferenceChange("region", selectedRegion)
+          }
+        />
+        <PreferredGenderSelector
+          selectedGender={tempPreferences.preferred_gender}
+          onChange={(gender) =>
+            handlePreferenceChange("preferred_gender", gender)
+          }
+        />
 
-          <PlatformSelector
-            label="Select teammate Platforms"
-            selectedPlatforms={tempPreferences.teammate_platform}
-            onChange={(event, newPlatform) =>
-              handlePreferenceChange("teammate_platform", newPlatform)
-            }
-          />
-          <AgeRangeSelector
-            useUserRange={useExistingPreferences}
-            min_age={tempPreferences.min_age}
-            max_age={tempPreferences.max_age}
-            onChange={handleAgeRangeChange}
-          />
-          <VoiceSelector
-            isVoice={tempPreferences.voice}
-            onChange={handleVoiceClick}
-          />
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <Button
-              onClick={handleButtonClick}
-              variant="contained"
-              size="medium"
-            >
-              {buttonLabel}
-            </Button>
-          </Box>
+        <PlatformSelector
+          label="Select teammate Platforms"
+          selectedPlatforms={tempPreferences.teammate_platform}
+          onChange={(event, newPlatform) =>
+            handlePreferenceChange("teammate_platform", newPlatform)
+          }
+        />
+        <AgeRangeSelector
+          useUserRange={useExistingPreferences}
+          min_age={tempPreferences.min_age}
+          max_age={tempPreferences.max_age}
+          onChange={handleAgeRangeChange}
+        />
+        <VoiceSelector
+          isVoice={tempPreferences.voice}
+          onChange={handleVoiceClick}
+        />
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Button onClick={handleButtonClick} variant="contained" size="medium">
+            {buttonLabel}
+          </Button>
         </Box>
-      </Grid>
-    </ThemeProvider>
+      </Box>
+    </Grid>
   );
 };
 

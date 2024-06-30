@@ -7,7 +7,7 @@ const games: Game[] = await getGames(5);
 
 const users: User[] = [
   {
-    username: "itamarthedoggggg",
+    username: "gilash",
     password: "123",
     email: "itamar@gmail.com",
     dob: new Date(1995, 7, 25),
