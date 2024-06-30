@@ -8,7 +8,7 @@ import {
   Grid,
   Typography,
   ThemeProvider,
-  Rating
+  Rating,
 } from "@mui/material";
 import { Chat, Gamepad, Person } from "@mui/icons-material";
 import { FaDiscord } from "react-icons/fa";
@@ -16,6 +16,7 @@ import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { User, Gender } from "../api/types";
 import theme from "./Theme";
 import { useState } from "react";
+import GamesList from "./GamesList";
 
 type CardProps = {
   user: User;
@@ -33,14 +34,19 @@ const UserCard = ({ user }: CardProps) => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
   };
 
   const getRating = (): number => {
-    return user.rating && user.rating_count ? user.rating / user.rating_count : 0;
+    return user.rating && user.rating_count
+      ? user.rating / user.rating_count
+      : 0;
   };
 
   return (
@@ -59,7 +65,11 @@ const UserCard = ({ user }: CardProps) => {
             <Grid item>
               <Link to={`/profile/${user.username}`}>
                 <Avatar>
-                  {user.avatar ? <img src={`${user.avatar}`} alt="Avatar" /> : <Person />}
+                  {user.avatar ? (
+                    <img src={`${user.avatar}`} alt="Avatar" />
+                  ) : (
+                    <Person />
+                  )}
                 </Avatar>
               </Link>
             </Grid>
@@ -71,9 +81,9 @@ const UserCard = ({ user }: CardProps) => {
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 {user.gender === Gender.Male ? (
-                  <IoMdMale color="blue" size={20} className="mr-1" />
+                  <IoMdMale color="blue" size={20} className="mr-2" />
                 ) : (
-                  <IoMdFemale color="pink" size={20} className="mr-1" />
+                  <IoMdFemale color="pink" size={20} className="mr-2" />
                 )}
                 <Typography>{calculateAge(user.dob)}</Typography>
                 <Typography sx={{ ml: 1 }}>{user.country}</Typography>
@@ -87,28 +97,16 @@ const UserCard = ({ user }: CardProps) => {
           </Box>
           <Box mt={2}>
             <Grid container spacing={1} alignItems="center">
-              <Grid item><Gamepad /></Grid>
+              <Grid item>
+                <Gamepad />
+              </Grid>
               <Grid item>
                 <Typography variant="body1" color="primary">
                   Games:
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container mt={1} spacing={1} justifyContent="start">
-              {user.preferences.games.slice(0, 4).map((game, index) => (
-                <Grid item key={index}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      className="game-image mb-2 mr-2"
-                      src={game.cover}
-                      alt={game.name}
-                      style={{ width: 30, height: 30 }}
-                    />
-                    <Typography>{game.name}</Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+            <GamesList games={user.preferences.games} initialSlice={4} />
           </Box>
           <Box mt={2} textAlign="center">
             <Rating
@@ -128,8 +126,8 @@ const UserCard = ({ user }: CardProps) => {
                 color="text.primary"
                 sx={{ mt: 2 }}
               >
-                <FaDiscord style={{ fontSize: "1.5rem", marginRight: "0.5rem" }} />
-                <Typography variant="body1" fontWeight="bold">
+                <FaDiscord className="text-white text-2xl mr-2" />
+                <Typography variant="body1" fontWeight="bold" color="white">
                   {user.discord}
                 </Typography>
               </Box>

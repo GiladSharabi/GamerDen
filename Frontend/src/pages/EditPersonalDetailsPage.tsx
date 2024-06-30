@@ -13,7 +13,7 @@ const EditPersonalDetailsPage = () => {
   const [emailError, setEmailError] = useState<string>("");
 
   if (!authContext) {
-    return <Loading />
+    return <Loading />;
   }
 
   const { user, setUser } = authContext;
@@ -29,18 +29,12 @@ const EditPersonalDetailsPage = () => {
         setEmailError("Email already exists.");
       }
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
     }
   };
 
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="start"
-      spacing={2}
-      sx={{ p: 2 }}
-    >
+    <Grid container justifyContent="center" alignItems="start" sx={{ p: 2 }}>
       <EditPersonalDetailsSection
         user={user}
         buttonLabel="Save"

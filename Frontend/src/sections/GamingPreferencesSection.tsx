@@ -1,13 +1,21 @@
-import { Box, Grid, Typography, Button, ThemeProvider, List, ListItem, ListItemText } from "@mui/material";
+import { Box, Grid, Typography, Button, ThemeProvider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { MdModeEditOutline, MdMic, MdMicOff } from "react-icons/md";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import Loading from "../components/Loading";
 import theme from "../components/Theme";
-import backgroundImage from "../assets/images/background-black.jpg";
+import MyDivider from "../components/MyDivider";
+import GamesList from "../components/GamesList";
+import { FaComputer, FaXbox, FaPlaystation } from "react-icons/fa6";
+import { Platform, Gender } from "../api/types";
+import { IoMdMale, IoMdFemale } from "react-icons/io";
 
-const GamingPreferencesSection = () => {
+type Props = {
+  isEditable: boolean;
+};
+
+const GamingPreferencesSection = ({ isEditable }: Props) => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
@@ -24,84 +32,125 @@ const GamingPreferencesSection = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid item xs={12} sm={6} md={4} lg={3} sx={{ marginBottom: 10 }}>
+      <Grid item xs={12} sm={6} md={4} lg={3} marginBottom={10}>
         <Box
-          className="mx-auto max-w-xl text-white rounded-lg shadow-lg p-4 w-1/3"
+          className="mx-auto shadow-lg p-4 mb-1"
           sx={{
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow: "0 8px 16px rgba(0,0,0,1)", // Intense shadow
+            background: "rgba(255, 255, 255, 0.8)",
+            backdropFilter: "blur(5px)",
+            borderRadius: 10,
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+            width: "600px",
           }}
         >
-          <Typography variant="h6" color="primary" className="text-lg text-center mb-2">
+          <Typography
+            variant="h5"
+            color="primary"
+            className="text-lg text-center mb-2"
+          >
             My Gaming Preferences
           </Typography>
-          <List dense>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Games:`}
-                secondary={preferences.games.length === 0 ? "No games selected yet" : preferences.games.map((game) => game.name).join(", ")}
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Platform: `}
-                secondary={preferences.platform.join(", ")}
-                className="font-bold"
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Region: `}
-                secondary={preferences.region}
-                className="font-bold"
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Preferred Gender:`}
-                secondary={preferences.preferred_gender}
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Teammate Platform: `}
-                secondary={preferences.teammate_platform.join(", ")}
-                className="font-bold"
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Voice:`}
-                secondary={
-                  preferences.voice ? (
-                    <MdMic size={20} className="text-green-500" />
-                  ) : (
-                    <MdMicOff size={20} className="text-red-500" />
-                  )
-                }
-              />
-            </ListItem>
-            <ListItem sx={{ py: 1 }}>
-              <ListItemText
-                primary={`Age Range:`}
-                secondary={`${user.preferences.min_age} - ${user.preferences.max_age}`}
-              />
-            </ListItem>
-          </List>
-          <Grid container justifyContent="center">
-            <Button
-              startIcon={<MdModeEditOutline />}
-              variant="contained"
-              color="primary"
-              size="medium"
-              onClick={handleEditGamingPreferences}
-              className="mt-4"
-            >
-              Edit Preferences
-            </Button>
-          </Grid>
+          <MyDivider color="black" />
+          <Box p={2}>
+            <Typography fontWeight="bold">Games:</Typography>
+            <GamesList games={preferences.games} />
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Platform:
+            </Typography>
+            {preferences.platform.map((platform) => (
+              <>
+                {platform === Platform.PC && (
+                  <FaComputer className="mr-3 size-7" />
+                )}
+                {platform === Platform.Playstation && (
+                  <FaPlaystation className="mr-3 size-7" />
+                )}
+                {platform === Platform.Xbox && (
+                  <FaXbox className="mr-3 size-7" />
+                )}
+              </>
+            ))}
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Region:
+            </Typography>
+            <Typography>{preferences.region}</Typography>
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Preferred Gender:
+            </Typography>
+            {preferences.preferred_gender === Gender.Male && (
+              <IoMdMale className="size-6 text-blue-700" />
+            )}
+            {preferences.preferred_gender === Gender.Female && (
+              <IoMdFemale className="size-6 text-pink-400" />
+            )}
+            {preferences.preferred_gender === Gender.Both && (
+              <>
+                <IoMdMale className="size-6 text-blue-700 mr-1" />
+                <IoMdFemale className="size-6 text-pink-400" />
+              </>
+            )}
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Teammate Platform:
+            </Typography>
+            {preferences.teammate_platform.map((platform) => (
+              <>
+                {platform === Platform.PC && (
+                  <FaComputer className="mr-3 size-7" />
+                )}
+                {platform === Platform.Playstation && (
+                  <FaPlaystation className="mr-3 size-7" />
+                )}
+                {platform === Platform.Xbox && (
+                  <FaXbox className="mr-3 size-7" />
+                )}
+              </>
+            ))}
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Voice:
+            </Typography>
+            {preferences.voice ? (
+              <MdMic size={25} className="text-green-500" />
+            ) : (
+              <MdMicOff size={25} className="text-red-500" />
+            )}
+          </Box>
+          <MyDivider color="black" />
+          <Box display="flex" alignItems="center" p={2}>
+            <Typography fontWeight="bold" flexShrink={0} mr={1}>
+              Age Range:
+            </Typography>
+            <Typography>{`${preferences.min_age} - ${preferences.max_age}`}</Typography>
+          </Box>
+          <MyDivider color="black" />
+          {isEditable && (
+            <Grid container justifyContent="center">
+              <Button
+                startIcon={<MdModeEditOutline />}
+                variant="contained"
+                color="primary"
+                size="medium"
+                onClick={handleEditGamingPreferences}
+                className="mt-4"
+              >
+                Edit Preferences
+              </Button>
+            </Grid>
+          )}
         </Box>
       </Grid>
     </ThemeProvider>

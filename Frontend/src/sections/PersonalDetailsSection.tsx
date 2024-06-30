@@ -1,4 +1,11 @@
-import { Avatar, Box, Typography, Button, Rating, ThemeProvider } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Button,
+  Rating,
+  ThemeProvider,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 import { Gender } from "../api/types";
@@ -11,7 +18,11 @@ import { FaDiscord } from "react-icons/fa";
 import Loading from "../components/Loading";
 import theme from "../components/Theme";
 
-const PersonalDetailsSection = () => {
+type Props = {
+  isEditable: boolean;
+};
+
+const PersonalDetailsSection = ({ isEditable }: Props) => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
@@ -50,26 +61,29 @@ const PersonalDetailsSection = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        className="flex justify-center items-center flex-row flex-wrap p-4"
+        className="flex justify-start items-center p-4 mt-5"
         sx={{
           background: "rgba(255, 255, 255, 0.8)",
           backdropFilter: "blur(5px)",
           borderRadius: 10,
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-          p: 2,
+          width: "600px",
           mb: 1,
-          width: "600px"
         }}
       >
-        <Avatar sx={{ width: 100, height: 100, mr: 2 }}>
+        <Avatar sx={{ width: 200, height: 200, mr: 2 }}>
           {user.avatar ? (
-            <Box component="img" src={`${user.avatar}`} className="w-full h-full" />
+            <Box
+              component="img"
+              src={`${user.avatar}`}
+              className="w-full h-full"
+            />
           ) : (
             <Person sx={{ width: "95%", height: "95%" }} />
           )}
         </Avatar>
 
-        <Box marginRight={2}>
+        <Box flex="1">
           <Typography variant="h6" fontSize={40}>
             {user.username}
           </Typography>
@@ -77,29 +91,29 @@ const PersonalDetailsSection = () => {
             {user.bio}
           </Typography>
 
-          {/* the Box of the gender,age,country */}
+          {/* Gender, Age, Country */}
           <Box className="flex justify-start items-center flex-row flex-wrap pr-2 mb-2">
             {user.gender === Gender.Male ? (
-              <IoMdMale color="blue" size={30} className="mr-2" />
+              <IoMdMale className="size-6 text-blue-700 mr-2" />
             ) : (
-              <IoMdFemale color="pink" size={30} className="mr-2" />
+              <IoMdFemale className="size-6 text-pink-400 mr-2" />
             )}
-            <Typography marginRight={1}>
+            <Typography variant="h6" marginRight={1}>
               {calculateAge(user.dob)}
             </Typography>
-            <Typography >{user?.country}</Typography>
+            <Typography variant="h6">{user?.country}</Typography>
           </Box>
-          {/* languages box */}
-          <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
+          {/* Languages */}
+          <Box className="flex justify-start items-center flex-row flex-wrap mb-2">
             <FaLanguage className="mr-2" size={30} />
-            <Typography >{user.languages.join(", ")}</Typography>
+            <Typography>{user.languages.join(", ")}</Typography>
           </Box>
-          {/* discord box */}
-          <Box className="flex justify-start items-center flex-row flex-nowrap mb-2">
+          {/* Discord */}
+          <Box className="flex justify-start items-center flex-row flex-wrap mb-2">
             <FaDiscord className="mr-2" size={30} />
-            <Typography >{user.discord}</Typography>
+            <Typography>{user.discord}</Typography>
           </Box>
-          <Box>
+          <Box marginBottom={2}>
             <Rating
               name="user-rating"
               value={getRating()}
@@ -107,15 +121,17 @@ const PersonalDetailsSection = () => {
               readOnly
             />
           </Box>
+          {isEditable && (
+            <Button
+              startIcon={<MdModeEditOutline />}
+              variant="contained"
+              size="medium"
+              onClick={handleEditPersonalDetails}
+            >
+              Edit Profile
+            </Button>
+          )}
         </Box>
-        <Button
-          startIcon={<MdModeEditOutline />}
-          variant="contained"
-          size="medium"
-          onClick={handleEditPersonalDetails}
-        >
-          Edit Profile
-        </Button>
       </Box>
     </ThemeProvider>
   );

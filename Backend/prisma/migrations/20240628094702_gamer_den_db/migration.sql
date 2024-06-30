@@ -34,7 +34,7 @@ CREATE TABLE "UserPreferences" (
     "preferred_gender" "Gender" NOT NULL DEFAULT 'None',
     "min_age" INTEGER NOT NULL DEFAULT 18,
     "max_age" INTEGER NOT NULL DEFAULT 100,
-    "userID" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "UserPreferences_pkey" PRIMARY KEY ("id")
 );
@@ -44,14 +44,9 @@ CREATE TABLE "Game" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "cover" TEXT NOT NULL,
+    "userPreferencesId" INTEGER,
 
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_UserPreferencesGames" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -61,19 +56,10 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserPreferences_userID_key" ON "UserPreferences"("userID");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_UserPreferencesGames_AB_unique" ON "_UserPreferencesGames"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_UserPreferencesGames_B_index" ON "_UserPreferencesGames"("B");
+CREATE UNIQUE INDEX "UserPreferences_userId_key" ON "UserPreferences"("userId");
 
 -- AddForeignKey
-ALTER TABLE "UserPreferences" ADD CONSTRAINT "UserPreferences_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserPreferences" ADD CONSTRAINT "UserPreferences_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_UserPreferencesGames" ADD CONSTRAINT "_UserPreferencesGames_A_fkey" FOREIGN KEY ("A") REFERENCES "Game"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_UserPreferencesGames" ADD CONSTRAINT "_UserPreferencesGames_B_fkey" FOREIGN KEY ("B") REFERENCES "UserPreferences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Game" ADD CONSTRAINT "Game_userPreferencesId_fkey" FOREIGN KEY ("userPreferencesId") REFERENCES "UserPreferences"("id") ON DELETE SET NULL ON UPDATE CASCADE;

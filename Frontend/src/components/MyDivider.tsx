@@ -1,12 +1,16 @@
 import { Divider } from "@mui/material";
 
-const MyDivider = () => {
+type Props = {
+  color?: string;
+};
+
+const MyDivider = ({ color = "white" }: Props) => {
   return (
     <Divider
       variant="middle"
       sx={{
         borderBottomWidth: "3px",
-        borderBottomColor: "white",
+        borderBottomColor: color,
         marginTop: 2,
         marginBottom: 2,
       }}

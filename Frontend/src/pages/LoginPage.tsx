@@ -22,7 +22,7 @@ const LoginPage = () => {
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
-    return <Loading />
+    return <Loading />;
   }
   const { AuthLogin } = authContext;
 
@@ -35,6 +35,12 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       if (usernameRef.current && passwordRef.current) {
+        // console.log(
+        //   "username: " +
+        //     usernameRef.current.value +
+        //     " passwor: " +
+        //     passwordRef.current.value
+        // );
         const result = await login(
           usernameRef.current.value,
           passwordRef.current.value
@@ -55,8 +61,9 @@ const LoginPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box className="min-h-screen flex justify-center items-center">
-        <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-md w-full"
-          style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
+        <Grid
+          className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-md w-full"
+          style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)" }}
         >
           <Box className="flex flex-col items-center w-full">
             <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
@@ -102,10 +109,24 @@ const LoginPage = () => {
               >
                 Sign In
               </Button>
-              <Grid container sx={{ justifyContent: "flex-start", alignItems: "center", marginBottom: 2 }}>
+              <Grid
+                container
+                sx={{
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  marginBottom: 2,
+                }}
+              >
                 <Typography variant="body2">
                   Don't have an account?&nbsp;
-                  <Link to="/sign-up" style={{ textDecoration: "none", fontWeight: "bold", cursor: "pointer" }}>
+                  <Link
+                    to="/sign-up"
+                    style={{
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
                     Sign Up
                   </Link>
                 </Typography>

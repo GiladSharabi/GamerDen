@@ -26,7 +26,6 @@ export async function signup(user: User): Promise<UserResult> {
   }
 }
 
-
 export async function getUser(token: string) {
   try {
     const response = await instance.get("/login", {
@@ -54,7 +53,7 @@ export async function updateUser(user: User): Promise<UserResult> {
 
     return response.data;
   } catch (error: any) {
-    console.error('Error updating user:', error);
+    console.error("Error updating user:", error);
     if (error.response) {
       const errorData = error.response.data;
       if (errorData) {
@@ -65,15 +64,16 @@ export async function updateUser(user: User): Promise<UserResult> {
   }
 }
 
-
 export async function login(username: string, password: string) {
   try {
     const response = await instance.post("/login", {
       username,
       password,
     });
-
+    console.log("Response status:", response.status);
+    console.log("Response data:", response.data);
     if (response.data.accessToken) {
+      console.log(response.data.accessToken);
       localStorage.setItem("accessToken", response.data.accessToken);
       return { success: true, accessToken: response.data.accessToken };
     } else {
