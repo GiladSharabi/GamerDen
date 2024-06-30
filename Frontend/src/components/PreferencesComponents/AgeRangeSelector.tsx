@@ -1,6 +1,5 @@
-import { Slider, Box, Typography, ThemeProvider } from "@mui/material";
+import { Slider, Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import theme from "../Theme";
 
 type Props = {
   useUserRange: boolean;
@@ -37,22 +36,20 @@ const AgeRangeSelector = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box>
-        <Typography gutterBottom>
-          What is the age range of your ideal teammates?
-        </Typography>
-        <Slider
-          value={currentRange}
-          onChange={handleChange}
-          valueLabelDisplay="on"
-          min={ageRange.minAge}
-          max={ageRange.maxAge}
-          disableSwap
-          sx={{ marginTop: "30px" }}
-        />
-      </Box>
-    </ThemeProvider>
+    <Box>
+      <Typography gutterBottom>
+        What is the age range of your ideal teammates?
+      </Typography>
+      <Slider
+        value={currentRange}
+        onChange={handleChange}
+        valueLabelDisplay="on"
+        min={ageRange.minAge}
+        max={ageRange.maxAge}
+        disableSwap
+        sx={{ marginTop: "30px" }}
+      />
+    </Box>
   );
 };
 

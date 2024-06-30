@@ -4,15 +4,13 @@ import {
   Grid,
   Typography,
   Button,
-  ThemeProvider,
   FormControl,
   RadioGroup,
   Radio,
   TextField,
   FormControlLabel,
 } from "@mui/material";
-import theme from "../components/Theme";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { User } from "../api/types";
 import { Person } from "@mui/icons-material";
 import MyDivider from "../components/MyDivider";
@@ -115,103 +113,101 @@ const EditPersonalDetailsSection = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container className="flex justify-center mt-10">
-        <Box
-          bgcolor="background.default"
-          p={2}
-          borderRadius={4}
-          display="flex"
-          flexDirection="column"
-          marginBottom={10}
-          sx={{ width: "600px" }}
-        >
-          <Box display="flex" justifyContent="center" mb={2}>
-            <label htmlFor="avatar-upload" style={{ cursor: "pointer" }}>
-              <input
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-              <Avatar sx={{ width: 150, height: 150, cursor: "pointer" }}>
-                {tempUser.avatar ? (
-                  <Box
-                    component="img"
-                    src={`${tempUser.avatar}`}
-                    sx={{ width: "100%", height: "100%" }}
-                  />
-                ) : (
-                  <Person sx={{ width: "95%", height: "95%" }} />
-                )}
-              </Avatar>
-            </label>
-          </Box>
-          <MyDivider />
-          <Box>
-            <TextField
-              error={!!emailError}
-              helperText={emailError}
-              margin="normal"
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              value={tempUser.email}
-              onChange={(e) => handleChange("email", e.target.value)}
+    <Grid container className="flex justify-center mt-10">
+      <Box
+        bgcolor="background.default"
+        p={2}
+        borderRadius={4}
+        display="flex"
+        flexDirection="column"
+        marginBottom={10}
+        sx={{ width: "600px" }}
+      >
+        <Box display="flex" justifyContent="center" mb={2}>
+          <label htmlFor="avatar-upload" style={{ cursor: "pointer" }}>
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
             />
-
-            <FormControl component="fieldset" margin="normal">
-              <Typography gutterBottom>
-                Gender
-              </Typography>
-
-              <RadioGroup
-                name="gender"
-                value={tempUser.gender}
-                onChange={(e) => handleChange("gender", e.target.value)}
-                sx={{ marginBottom: 1 }}
-              >
-                {filteredGenderValues.map((gender: Gender, index) =>
-                  <FormControlLabel
-                    key={index}
-                    value={gender}
-                    control={<Radio />}
-                    label={gender}
-                  />)}
-              </RadioGroup>
-            </FormControl>
-            <Box margin="normal">
-              <DatePickerComponent
-                selectedDate={tempUser.dob}
-                onChange={(date) => handleChange("dob", date || new Date())}
-              />
-            </Box>
-            <CountrySelector
-              country={tempUser.country}
-              onChange={(value) => handleChange("country", value)}
-            ></CountrySelector>
-            <LanguageSelector
-              languages={tempUser.languages}
-              onChange={(languages) => handleChange("languages", languages)}
-            ></LanguageSelector>
-            <BioTextarea
-              bio={tempUser.bio}
-              onChange={(value) => handleChange("bio", value)}
-            ></BioTextarea>
-            <Button
-              onClick={handleSaveClick}
-              variant="contained"
-              size="medium"
-            >
-              {buttonLabel}
-            </Button>
-          </Box>
+            <Avatar sx={{ width: 150, height: 150, cursor: "pointer" }}>
+              {tempUser.avatar ? (
+                <Box
+                  component="img"
+                  src={`${tempUser.avatar}`}
+                  sx={{ width: "100%", height: "100%" }}
+                />
+              ) : (
+                <Person sx={{ width: "95%", height: "95%" }} />
+              )}
+            </Avatar>
+          </label>
         </Box>
-      </Grid>
-    </ThemeProvider>
+        <MyDivider />
+        <Box>
+          <TextField
+            error={!!emailError}
+            helperText={emailError}
+            margin="normal"
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            value={tempUser.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+          />
+
+          <FormControl component="fieldset" margin="normal">
+            <Typography gutterBottom>
+              Gender
+            </Typography>
+
+            <RadioGroup
+              name="gender"
+              value={tempUser.gender}
+              onChange={(e) => handleChange("gender", e.target.value)}
+              sx={{ marginBottom: 1 }}
+            >
+              {filteredGenderValues.map((gender: Gender, index) =>
+                <FormControlLabel
+                  key={index}
+                  value={gender}
+                  control={<Radio />}
+                  label={gender}
+                />)}
+            </RadioGroup>
+          </FormControl>
+          <Box margin="normal">
+            <DatePickerComponent
+              selectedDate={tempUser.dob}
+              onChange={(date) => handleChange("dob", date || new Date())}
+            />
+          </Box>
+          <CountrySelector
+            country={tempUser.country}
+            onChange={(value) => handleChange("country", value)}
+          ></CountrySelector>
+          <LanguageSelector
+            languages={tempUser.languages}
+            onChange={(languages) => handleChange("languages", languages)}
+          ></LanguageSelector>
+          <BioTextarea
+            bio={tempUser.bio}
+            onChange={(value) => handleChange("bio", value)}
+          ></BioTextarea>
+          <Button
+            onClick={handleSaveClick}
+            variant="contained"
+            size="medium"
+          >
+            {buttonLabel}
+          </Button>
+        </Box>
+      </Box>
+    </Grid>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, ThemeProvider, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { NullUser, User, Gender } from "../api/types";
 import UserDetails from "../components/SignUpComponents/UserDetails";
@@ -78,52 +78,50 @@ const SignUp = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="min-h-screen flex justify-center items-center overflow-auto">
-        <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-lg w-full mt-10 mb-20"
-          style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
-        >
-          <Box className="flex flex-col items-center p-8">
-            <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
-              <PersonAdd />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Box component="form" sx={{ mt: 3 }}>
+    <Box className="min-h-screen flex justify-center items-center overflow-auto">
+      <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-lg w-full mt-10 mb-20"
+        style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
+      >
+        <Box className="flex flex-col items-center p-8">
+          <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+            <PersonAdd />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+          <Box component="form" sx={{ mt: 3 }}>
 
-              <UserDetails
-                user={user}
-                confirmPassword={confirmPassword}
-                onChange={handleUserChange}
-                onConfirmPasswordChange={setConfirmPassword}
-                errors={errors}
-              />
+            <UserDetails
+              user={user}
+              confirmPassword={confirmPassword}
+              onChange={handleUserChange}
+              onConfirmPasswordChange={setConfirmPassword}
+              errors={errors}
+            />
 
-              <DatePickerComponent
-                selectedDate={user.dob}
-                onChange={(date) => handleUserChange("dob", date)}
-              />
-              <CountrySelector
-                country={user.country}
-                onChange={(country) => handleUserChange("country", country)}
-                countryError={errors.country}
-              />
-              <LanguageSelector
-                languages={user.languages}
-                onChange={(languages) => handleUserChange("languages", languages)}
-                languageError={errors.languages}
-              />
-              <BioTextarea
-                bio={user.bio}
-                onChange={(value) => handleUserChange("bio", value)}
-              />
-              <SubmitButton onClick={handleSubmit} />
-            </Box>
+            <DatePickerComponent
+              selectedDate={user.dob}
+              onChange={(date) => handleUserChange("dob", date)}
+            />
+            <CountrySelector
+              country={user.country}
+              onChange={(country) => handleUserChange("country", country)}
+              countryError={errors.country}
+            />
+            <LanguageSelector
+              languages={user.languages}
+              onChange={(languages) => handleUserChange("languages", languages)}
+              languageError={errors.languages}
+            />
+            <BioTextarea
+              bio={user.bio}
+              onChange={(value) => handleUserChange("bio", value)}
+            />
+            <SubmitButton onClick={handleSubmit} />
           </Box>
-        </Grid>
-      </Box>
-    </ThemeProvider>
+        </Box>
+      </Grid>
+    </Box>
   );
 };
 
