@@ -1,28 +1,22 @@
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { MdModeEditOutline, MdMic, MdMicOff } from "react-icons/md";
-import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
 import Loading from "../components/Loading";
-import theme from "../components/Theme";
 import MyDivider from "../components/MyDivider";
 import GamesList from "../components/GamesList";
 import { FaComputer, FaXbox, FaPlaystation } from "react-icons/fa6";
-import { Platform, Gender } from "../api/types";
+import { Platform, Gender, User } from "../api/types";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 
 type Props = {
   isEditable: boolean;
+  user: User;
 };
 
-const GamingPreferencesSection = ({ isEditable }: Props) => {
-  const authContext = useContext(AuthContext);
-
-  if (!authContext) {
+const GamingPreferencesSection = ({ user, isEditable }: Props) => {
+  if (!user) {
     return <Loading />;
   }
-
-  const { user } = authContext;
   const { preferences } = user;
   preferences.games = preferences.games || [];
   const navigate = useNavigate();

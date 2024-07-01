@@ -8,7 +8,7 @@ type Props = {
 };
 
 const GamesList = ({ games = [], initialSlice = 3 }: Props) => {
-  const [slice, setSlice] = useState(initialSlice);
+  const [slice, setSlice] = useState<number>(initialSlice);
 
   const handleMoreClick = () => {
     setSlice((prevSlice) => Math.min(prevSlice + 3, games.length));

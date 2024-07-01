@@ -31,28 +31,18 @@ const LoginPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleLogin = async () => {
-    try {
-      if (usernameRef.current && passwordRef.current) {
-        // console.log(
-        //   "username: " +
-        //     usernameRef.current.value +
-        //     " passwor: " +
-        //     passwordRef.current.value
-        // );
-        const result = await login(
-          usernameRef.current.value,
-          passwordRef.current.value
-        );
-        if (result.accessToken) {
-          setHasError(false);
-          AuthLogin();
-          navigate("/dashboard");
-        } else {
-          setHasError(true);
-        }
+    if (usernameRef.current && passwordRef.current) {
+      const result = await login(
+        usernameRef.current.value,
+        passwordRef.current.value
+      );
+      if (result.accessToken) {
+        setHasError(false);
+        AuthLogin();
+        navigate("/dashboard");
+      } else {
+        setHasError(true);
       }
-    } catch (e) {
-      console.log("Error Signin: ", e);
     }
   };
 

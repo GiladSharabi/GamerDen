@@ -99,6 +99,7 @@ const PreferencesSection = ({
         <GameSelector
           selectedGames={tempPreferences.games}
           onChange={handleGamesChange}
+          useGamingPreferences={useGamingPreferences}
         />
         <PlatformSelector
           label="Select Platform"

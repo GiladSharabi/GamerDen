@@ -18,16 +18,12 @@ const EditGamingPreferencesPage = () => {
   const { user, setUser } = authContext;
 
   const handleSaveClick = async (preferences: UserPreferences) => {
-    try {
-      user.preferences = preferences;
-      const result = await updateUser(user);
+    user.preferences = preferences;
+    const result = await updateUser(user);
 
-      if (result.user) {
-        setUser(result.user);
-        navigate("/account");
-      }
-    } catch (error) {
-      console.error('Error updating user:', error);
+    if (result.user) {
+      setUser(result.user);
+      navigate("/account");
     }
   };
 

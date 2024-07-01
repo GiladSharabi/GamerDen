@@ -12,10 +12,6 @@ import { signup } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
 import theme from "../components/Theme";
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email regex
-const usernameRegex = /^.{6,}$/; // at least 6 characters
-const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // at least 8 characters, 1 number, 1 special char
-
 const SignUp = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>(NullUser);
@@ -37,6 +33,10 @@ const SignUp = () => {
   };
 
   const validateFields = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email
+    const usernameRegex = /^.{6,}$/; // at least 6 characters
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // at least 8 characters, 1 number, 1 special char
+
     const newErrors = {
       username: usernameRegex.test(user.username) ? "" : "Username must be at least 6 characters long.",
       email: user.email && emailRegex.test(user.email) ? "" : "Please enter a valid email.",
@@ -58,22 +58,19 @@ const SignUp = () => {
 
   const handleSubmit = async () => {
     if (validateFields()) {
-      try {
-        const result = await signup(user);
-        if (result.error || result.emailError || result.usernameError) {
-          setErrors(errors => ({
-            ...errors,
-            email: result.emailError || "",
-            username: result.usernameError || "",
-            form: result.error || ""
-          }));
-        } else {
-          navigate("/login");
-        }
-      } catch (e) {
-        console.log("Error in signup:", e);
-        setErrors(errors => ({ ...errors, form: "Error in signup" }));
+
+      const result = await signup(user);
+      if (result.error || result.emailError || result.usernameError) {
+        setErrors(errors => ({
+          ...errors,
+          email: result.emailError || "",
+          username: result.usernameError || "",
+          form: result.error || ""
+        }));
+      } else {
+        navigate("/login");
       }
+      setErrors(errors => ({ ...errors, form: "Error in signup" }));
     }
   };
 

@@ -48,12 +48,15 @@ const UserCard = ({ user }: CardProps) => {
   };
 
   return (
+
     <Card
       sx={{
         background: "rgba(255, 255, 255, 0.8)",
         backdropFilter: "blur(5px)",
         borderRadius: 4,
         width: "325px",
+        minWidth: "325px",
+        margin: "rem",
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
       }}
     >

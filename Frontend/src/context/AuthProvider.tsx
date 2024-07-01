@@ -2,17 +2,27 @@ import { createContext, useState, useEffect, ReactNode, FC } from "react";
 import { NullUser, User } from "../api/types";
 import { jwtDecode } from "jwt-decode";
 
-interface AuthContextType {
+type AuthContextType = {
   user: User;
+  isUserLoading: boolean;
   setUser: React.Dispatch<React.SetStateAction<User>>;
   AuthLogin: () => void;
   AuthLogout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const nullAuthContext: AuthContextType = {
+  user: NullUser,
+  isUserLoading: false,
+  setUser: () => { },
+  AuthLogin: () => { },
+  AuthLogout: () => { },
+};
+
+const AuthContext = createContext<AuthContextType>(nullAuthContext);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>(NullUser);
+  const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
 
   function decodeAndSetUser() {
@@ -20,7 +30,10 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     if (token) {
       const decodedUser: User = jwtDecode(token);
       setUser(decodedUser);
+    } else {
+      setUser(NullUser);
     }
+    setIsUserLoading(false);
   }
 
   useEffect(() => {
@@ -37,7 +50,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, AuthLogin, AuthLogout }}>
+    <AuthContext.Provider value={{ user, isUserLoading, setUser, AuthLogin, AuthLogout }}>
       {children}
     </AuthContext.Provider>
   );

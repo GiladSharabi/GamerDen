@@ -1,4 +1,4 @@
-import { Grid, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import GamingPreferencesSection from "../sections/GamingPreferencesSection";
@@ -12,13 +12,15 @@ const AccountPage = () => {
     return <Loading />;
   }
 
+  const { user } = authContext;
+
   return (
     <Box className="flex flex-col items-center justify-center min-h-screen p-4">
       <Box className="mb-8">
-        <PersonalDetailsSection isEditable={true} />
+        <PersonalDetailsSection user={user} isEditable={true} />
       </Box>
       <Box>
-        <GamingPreferencesSection isEditable={true} />
+        <GamingPreferencesSection user={user} isEditable={true} />
       </Box>
     </Box>
   );

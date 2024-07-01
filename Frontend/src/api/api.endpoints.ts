@@ -22,7 +22,6 @@ export async function signup(user: User): Promise<UserResult> {
         };
       }
     }
-    console.log("signup error: ", error);
     return { error: "Error in signup" };
   }
 }
@@ -61,10 +60,7 @@ export async function login(
       username,
       password,
     });
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
     if (response.data.accessToken) {
-      console.log(response.data.accessToken);
       localStorage.setItem("accessToken", response.data.accessToken);
       return { accessToken: response.data.accessToken };
     }
@@ -79,23 +75,36 @@ export async function getGames(limit?: number): Promise<Game[]> {
     const response = await instance.get(`/games/${limit}`);
     return response.data;
   } catch (error: any) {
-    console.log("Get games error: ", error);
     return [];
   }
 }
 
-export async function getUserByUsername(username: string): Promise<UserResult> {
+export async function getAccessTokenByUsername(username: string): Promise<UserResult> {
   try {
     const response = await instance.get(`/users/${username}`);
-    console.log("response: ", response);
     if (response.data.existError) {
       return { existError: response.data.existError };
     }
     if (response.data.accessToken) {
-      const decodedUser: User = jwtDecode(response.data.accessToken);
-      return { user: decodedUser };
+      return { accessToken: response.data.accessToken };
     }
     return { error: "Unexpected error" };
+  } catch (error: any) {
+    return { error: error };
+  }
+}
+
+export async function findMatchingUsers(user: User) {
+  try {
+    const response = await instance.post(`/users/match`, user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.data.matchError) {
+      return { matchError: response.data.matchError };
+    }
+    return { users: response.data.users };
   } catch (error: any) {
     return { error: error };
   }

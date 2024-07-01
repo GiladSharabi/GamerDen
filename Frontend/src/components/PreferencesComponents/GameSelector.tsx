@@ -7,25 +7,21 @@ import { getGames } from "../../api/api.endpoints";
 type props = {
   selectedGames: Game[];
   onChange: (newGame: Game) => void;
+  useGamingPreferences?: boolean;
 };
 
-const GameSelector = ({ selectedGames = [], onChange }: props) => {
+const GameSelector = ({ selectedGames = [], onChange, useGamingPreferences }: props) => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [gamesList, setGamesList] = useState<Game[]>([]);
 
   useEffect(() => {
     const fetchGames = async () => {
-      try {
-        const games = await getGames();
-        setAllGames(games);
-        setGamesList(games.filter(game => !selectedGames.some(selectedGame => selectedGame.id === game.id)));
-
-      } catch (error) {
-        console.error("Error fetching games:", error);
-      }
+      const games = await getGames();
+      setAllGames(games);
+      setGamesList(games.filter(game => !selectedGames.some(selectedGame => selectedGame.id === game.id)));
     };
     fetchGames();
-  }, []);
+  }, [useGamingPreferences]);
 
   const handleAdd = (selectedGame: string) => {
     const theGame: Game | undefined = gamesList.find(

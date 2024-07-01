@@ -1,27 +1,23 @@
 import { Avatar, Box, Typography, Button, Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
-import { Gender } from "../api/types";
+import { Gender, User } from "../api/types";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa";
-import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
 import Loading from "../components/Loading";
 
 type Props = {
   isEditable: boolean;
+  user: User;
 };
 
-const PersonalDetailsSection = ({ isEditable }: Props) => {
-  const authContext = useContext(AuthContext);
+const PersonalDetailsSection = ({ user, isEditable }: Props) => {
 
-  if (!authContext) {
+  if (!user) {
     return <Loading />;
   }
-
-  const { user } = authContext;
 
   const navigate = useNavigate();
 

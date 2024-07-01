@@ -19,16 +19,12 @@ const EditPersonalDetailsPage = () => {
   const { user, setUser } = authContext;
 
   const handleSaveClick = async (updatedUser: User) => {
-    try {
-      const result = await updateUser(updatedUser);
-      if (result.user) {
-        setUser(result.user);
-        navigate("/account");
-      } else if (result.emailError) {
-        setEmailError("Email already exists.");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
+    const result = await updateUser(updatedUser);
+    if (result.user) {
+      setUser(result.user);
+      navigate("/account");
+    } else if (result.emailError) {
+      setEmailError("Email already exists.");
     }
   };
 

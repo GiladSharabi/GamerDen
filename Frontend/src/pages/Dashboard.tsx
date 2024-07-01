@@ -1,40 +1,50 @@
-import { NullUser, UserPreferences } from "../api/types";
+import { User, UserPreferences } from "../api/types";
 import SearchPartnersSection from "../sections/SearchPartnersSection";
 import { AuthContext } from "../context/AuthProvider";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import UserCards from "../components/UserCards";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Loading from "../components/Loading";
+import { findMatchingUsers } from "../api/api.endpoints";
 
 const Dashboard = () => {
   const authContext = useContext(AuthContext);
+
   if (!authContext) {
     return <Loading />;
   }
-  const { user, setUser } = authContext;
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    if (user !== NullUser) {
-      setIsLoading(false);
+
+  const { user } = authContext;
+  const [hasMatch, setHasMatch] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
+
+  const handleSearchClick = async (preferences: UserPreferences) => {
+    const tempUser = user;
+    tempUser.preferences = preferences;
+    const result = await findMatchingUsers(tempUser);
+    if (result.users) {
+      setUsers(result.users);
+      setHasMatch(true);
+    } else {
+      setUsers([]);
+      setHasMatch(false);
     }
-  }, [user]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const handleSubmit = (tempPreferences: UserPreferences) => {
-    // search in DB
   };
+
 
   return (
     <Box>
       <SearchPartnersSection
-        buttonLabel="Search"
-        onSubmitClick={handleSubmit}
+        buttonLabel="Search Partners"
+        onSubmitClick={handleSearchClick}
         userPref={user.preferences}
       />
-      <UserCards />
+      {hasMatch ?
+        <UserCards users={users} />
+        : <Typography>
+          Not found
+        </Typography>
+      }
     </Box>
   );
 };
