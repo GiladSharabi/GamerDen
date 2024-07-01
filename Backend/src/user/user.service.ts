@@ -1,4 +1,4 @@
-import { PrismaClient, UserPreferences } from "@prisma/client";
+import { Game, Gender, PrismaClient, UserPreferences } from "@prisma/client";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "..";
@@ -44,21 +44,15 @@ export async function fetchUserByUserName(
 
 export async function getUserByUsername(req: Request, res: Response) {
   const { username } = req.params;
-  try {
-    const userRes = await fetchUserByUserName(username);
-    // if (userRes.userNotFoundError) {
-    //   res.status(200).json({ userNotFoundError: userRes.userNotFoundError });
-    //   return;
-    // }
+  const userRes = await fetchUserByUserName(username);
 
-    const { accessToken } = userRes;
-    if (accessToken) {
-      res.status(200).json({ accessToken: accessToken });
-      return;
-    }
-    res.status(200).json({ existError: "User does not exist" });
-  } catch (error: any) {
+  const { accessToken, userNotFoundError, error } = userRes;
+  if (accessToken) {
+    res.status(200).json({ accessToken: accessToken });
+  } else if (userNotFoundError) {
     res.status(500).json({ error: "Internal server error" });
+  } else if (error) {
+    res.status(200).json({ existError: "User does not exist" });
   }
 }
 
@@ -209,5 +203,62 @@ async function updateUserInDatabase(
         },
       },
     },
+  });
+}
+
+
+export async function findMatchingUsers(req: Request, res: Response) {
+  const user = req.body;
+
+  if (!user.preferences || !user.preferences.games || user.preferences.games.length === 0) {
+    res.status(200).json({ matchError: "User has no games" });
+    return;
+  }
+
+  const { preferences } = user;
+  const gameIds: number[] = preferences.games.map((game: Game) => game.id);
+
+  try {
+    const matchedUsers = await getMatchingUsers(user, preferences, gameIds);
+
+    if (matchedUsers.length === 0) {
+      res.status(200).json({ matchError: "No match found" });
+      return;
+    }
+
+    const filteredUsers = matchedUsers.map(user => {
+      if (user.preferences) {
+        user.preferences.games = user.preferences.games.filter(game => gameIds.includes(game.id));
+      }
+      return user;
+    });
+
+    res.status(200).json({ users: filteredUsers });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function getMatchingUsers(user: User, preferences: UserPreferences, gameIds: number[]) {
+  const { id } = user;
+  const { region, min_age, max_age, preferred_gender, teammate_platform, voice } = preferences;
+  const selectedRegion: string | undefined = region !== "None" ? region : undefined;
+  const selectedGender: Gender | undefined = preferred_gender !== "Both" ? preferred_gender : undefined;
+
+  return db.user.findMany({
+    where: {
+      AND: [
+        { id: { not: id } },
+        selectedRegion ? { preferences: { region: selectedRegion } } : {},
+        selectedGender ? { gender: selectedGender } : {},
+        { preferences: { voice } },
+        { dob: { lte: new Date(new Date().setFullYear(new Date().getFullYear() - min_age)) } },
+        { dob: { gte: new Date(new Date().setFullYear(new Date().getFullYear() - max_age)) } },
+        { preferences: { games: { some: { id: { in: gameIds } } } } },
+        { preferences: { platform: { hasSome: teammate_platform } } },
+      ]
+    },
+    include: { preferences: { include: { games: true } } }
   });
 }

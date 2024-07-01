@@ -13,7 +13,6 @@ import { Chat, Gamepad, Person } from "@mui/icons-material";
 import { FaDiscord } from "react-icons/fa";
 import { IoMdMale, IoMdFemale } from "react-icons/io";
 import { User, Gender } from "../api/types";
-import theme from "./Theme";
 import { useState } from "react";
 import GamesList from "./GamesList";
 
