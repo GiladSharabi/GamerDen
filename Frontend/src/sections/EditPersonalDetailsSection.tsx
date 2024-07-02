@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Grid,
   Typography,
   Button,
   FormControl,
@@ -10,7 +9,7 @@ import {
   TextField,
   FormControlLabel,
 } from "@mui/material";
-import { useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../api/types";
 import { Person } from "@mui/icons-material";
 import MyDivider from "../components/MyDivider";
@@ -23,7 +22,7 @@ import BioTextarea from "../components/SignUpComponents/BioTextarea";
 type Props = {
   user: User;
   buttonLabel: string;
-  onSaveClick: (updatedUser: User) => void;
+  onSaveClick: (formData: FormData) => void;
   emailError: string;
 };
 
@@ -34,115 +33,65 @@ const EditPersonalDetailsSection = ({
   emailError,
 }: Props) => {
   const [tempUser, setTempUser] = useState<User>(user);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [image, setImage] = useState<string>();
+  const [file, setFile] = useState<File>();
 
   const genderValues = Object.values(Gender);
   const filteredGenderValues = genderValues.filter(
     (value) => value !== Gender.None && value !== Gender.Both
   );
 
-  const [usernameError, setUsernameError] = useState<string>("");
+  useEffect(() => {
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  }, [file]);
 
   const handleChange = (name: keyof User, value: any) => {
     setTempUser({ ...tempUser, [name]: value });
   };
 
-  const handleSubmit = async () => {
-    if (!tempUser.username) {
-      setUsernameError("Please enter Username.");
-    } else {
-      setUsernameError("");
-    }
-    if (!tempUser.email) {
-      handleChange("email", "Please enter Email.");
-    } else {
-      handleChange("email", "");
-    }
-  };
-
   const handleSaveClick = () => {
-    onSaveClick(tempUser);
-  };
-
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click();
+    const formData = new FormData();
+    if (file) {
+      formData.append('file', file);
+    }
+    formData.append('data', JSON.stringify(tempUser));
+    onSaveClick(formData);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-
-          if (ctx) {
-            const maxWidth = 180;
-            const maxHeight = 180;
-            let { width, height } = img;
-
-            if (width > height) {
-              if (width > maxWidth) {
-                height *= maxWidth / width;
-                width = maxWidth;
-              }
-            } else {
-              if (height > maxHeight) {
-                width *= maxHeight / height;
-                height = maxHeight;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const resizedImage = canvas.toDataURL("image/jpeg", 0.7); // Adjust the quality if needed
-            setTempUser({ ...tempUser, avatar: resizedImage });
-          } else {
-            console.error(
-              "2D context not supported or canvas already initialized"
-            );
-          }
-        };
-        img.src = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
     }
-  };
+  }
 
   return (
-    <Box
-      className="p-4 rounded-lg flex flex-col mb-20 mt-5"
+    <Box className="p-10 rounded-3xl flex flex-col mb-20 mt-5 bg-white bg-opacity-80 backdrop-blur-sm"
       sx={{
-        background: "rgba(255, 255, 255, 0.8)",
-        backdropFilter: "blur(5px)",
-        borderRadius: 10,
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-        width: "600px",
-      }}
-    >
-      <Box display="flex" justifyContent="center" mb={2}>
-        <label htmlFor="avatar-upload" style={{ cursor: "pointer" }}>
-          <input
-            id="avatar-upload"
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-          <Avatar sx={{ width: 150, height: 150, cursor: "pointer" }}>
-            {tempUser.avatar ? (
-              <Box
-                component="img"
-                src={`${tempUser.avatar}`}
-                sx={{ width: "100%", height: "100%" }}
-              />
-            ) : (
-              <Person sx={{ width: "95%", height: "95%" }} />
-            )}
+        width: "500px",
+      }}>
+      <Box className="flex justify-center mb-2">
+        <label htmlFor="avatar-input">
+          <Avatar className="cursor-pointer rounded-full overflow-hidden"
+            sx={{ width: 150, height: 150 }}
+          >
+            {image ? (
+              <img src={image} className="w-full h-full object-cover" />
+            ) : user.avatar ? (
+              <img src={user.avatar} className="w-full h-full object-cover" />
+            ) : <Person sx={{ width: "95%", height: "95%" }} />
+            }
+            <input
+              id="avatar-input"
+              type="file"
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
           </Avatar>
         </label>
       </Box>
@@ -204,7 +153,7 @@ const EditPersonalDetailsSection = ({
           </Button>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 

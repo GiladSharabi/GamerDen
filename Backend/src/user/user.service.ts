@@ -178,6 +178,7 @@ async function updateUserInDatabase(
   userData: any,
   preferences: any
 ) {
+
   const { id, userId, ...preferencesOmitID } = preferences;
 
   return await db.user.update({

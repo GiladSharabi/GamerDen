@@ -2,9 +2,8 @@ import { Grid } from "@mui/material";
 import EditPersonalDetailsSection from "../sections/EditPersonalDetailsSection";
 import { AuthContext } from "../context/AuthProvider";
 import { useContext, useState } from "react";
-import { User } from "../api/types";
 import { useNavigate } from "react-router-dom";
-import { updateUser } from "../api/api.endpoints";
+import { updateUserWithImage } from "../api/api.endpoints";
 import Loading from "../components/Loading";
 
 const EditPersonalDetailsPage = () => {
@@ -18,8 +17,8 @@ const EditPersonalDetailsPage = () => {
 
   const { user, setUser } = authContext;
 
-  const handleSaveClick = async (updatedUser: User) => {
-    const result = await updateUser(updatedUser);
+  const handleSaveClick = async (formData: FormData) => {
+    const result = await updateUserWithImage(formData);
     if (result.user) {
       setUser(result.user);
       navigate("/account");

@@ -51,6 +51,31 @@ export async function updateUser(user: User): Promise<UserResult> {
   }
 }
 
+export async function updateUserWithImage(formData: FormData): Promise<UserResult> {
+  try {
+    const response = await instance.post(`/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (response.data.accessToken) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      const decodedUser: User = jwtDecode(response.data.accessToken);
+      return { user: decodedUser };
+    }
+    return { error: "Unexpected error" };
+  } catch (error: any) {
+    console.error("Error updating user:", error);
+    if (error.response) {
+      const errorData = error.response.data;
+      if (errorData) {
+        return { emailError: errorData.emailError };
+      }
+    }
+    return { error: "Error in user update" };
+  }
+}
+
 export async function login(
   username: string,
   password: string

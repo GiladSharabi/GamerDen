@@ -4,15 +4,17 @@ import dotenv from "dotenv";
 import dotenvexpand from "dotenv-expand";
 import gameRouter from "./game/game.router";
 import userRouter from "./user/user.router";
-import { createUser, fetchUserByUserName } from "./user/user.service";
+import { createUser, fetchUserByUserName, updateUser } from "./user/user.service";
 import { jwtDecode } from "jwt-decode";
-import bcrypt from "bcrypt";
 import seedDB from "./game/game.seed";
-import { Prisma, PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import upload from "./multer/multer";
+import { compressAndSave, generateUniquePath } from "./multer/multer.service";
+
+import bcrypt from "bcrypt";
+export default bcrypt;
 
 seedDB();
-
-export default bcrypt;
 
 dotenvexpand.expand(dotenv.config());
 
@@ -21,6 +23,7 @@ const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'))
 app.use("/api/games", gameRouter);
 app.use("/api/users", userRouter);
 
@@ -65,4 +68,26 @@ app.post("/api/signup", async (req: Request, res: Response) => {
   } else {
     return res.status(500).json({ error: "Unknown error" });
   }
+});
+
+app.post('/api/upload', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
+  const data = JSON.parse(req.body.data);
+  const { preferences, iat, ...userData } = data;
+
+  const file: Express.Multer.File | undefined = req.file;
+
+  if (file) {
+    const savePath = generateUniquePath(file.originalname);
+    userData.avatar = `${req.protocol}://${req.get('host')}/${savePath}`;
+
+    try {
+      await compressAndSave(file, savePath);
+    } catch (error: any) {
+      res.status(500).json({ error: "Save image error" });
+      return;
+    }
+  }
+
+  req.body = { ...userData, preferences };
+  await updateUser(req, res);
 });
