@@ -23,14 +23,15 @@ const Dashboard = () => {
     tempUser.preferences = preferences;
     const result = await findMatchingUsers(tempUser);
     if (result.users) {
+      console.log("match");
       setUsers(result.users);
       setHasMatch(true);
     } else {
+      console.log("no match");
       setUsers([]);
       setHasMatch(false);
     }
   };
-
 
   return (
     <Box>
@@ -39,12 +40,11 @@ const Dashboard = () => {
         onSubmitClick={handleSearchClick}
         userPref={user.preferences}
       />
-      {hasMatch ?
+      {hasMatch ? (
         <UserCards users={users} />
-        : <Typography>
-          Not found
-        </Typography>
-      }
+      ) : (
+        <Typography>Not found</Typography>
+      )}
     </Box>
   );
 };

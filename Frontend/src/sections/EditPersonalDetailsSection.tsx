@@ -21,19 +21,21 @@ import BioTextarea from "../components/SignUpComponents/BioTextarea";
 
 type Props = {
   user: User;
-  buttonLabel: string;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
   onSaveClick: (formData: FormData) => void;
-  emailError: string;
+  errors: {
+    email: string;
+    discord: string;
+    languages: string;
+  };
 };
 
 const EditPersonalDetailsSection = ({
   user,
-  buttonLabel,
+  setUser,
   onSaveClick,
-  emailError,
+  errors,
 }: Props) => {
-  const [tempUser, setTempUser] = useState<User>(user);
-
   const [image, setImage] = useState<string>();
   const [file, setFile] = useState<File>();
 
@@ -49,15 +51,15 @@ const EditPersonalDetailsSection = ({
   }, [file]);
 
   const handleChange = (name: keyof User, value: any) => {
-    setTempUser({ ...tempUser, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleSaveClick = () => {
     const formData = new FormData();
     if (file) {
-      formData.append('file', file);
+      formData.append("file", file);
     }
-    formData.append('data', JSON.stringify(tempUser));
+    formData.append("data", JSON.stringify(user));
     onSaveClick(formData);
   };
 
@@ -66,25 +68,29 @@ const EditPersonalDetailsSection = ({
     if (selectedFile) {
       setFile(selectedFile);
     }
-  }
+  };
 
   return (
-    <Box className="p-10 rounded-3xl flex flex-col mb-20 mt-5 bg-white bg-opacity-80 backdrop-blur-sm"
+    <Box
+      className="p-10 rounded-3xl flex flex-col mb-20 mt-5 bg-white bg-opacity-80 backdrop-blur-sm"
       sx={{
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
         width: "500px",
-      }}>
+      }}
+    >
       <Box className="flex justify-center mb-2">
         <label htmlFor="avatar-input">
-          <Avatar className="cursor-pointer rounded-full overflow-hidden"
+          <Avatar
+            className="cursor-pointer rounded-full overflow-hidden"
             sx={{ width: 150, height: 150 }}
           >
             {image ? (
               <img src={image} className="w-full h-full object-cover" />
             ) : user.avatar ? (
               <img src={user.avatar} className="w-full h-full object-cover" />
-            ) : <Person sx={{ width: "95%", height: "95%" }} />
-            }
+            ) : (
+              <Person sx={{ width: "95%", height: "95%" }} />
+            )}
             <input
               id="avatar-input"
               type="file"
@@ -98,16 +104,28 @@ const EditPersonalDetailsSection = ({
       <MyDivider color="black" />
       <Box>
         <TextField
-          error={!!emailError}
-          helperText={emailError}
+          error={!!errors.email}
+          helperText={errors.email}
           margin="normal"
           fullWidth
           id="email"
           label="Email Address"
           name="email"
           autoComplete="email"
-          value={tempUser.email}
+          value={user.email}
           onChange={(e) => handleChange("email", e.target.value)}
+        />
+        <TextField
+          error={!!errors.discord}
+          helperText={errors.discord}
+          margin="normal"
+          fullWidth
+          id="discord"
+          label="Discord"
+          name="discord"
+          autoComplete="discord"
+          value={user.discord}
+          onChange={(e) => handleChange("discord", e.target.value)}
         />
 
         <FormControl component="fieldset" margin="normal">
@@ -115,7 +133,7 @@ const EditPersonalDetailsSection = ({
 
           <RadioGroup
             name="gender"
-            value={tempUser.gender}
+            value={user.gender}
             onChange={(e) => handleChange("gender", e.target.value)}
             sx={{ marginBottom: 1 }}
           >
@@ -131,29 +149,30 @@ const EditPersonalDetailsSection = ({
         </FormControl>
         <Box margin="normal">
           <DatePickerComponent
-            selectedDate={tempUser.dob}
+            selectedDate={user.dob}
             onChange={(date) => handleChange("dob", date || new Date())}
           />
         </Box>
         <CountrySelector
-          country={tempUser.country}
+          country={user.country}
           onChange={(value) => handleChange("country", value)}
         ></CountrySelector>
         <LanguageSelector
-          languages={tempUser.languages}
+          languages={user.languages}
           onChange={(languages) => handleChange("languages", languages)}
+          languageError={errors.languages}
         ></LanguageSelector>
         <BioTextarea
-          bio={tempUser.bio}
+          bio={user.bio}
           onChange={(value) => handleChange("bio", value)}
         ></BioTextarea>
         <Box className="flex items-center justify-center">
           <Button onClick={handleSaveClick} variant="contained" size="medium">
-            {buttonLabel}
+            Save
           </Button>
         </Box>
       </Box>
-    </Box >
+    </Box>
   );
 };
 

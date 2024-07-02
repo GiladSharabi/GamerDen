@@ -1,4 +1,4 @@
-import { TextField, Box, FormControl, RadioGroup, FormControlLabel, Radio, Typography } from "@mui/material";
+import { TextField, Box, FormControl, RadioGroup, FormControlLabel, Radio, Typography, FormHelperText } from "@mui/material";
 import { User, Gender } from "../../api/types";
 
 type UserDetailsProps = {
@@ -73,19 +73,13 @@ const UserDetails = ({
             <FormControlLabel
               key={index}
               value={gender}
-              control={<Radio color={errors.gender ? "error" : "default"} />}
+              control={<Radio/>}
               label={gender}
-              sx={{
-                color: errors.gender ? "error.main" : "inherit",
-              }}
+              
             />
           ))}
+          {errors.gender && <FormHelperText error>{errors.gender}</FormHelperText>}
         </RadioGroup>
-        {errors.gender && (
-          <Typography variant="body2" color="error">
-            {errors.gender}
-          </Typography>
-        )}
       </FormControl>
     </Box>
   );

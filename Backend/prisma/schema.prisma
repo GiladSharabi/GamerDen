@@ -43,8 +43,7 @@ model Game {
   id                Int              @id @default(autoincrement())
   name              String
   cover             String
-  userPreferencesId Int?
-  userPreferences   UserPreferences? @relation(fields: [userPreferencesId], references: [id], name: "UserPreferencesGames")
+  userPreferences   UserPreferences[] @relation("UserPreferencesGames")
 }
 
 enum Gender {

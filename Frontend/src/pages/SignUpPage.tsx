@@ -24,6 +24,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     gender: "",
+    dob: "",
     country: "",
     languages: ""
   });
@@ -34,16 +35,17 @@ const SignUp = () => {
 
   const validateFields = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email
-    const usernameRegex = /^.{6,}$/; // at least 6 characters
+    const usernameRegex = /^.{3,}$/; // at least 3 characters
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // at least 8 characters, 1 number, 1 special char
 
     const newErrors = {
-      username: usernameRegex.test(user.username) ? "" : "Username must be at least 6 characters long.",
+      username: usernameRegex.test(user.username) ? "" : "Username must be at least 3 characters long.",
       email: user.email && emailRegex.test(user.email) ? "" : "Please enter a valid email.",
       discord: user.discord ? "" : "Please enter Discord username.",
       password: user.password && passwordRegex.test(user.password) ? "" : "Password must be at least 8 characters long and contain at least one number and one special character.",
       confirmPassword: confirmPassword ? "" : "Please enter confirm password.",
       gender: user.gender !== Gender.None ? "" : "Please select gender.",
+      dob: user.dob ? "" : "Please enter birthday.",
       country: user.country ? "" : "Please select country.",
       languages: user.languages.length ? "" : "Please select at least 1 language.",
     };
@@ -99,6 +101,7 @@ const SignUp = () => {
             <DatePickerComponent
               selectedDate={user.dob}
               onChange={(date) => handleUserChange("dob", date)}
+              dateError={errors.dob}
             />
             <CountrySelector
               country={user.country}

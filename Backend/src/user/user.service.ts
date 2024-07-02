@@ -178,7 +178,6 @@ async function updateUserInDatabase(
   userData: any,
   preferences: any
 ) {
-
   const { id, userId, ...preferencesOmitID } = preferences;
 
   return await db.user.update({
@@ -207,11 +206,14 @@ async function updateUserInDatabase(
   });
 }
 
-
 export async function findMatchingUsers(req: Request, res: Response) {
   const user = req.body;
 
-  if (!user.preferences || !user.preferences.games || user.preferences.games.length === 0) {
+  if (
+    !user.preferences ||
+    !user.preferences.games ||
+    user.preferences.games.length === 0
+  ) {
     res.status(200).json({ matchError: "User has no games" });
     return;
   }
@@ -227,9 +229,11 @@ export async function findMatchingUsers(req: Request, res: Response) {
       return;
     }
 
-    const filteredUsers = matchedUsers.map(user => {
+    const filteredUsers = matchedUsers.map((user) => {
       if (user.preferences) {
-        user.preferences.games = user.preferences.games.filter(game => gameIds.includes(game.id));
+        user.preferences.games = user.preferences.games.filter((game) =>
+          gameIds.includes(game.id)
+        );
       }
       return user;
     });
@@ -241,11 +245,24 @@ export async function findMatchingUsers(req: Request, res: Response) {
   }
 }
 
-async function getMatchingUsers(user: User, preferences: UserPreferences, gameIds: number[]) {
+async function getMatchingUsers(
+  user: User,
+  preferences: UserPreferences,
+  gameIds: number[]
+) {
   const { id } = user;
-  const { region, min_age, max_age, preferred_gender, teammate_platform, voice } = preferences;
-  const selectedRegion: string | undefined = region !== "None" ? region : undefined;
-  const selectedGender: Gender | undefined = preferred_gender !== "Both" ? preferred_gender : undefined;
+  const {
+    region,
+    min_age,
+    max_age,
+    preferred_gender,
+    teammate_platform,
+    voice,
+  } = preferences;
+  const selectedRegion: string | undefined =
+    region !== "None" ? region : undefined;
+  const selectedGender: Gender | undefined =
+    preferred_gender !== "Both" ? preferred_gender : undefined;
 
   return db.user.findMany({
     where: {
@@ -254,12 +271,12 @@ async function getMatchingUsers(user: User, preferences: UserPreferences, gameId
         selectedRegion ? { preferences: { region: selectedRegion } } : {},
         selectedGender ? { gender: selectedGender } : {},
         { preferences: { voice } },
-        { dob: { lte: new Date(new Date().setFullYear(new Date().getFullYear() - min_age)) } },
-        { dob: { gte: new Date(new Date().setFullYear(new Date().getFullYear() - max_age)) } },
+        { dob: { lte: new Date(new Date().setFullYear(new Date().getFullYear() - min_age + 1)) } },
+        { dob: { gte: new Date(new Date().setFullYear(new Date().getFullYear() - max_age - 1)) } },
         { preferences: { games: { some: { id: { in: gameIds } } } } },
         { preferences: { platform: { hasSome: teammate_platform } } },
-      ]
+      ],
     },
-    include: { preferences: { include: { games: true } } }
+    include: { preferences: { include: { games: true } } },
   });
 }
