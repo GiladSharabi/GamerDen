@@ -60,14 +60,14 @@ async function checkExistingUser(
   userData: any
 ): Promise<AccessTokenResult | undefined> {
   const existingUsername = await db.user.findUnique({
-    where: { username: userData.username },
+    where: { username: userData.username.toLowerCase() },
   });
   if (existingUsername) {
     return { usernameError: "Username already exists" };
   }
 
   const existingEmail = await db.user.findUnique({
-    where: { email: userData.email },
+    where: { email: userData.email.toLowerCase() },
   });
   if (existingEmail) {
     return { emailError: "Email already exists" };
@@ -111,10 +111,9 @@ async function createUserInDatabase(
   return await db.user.create({
     data: {
       ...userData,
+      email: userData.email.toLowerCase(),
       preferences: {
-        create: {
-          ...preferences,
-        },
+        create: preferences,
       },
     },
     include: {
@@ -124,6 +123,7 @@ async function createUserInDatabase(
     },
   });
 }
+
 
 function encryptPassword(userData: User) {
   const { password } = userData;
@@ -149,9 +149,15 @@ export async function updateUser(req: Request, res: Response) {
       return;
     }
 
-    if (email !== existingUser.email) {
+    const currentEmail: string = existingUser.email;
+    const sentEmail: string = email;
+
+    if (sentEmail.toLowerCase() === currentEmail.toLowerCase()) {
+      res.status(200).json({ accessToken: createAccessToken(req.body) });
+      return;
+    } else {
       const existingEmail = await db.user.findUnique({
-        where: { email },
+        where: { email: email.toLowerCase() },
       });
       if (existingEmail) {
         res.status(400).json({ emailError: "Email already exists" });
