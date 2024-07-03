@@ -7,10 +7,10 @@ type props = {
 
 const VoiceSelector = ({ isVoice = false, onChange }: props) => {
   return (
-    <Box marginBottom={2} sx={{ width: "100%" }}>
+    <Box marginBottom={2}>
       <FormControlLabel
         control={<Checkbox checked={isVoice} onChange={onChange} />}
-        label={<Typography color="textPrimary">Voice</Typography>}
+        label="Voice"
       ></FormControlLabel>
     </Box>
   );

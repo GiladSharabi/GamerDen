@@ -12,13 +12,14 @@ const EditGamingPreferencesSection = ({
   onSubmitClick,
   userPref,
 }: Props) => {
-  
+
   return (
     <PreferencesSection
       buttonLabel={buttonLabel}
       onSubmitClick={onSubmitClick}
       userPref={userPref}
       useExistingPreferences={false}
+      useExistingButton={false}
     />
   );
 };

@@ -18,19 +18,16 @@ function createAccessToken(user: User): string {
   return jwt.sign(user, process.env.JWT_SECRET_TOKEN as string);
 }
 
-export async function fetchUserByUserName(
-  username: string
-): Promise<AccessTokenResult> {
+export async function fetchUserByUserName(username: string): Promise<AccessTokenResult> {
   try {
-    const user = await db.user.findUnique({
-      where: { username },
+    const user = await db.user.findFirst({
+      where: { username: { equals: username, mode: "insensitive" } },
       include: {
         preferences: {
           include: { games: true },
         },
       },
     });
-
     if (!user) {
       return { userNotFoundError: "No user found" };
     }
@@ -50,24 +47,22 @@ export async function getUserByUsername(req: Request, res: Response) {
   if (accessToken) {
     res.status(200).json({ accessToken: accessToken });
   } else if (userNotFoundError) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(200).json({ userNotFoundError: "User does not exist" });
   } else if (error) {
-    res.status(200).json({ existError: "User does not exist" });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-async function checkExistingUser(
-  userData: any
-): Promise<AccessTokenResult | undefined> {
+async function checkExistingUser(userData: any): Promise<AccessTokenResult | undefined> {
   const existingUsername = await db.user.findUnique({
-    where: { username: userData.username.toLowerCase() },
+    where: { username: userData.username },
   });
   if (existingUsername) {
     return { usernameError: "Username already exists" };
   }
 
   const existingEmail = await db.user.findUnique({
-    where: { email: userData.email.toLowerCase() },
+    where: { email: userData.email },
   });
   if (existingEmail) {
     return { emailError: "Email already exists" };
@@ -76,10 +71,7 @@ async function checkExistingUser(
   return undefined;
 }
 
-export async function createUser(
-  req: Request,
-  res: Response
-): Promise<AccessTokenResult> {
+export async function createUser(req: Request, res: Response): Promise<AccessTokenResult> {
   try {
     const { preferences, ...userData } = req.body;
     const userRes = await checkExistingUser(userData);
@@ -104,14 +96,10 @@ export async function createUser(
   }
 }
 
-async function createUserInDatabase(
-  userData: User,
-  preferences: UserPreferences
-): Promise<User> {
+async function createUserInDatabase(userData: User, preferences: UserPreferences): Promise<User> {
   return await db.user.create({
     data: {
       ...userData,
-      email: userData.email.toLowerCase(),
       preferences: {
         create: preferences,
       },
@@ -123,7 +111,6 @@ async function createUserInDatabase(
     },
   });
 }
-
 
 function encryptPassword(userData: User) {
   const { password } = userData;
@@ -138,38 +125,25 @@ function encryptPassword(userData: User) {
 export async function updateUser(req: Request, res: Response) {
   try {
     const { preferences, id, iat, ...userData } = req.body;
-    const { username, email } = userData;
-
-    const existingUser = await db.user.findUnique({
-      where: { username },
+    const { username } = userData;
+    const user = await db.user.findUnique({
+      where: { id: id },
     });
-
-    if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
-      return;
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    const currentEmail: string = existingUser.email;
-    const sentEmail: string = email;
-
-    if (sentEmail.toLowerCase() === currentEmail.toLowerCase()) {
-      res.status(200).json({ accessToken: createAccessToken(req.body) });
-      return;
-    } else {
-      const existingEmail = await db.user.findUnique({
-        where: { email: email.toLowerCase() },
-      });
-      if (existingEmail) {
-        res.status(400).json({ emailError: "Email already exists" });
-        return;
-      }
+    const usernameExists = await db.user.findFirst({
+      where: {
+        username: { equals: username, mode: "insensitive" },
+        id: { not: id },
+      },
+    });
+    if (usernameExists) {
+      return res.status(400).json({ usernameError: "Username is already taken by another user" });
     }
 
-    const updatedUser = await updateUserInDatabase(
-      username,
-      userData,
-      preferences
-    );
+    const updatedUser = await updateUserInDatabase(userData, preferences);
     const accessToken = createAccessToken(updatedUser);
 
     res.status(200).json({ accessToken: accessToken });
@@ -179,15 +153,12 @@ export async function updateUser(req: Request, res: Response) {
   }
 }
 
-async function updateUserInDatabase(
-  username: string,
-  userData: any,
-  preferences: any
-) {
+async function updateUserInDatabase(userData: User, preferences: any) {
+  const { email } = userData;
   const { id, userId, ...preferencesOmitID } = preferences;
 
   return await db.user.update({
-    where: { username },
+    where: { email },
     data: {
       ...userData,
       preferences: {
@@ -215,11 +186,7 @@ async function updateUserInDatabase(
 export async function findMatchingUsers(req: Request, res: Response) {
   const user = req.body;
 
-  if (
-    !user.preferences ||
-    !user.preferences.games ||
-    user.preferences.games.length === 0
-  ) {
+  if (!user.preferences || !user.preferences.games || user.preferences.games.length === 0) {
     res.status(200).json({ matchError: "User has no games" });
     return;
   }
@@ -251,24 +218,11 @@ export async function findMatchingUsers(req: Request, res: Response) {
   }
 }
 
-async function getMatchingUsers(
-  user: User,
-  preferences: UserPreferences,
-  gameIds: number[]
-) {
+async function getMatchingUsers(user: User, preferences: UserPreferences, gameIds: number[]) {
   const { id } = user;
-  const {
-    region,
-    min_age,
-    max_age,
-    preferred_gender,
-    teammate_platform,
-    voice,
-  } = preferences;
-  const selectedRegion: string | undefined =
-    region !== "None" ? region : undefined;
-  const selectedGender: Gender | undefined =
-    preferred_gender !== "Both" ? preferred_gender : undefined;
+  const { region, min_age, max_age, preferred_gender, teammate_platform, voice } = preferences;
+  const selectedRegion: string | undefined = region !== "None" ? region : undefined;
+  const selectedGender: Gender | undefined = preferred_gender !== "Both" ? preferred_gender : undefined;
 
   return db.user.findMany({
     where: {

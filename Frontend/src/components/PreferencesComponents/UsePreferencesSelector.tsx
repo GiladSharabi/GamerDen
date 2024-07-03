@@ -7,12 +7,10 @@ type props = {
 
 const UsePreferencesSelector = ({ isUse = false, onChange }: props) => {
   return (
-    <Box marginBottom={2} sx={{ width: "100%" }}>
+    <Box marginBottom={2}>
       <FormControlLabel
         control={<Checkbox checked={isUse} onChange={onChange} />}
-        label={
-          <Typography color="textPrimary">Use My Gaming Preferences</Typography>
-        }
+        label="Use My Gaming Preferences"
       ></FormControlLabel>
     </Box>
   );

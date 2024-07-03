@@ -28,7 +28,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (username === user.username) { // user typed his own name in /profile
-        navigate("/account");
+        navigate("/dashboard");
       }
       if (username) {
         const result = await getAccessTokenByUsername(username);

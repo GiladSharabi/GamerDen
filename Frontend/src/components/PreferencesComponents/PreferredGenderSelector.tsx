@@ -1,7 +1,7 @@
 import { Typography, ToggleButton, ToggleButtonGroup, Grid, FormHelperText } from "@mui/material";
 import { Gender } from "../../api/types";
 import theme from "../Theme";
-import { useEffect } from "react";
+
 type props = {
   selectedGender: Gender;
   onChange: (gender: Gender) => void;
@@ -11,14 +11,14 @@ type props = {
 const PreferredGenderSelector = ({
   selectedGender = Gender.None,
   onChange,
-  genderError="",
+  genderError = "",
 }: props) => {
 
   const genderValues = Object.values(Gender);
   const filteredGenderValues = genderValues.filter(value => value !== Gender.None);
 
-  const handleGenderChange = (event : any, newGender : Gender | null) => {
-    if (newGender !== Gender.None && newGender !== null ) {
+  const handleGenderChange = (event: any, newGender: Gender | null) => {
+    if (newGender !== Gender.None && newGender !== null) {
       onChange(newGender);
     }
   };

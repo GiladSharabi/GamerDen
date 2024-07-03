@@ -24,7 +24,7 @@ type Props = {
   setUser: React.Dispatch<React.SetStateAction<User>>;
   onSaveClick: (formData: FormData) => void;
   errors: {
-    email: string;
+    username: string;
     discord: string;
     languages: string;
   };
@@ -104,16 +104,16 @@ const EditPersonalDetailsSection = ({
       <MyDivider color="black" />
       <Box>
         <TextField
-          error={!!errors.email}
-          helperText={errors.email}
+          error={!!errors.username}
+          helperText={errors.username}
           margin="normal"
           fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          value={user.email}
-          onChange={(e) => handleChange("email", e.target.value)}
+          id="username"
+          label="username"
+          name="username"
+          autoComplete="username"
+          value={user.username}
+          onChange={(e) => handleChange("username", e.target.value)}
         />
         <TextField
           error={!!errors.discord}

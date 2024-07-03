@@ -19,18 +19,17 @@ const Dashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   const handleSearchClick = async (preferences: UserPreferences) => {
-    const tempUser = user;
-    tempUser.preferences = preferences;
-    const result = await findMatchingUsers(tempUser);
+    const tempPref: UserPreferences = user.preferences;
+    user.preferences = preferences;
+    const result = await findMatchingUsers(user);
     if (result.users) {
-      // console.log("match");
       setUsers(result.users);
       setHasMatch(true);
     } else {
-      // console.log("no match");
       setUsers([]);
       setHasMatch(false);
     }
+    user.preferences = tempPref;
   };
 
   return (

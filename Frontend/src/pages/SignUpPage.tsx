@@ -10,6 +10,7 @@ import SubmitButton from "../components/SignUpComponents/SubmitButton";
 import { PersonAdd } from "@mui/icons-material";
 import { signup } from "../api/api.endpoints";
 import { useNavigate } from "react-router-dom";
+import { emailRegex, usernameRegex, passwordRegex } from "../regex";
 import theme from "../components/Theme";
 
 const SignUp = () => {
@@ -34,10 +35,6 @@ const SignUp = () => {
   };
 
   const validateFields = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email
-    const usernameRegex = /^.{3,}$/; // at least 3 characters
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // at least 8 characters, 1 number, 1 special char
-
     const newErrors = {
       username: usernameRegex.test(user.username) ? "" : "Username must be at least 3 characters long.",
       email: user.email && emailRegex.test(user.email) ? "" : "Please enter a valid email.",
@@ -78,7 +75,7 @@ const SignUp = () => {
 
   return (
     <Box className="min-h-screen flex justify-center items-center overflow-auto">
-      <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-lg w-full mt-10 mb-20"
+      <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-sm rounded-2xl max-w-lg w-full mt-10 mb-20"
         style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
       >
         <Box className="flex flex-col items-center p-8">

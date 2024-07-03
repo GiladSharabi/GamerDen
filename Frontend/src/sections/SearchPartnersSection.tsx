@@ -13,6 +13,7 @@ const SearchPartnersSection = ({ buttonLabel, onSubmitClick, userPref }: Props) 
       buttonLabel={buttonLabel}
       onSubmitClick={onSubmitClick}
       userPref={userPref}
+      useExistingButton={true}
     />
   );
 };

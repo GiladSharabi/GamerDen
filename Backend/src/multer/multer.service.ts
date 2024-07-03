@@ -11,18 +11,11 @@ export function generateUniquePath(originalname: string): string {
 };
 
 export async function compressAndSave(file: Express.Multer.File, savePath: string) {
-    try {
-        const compressedImageBuffer = await sharp(file.buffer)
-            .resize({ width: 150, height: 150 })
-            .jpeg({ quality: 70 })
-            .toBuffer();
+    const compressedImageBuffer = await sharp(file.buffer)
+        .resize({ width: 150, height: 150 })
+        .jpeg({ quality: 70 })
+        .toBuffer();
 
-        console.log(savePath);
-
-        fs.mkdirSync('uploads', { recursive: true });
-        fs.writeFileSync(savePath, compressedImageBuffer);
-    } catch (error: any) {
-        console.error('Error compressing and saving image:', error);
-        throw error;
-    }
+    fs.mkdirSync('uploads', { recursive: true });
+    fs.writeFileSync(savePath, compressedImageBuffer);
 }

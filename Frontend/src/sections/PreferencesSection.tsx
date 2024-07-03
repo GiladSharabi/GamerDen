@@ -14,7 +14,7 @@ type Props = {
   onSubmitClick: (userPreferences: UserPreferences) => void;
   userPref: UserPreferences;
   useExistingPreferences?: boolean;
-  useExistingButton?: boolean;
+  useExistingButton: boolean;
 };
 
 const PreferencesSection = ({
@@ -22,14 +22,18 @@ const PreferencesSection = ({
   onSubmitClick,
   userPref,
   useExistingPreferences = true,
-  useExistingButton = true,
+  useExistingButton,
 }: Props) => {
   const [tempPreferences, setTempPreferences] =
     useState<UserPreferences>(userPref);
 
-  const [useGamingPreferences, setUseGamingPreferences] = useState<boolean>(
-    useExistingPreferences
-  );
+  const [useGamingPreferences, setUseGamingPreferences] = useState<boolean>(useExistingPreferences);
+  const [errors, setErrors] = useState({
+    games: "",
+    platform: "",
+    preferred_gender: "",
+    teammate_platform: "",
+  });
 
   const handleUseGamingPrefClick = () => {
     setUseGamingPreferences(!useGamingPreferences);
@@ -79,41 +83,23 @@ const PreferencesSection = ({
       onSubmitClick(tempPreferences);
     }
   };
-  const [errors, setErrors] = useState({
-    games: "",
-    platform: "",
-    preferred_gender: "",
-    teammate_platform: "",
-  });
-  
+
   const validateFields = () => {
     const newErrors = {
       games: tempPreferences.games.length !== 0 ? "" : "Please select at least 1 game.",
       platform: tempPreferences.platform.length !== 0 ? "" : "Please select at least 1 platform.",
       preferred_gender: tempPreferences.preferred_gender !== Gender.None ? "" : "Please select gender.",
-      teammate_platform: tempPreferences.teammate_platform.length !== 0  ? "" : "Please select at least 1 platform.",
-      
+      teammate_platform: tempPreferences.teammate_platform.length !== 0 ? "" : "Please select at least 1 platform.",
+
     };
-    console.log("games: ",tempPreferences.games);
-    console.log("platform: ",tempPreferences.platform);
-    console.log("gender: ",tempPreferences.preferred_gender);
-    console.log("teammate_platform: ",tempPreferences.teammate_platform);
     setErrors(newErrors);
     return Object.values(newErrors).every((error) => error === "");
   };
 
   return (
-    <Grid container className="flex justify-center mt-10 mb-20">
+    <Grid container className="flex justify-center mt-10 mb-5">
       <Box
-        sx={{
-          p: 6,
-          background: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(5px)",
-          borderRadius: 4,
-          width: "600px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-        }}
-      >
+        className="p-10 bg-white/80 backdrop-blur-sm rounded-2xl w-[600px] shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
         {useExistingButton && (
           <UsePreferencesSelector
             isUse={useGamingPreferences}

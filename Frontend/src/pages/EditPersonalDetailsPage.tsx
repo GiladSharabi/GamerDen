@@ -5,13 +5,14 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUserWithImage } from "../api/api.endpoints";
 import Loading from "../components/Loading";
+import { usernameRegex } from "../regex";
 import { User } from "../api/types";
 
 const EditPersonalDetailsPage = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
-    email: "",
+    username: "",
     discord: "",
     languages: "",
   });
@@ -23,12 +24,11 @@ const EditPersonalDetailsPage = () => {
   const [tempUser, setTempUser] = useState<User>(user);
 
   const validateFields = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email
     const newErrors = {
-      email:
-        tempUser.email && emailRegex.test(tempUser.email)
+      username:
+        tempUser.username && usernameRegex.test(tempUser.username)
           ? ""
-          : "Please enter a valid email.",
+          : "Please enter a valid username.",
       discord: tempUser.discord ? "" : "Please enter Discord username.",
       languages: tempUser.languages.length
         ? ""
@@ -44,12 +44,11 @@ const EditPersonalDetailsPage = () => {
       if (result.user) {
         setUser(result.user);
         navigate("/account");
-      } else if (result.emailError) {
+      } else if (result.usernameError) {
         setErrors((errors) => ({
           ...errors,
-          email: "Email already exists." || "",
+          username: "Username already exists." || "",
         }));
-        // setEmailError("Email already exists.");
       }
     }
   };

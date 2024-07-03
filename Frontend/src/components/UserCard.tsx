@@ -8,6 +8,8 @@ import {
   Grid,
   Typography,
   Rating,
+  Divider,
+  Chip,
 } from "@mui/material";
 import { Chat, Gamepad, Person } from "@mui/icons-material";
 import { FaDiscord } from "react-icons/fa";
@@ -49,17 +51,13 @@ const UserCard = ({ user }: Props) => {
 
   return (
     <Card
+      className="backdrop-blur-sm w-[325px] min-w-[325px] m-4 flex flex-col"
       sx={{
         background: "rgba(255, 255, 255, 0.8)",
-        backdropFilter: "blur(5px)",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.8)",
         borderRadius: 4,
-        width: "325px",
-        minWidth: "325px",
-        margin: "1rem",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-        display: "flex",
-        flexDirection: "column",
       }}
+
     >
       <CardContent
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
@@ -104,21 +102,22 @@ const UserCard = ({ user }: Props) => {
             <strong>Bio:</strong> {user.bio || "No bio available"}
           </Typography>
         </Box>
+        <Divider sx={{ marginTop: 1 }} >
+          <Chip
+            icon={<Gamepad />}
+            label="Games:"
+            sx={{
+              backgroundColor: 'transparent',
+              color: 'primary.main',
+            }}
+          />
+        </Divider>
         {/* games Box */}
-        <Box mt={2}>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item>
-              <Gamepad />
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" color="primary">
-                Games:
-              </Typography>
-            </Grid>
-          </Grid>
+        <Box>
           <GamesList games={user.preferences.games} initialSlice={3} />
         </Box>
       </CardContent>
+      <Divider sx={{ margin: 2 }} />
       <Box
         mt="auto"
         textAlign="center"

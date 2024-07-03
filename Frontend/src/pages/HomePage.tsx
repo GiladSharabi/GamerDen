@@ -25,7 +25,7 @@ const HomePage = () => {
       component="main"
       className="min-h-screen flex justify-center items-center"
     >
-      <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-md rounded-2xl max-w-2xl"
+      <Grid className="flex flex-col items-center justify-center p-6 bg-opacity-80 bg-white backdrop-blur-sm rounded-2xl max-w-2xl"
         style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)' }}
       >
         <Box className="flex flex-col items-center p-4"

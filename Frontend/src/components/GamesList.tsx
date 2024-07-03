@@ -16,10 +16,10 @@ const GamesList = ({ games = [], initialSlice = 3 }: Props) => {
 
   return (
     <>
-      <Grid container mt={1} spacing={1} justifyContent="start">
+      <Grid container mt={1} spacing={1} justifyContent="center">
         {games.slice(0, slice).map((game, index) => (
           <Grid item xs={12} key={index}>
-            <Box className="flex items-center mb-3">
+            <Box className="flex items-center">
               <Avatar
                 alt={game.name}
                 src={game.cover}
