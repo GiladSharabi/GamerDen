@@ -4,13 +4,17 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Game } from "../../api/types";
 import { getGames } from "../../api/api.endpoints";
 
-type props = {
+type Props = {
   selectedGames: Game[];
   onChange: (newGame: Game) => void;
   useGamingPreferences?: boolean;
 };
 
-const GameSelector = ({ selectedGames = [], onChange, useGamingPreferences }: props) => {
+const GameSelector = ({
+  selectedGames = [],
+  onChange,
+  useGamingPreferences,
+}: Props) => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [gamesList, setGamesList] = useState<Game[]>([]);
 
@@ -18,10 +22,28 @@ const GameSelector = ({ selectedGames = [], onChange, useGamingPreferences }: pr
     const fetchGames = async () => {
       const games = await getGames();
       setAllGames(games);
-      setGamesList(games.filter(game => !selectedGames.some(selectedGame => selectedGame.id === game.id)));
+      setGamesList(
+        games.filter(
+          (game) =>
+            !selectedGames.some((selectedGame) => selectedGame.id === game.id)
+        )
+      );
     };
     fetchGames();
-  }, [useGamingPreferences]);
+  }, []);
+
+  useEffect(() => {
+    if (useGamingPreferences) {
+      setGamesList(
+        allGames.filter(
+          (game) =>
+            !selectedGames.some((selectedGame) => selectedGame.id === game.id)
+        )
+      );
+    } else {
+      setGamesList(allGames);
+    }
+  }, [useGamingPreferences, allGames, selectedGames]);
 
   const handleAdd = (selectedGame: string) => {
     const theGame: Game | undefined = gamesList.find(
@@ -62,7 +84,7 @@ const GameSelector = ({ selectedGames = [], onChange, useGamingPreferences }: pr
             }}
             variant="filled"
             color="primary"
-            style={{ margin: '2px' }}
+            style={{ margin: "2px" }}
           />
         ))}
       </Grid>

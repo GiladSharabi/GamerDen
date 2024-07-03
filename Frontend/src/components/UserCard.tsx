@@ -16,11 +16,11 @@ import { User, Gender } from "../api/types";
 import { useState } from "react";
 import GamesList from "./GamesList";
 
-type CardProps = {
+type Props = {
   user: User;
 };
 
-const UserCard = ({ user }: CardProps) => {
+const UserCard = ({ user }: Props) => {
   const [chatClick, setChatClick] = useState<boolean>(false);
 
   const handleStartChatClick = () => {
@@ -55,12 +55,18 @@ const UserCard = ({ user }: CardProps) => {
         borderRadius: 4,
         width: "325px",
         minWidth: "325px",
-        margin: "rem",
+        margin: "1rem",
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <CardContent>
+      <CardContent
+        sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+      >
+        {/* grid of the avatar and user personal details - Container */}
         <Grid container spacing={2} alignItems="center">
+          {/* avatar Grid - item */}
           <Grid item>
             <Link to={`/profile/${user.username}`}>
               <Avatar>
@@ -72,7 +78,8 @@ const UserCard = ({ user }: CardProps) => {
               </Avatar>
             </Link>
           </Grid>
-          <Grid item xs={9}>
+          {/* username, gender, age, country Grid - item */}
+          <Grid item>
             <Typography variant="h6" color="primary">
               <Link to={`/profile/${user.username}`} className="no-underline">
                 {user.username}
@@ -91,11 +98,13 @@ const UserCard = ({ user }: CardProps) => {
             </Box>
           </Grid>
         </Grid>
+        {/* bio Box */}
         <Box mt={2}>
           <Typography variant="body1">
             <strong>Bio:</strong> {user.bio || "No bio available"}
           </Typography>
         </Box>
+        {/* games Box */}
         <Box mt={2}>
           <Grid container spacing={1} alignItems="center">
             <Grid item>
@@ -109,42 +118,53 @@ const UserCard = ({ user }: CardProps) => {
           </Grid>
           <GamesList games={user.preferences.games} initialSlice={3} />
         </Box>
-        <Box mt={2} textAlign="center">
-          <Rating
-            name="user-rating"
-            value={getRating()}
-            precision={0.1}
-            readOnly
-          />
-          {chatClick ? (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              p={1}
-              borderRadius={1}
-              bgcolor="info.main"
-              color="text.primary"
-              sx={{ mt: 2 }}
-            >
-              <FaDiscord className="text-white text-2xl mr-2" />
-              <Typography variant="body1" fontWeight="bold" color="white">
-                {user.discord}
-              </Typography>
-            </Box>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<Chat />}
-              onClick={handleStartChatClick}
-              sx={{ mt: 2 }}
-            >
-              Start Chatting
-            </Button>
-          )}
-        </Box>
       </CardContent>
+      <Box
+        mt="auto"
+        textAlign="center"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <Rating
+          name="user-rating"
+          value={getRating()}
+          precision={0.1}
+          readOnly
+          sx={{ mb: 1 }}
+        />
+        {chatClick ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            p={1}
+            borderRadius={1}
+            bgcolor="info.main"
+            color="text.primary"
+            width="100%"
+            sx={{ mt: 2 }}
+          >
+            <FaDiscord className="text-white text-2xl mr-2" />
+            <Typography variant="body1" fontWeight="bold" color="white">
+              {user.discord}
+            </Typography>
+          </Box>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<Chat />}
+            onClick={handleStartChatClick}
+            sx={{ mt: 1, mb: 2 }}
+          >
+            Start Chatting
+          </Button>
+        )}
+      </Box>
     </Card>
   );
 };
