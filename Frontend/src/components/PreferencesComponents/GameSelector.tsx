@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TextField, Chip, Grid } from "@mui/material";
+import { TextField, Chip, Grid, FormHelperText } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Game } from "../../api/types";
 import { getGames } from "../../api/api.endpoints";
@@ -8,12 +8,14 @@ type Props = {
   selectedGames: Game[];
   onChange: (newGame: Game) => void;
   useGamingPreferences?: boolean;
+  gameError?: string;
 };
 
 const GameSelector = ({
   selectedGames = [],
   onChange,
   useGamingPreferences,
+  gameError="",
 }: Props) => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [gamesList, setGamesList] = useState<Game[]>([]);
@@ -74,6 +76,7 @@ const GameSelector = ({
         renderInput={(params) => <TextField {...params} label="Select Game" />}
         onChange={(event, value) => value && handleAdd(value)}
       />
+      {gameError && <FormHelperText error>{gameError}</FormHelperText>}
       <Grid className="mt-2">
         {selectedGames.map((game) => (
           <Chip

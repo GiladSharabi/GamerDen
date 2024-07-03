@@ -1,7 +1,7 @@
 import { Box, Grid, Button } from "@mui/material";
 import GameSelector from "../components/PreferencesComponents/GameSelector";
 import { useState, useEffect } from "react";
-import { UserPreferences, Game, NullUserPreferences } from "../api/types";
+import { UserPreferences, Game, NullUserPreferences, Gender } from "../api/types";
 import PlatformSelector from "../components/PreferencesComponents/PlatformSelector";
 import VoiceSelector from "../components/PreferencesComponents/VoiceSelector";
 import PreferredGenderSelector from "../components/PreferencesComponents/PreferredGenderSelector";
@@ -75,7 +75,31 @@ const PreferencesSection = ({
   };
 
   const handleButtonClick = () => {
-    onSubmitClick(tempPreferences);
+    if (validateFields()) {
+      onSubmitClick(tempPreferences);
+    }
+  };
+  const [errors, setErrors] = useState({
+    games: "",
+    platform: "",
+    preferred_gender: "",
+    teammate_platform: "",
+  });
+  
+  const validateFields = () => {
+    const newErrors = {
+      games: tempPreferences.games.length !== 0 ? "" : "Please select at least 1 game.",
+      platform: tempPreferences.platform.length !== 0 ? "" : "Please select at least 1 platform.",
+      preferred_gender: tempPreferences.preferred_gender !== Gender.None ? "" : "Please select gender.",
+      teammate_platform: tempPreferences.teammate_platform.length !== 0  ? "" : "Please select at least 1 platform.",
+      
+    };
+    console.log("games: ",tempPreferences.games);
+    console.log("platform: ",tempPreferences.platform);
+    console.log("gender: ",tempPreferences.preferred_gender);
+    console.log("teammate_platform: ",tempPreferences.teammate_platform);
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === "");
   };
 
   return (
@@ -100,6 +124,7 @@ const PreferencesSection = ({
           selectedGames={tempPreferences.games}
           onChange={handleGamesChange}
           useGamingPreferences={useGamingPreferences}
+          gameError={errors.games}
         />
         <PlatformSelector
           label="Select Platform"
@@ -107,6 +132,7 @@ const PreferencesSection = ({
           onChange={(event, newPlatform) =>
             handlePreferenceChange("platform", newPlatform)
           }
+          platformError={errors.platform}
         />
         <RegionSelector
           region={tempPreferences.region}
@@ -119,6 +145,7 @@ const PreferencesSection = ({
           onChange={(gender) =>
             handlePreferenceChange("preferred_gender", gender)
           }
+          genderError={errors.preferred_gender}
         />
 
         <PlatformSelector
@@ -127,6 +154,7 @@ const PreferencesSection = ({
           onChange={(event, newPlatform) =>
             handlePreferenceChange("teammate_platform", newPlatform)
           }
+          platformError={errors.teammate_platform}
         />
         <AgeRangeSelector
           useUserRange={useExistingPreferences}

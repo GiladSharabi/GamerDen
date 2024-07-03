@@ -7,7 +7,12 @@ type Props = {
   userPref: UserPreferences;
 };
 
-const EditGamingPreferencesSection = ({ buttonLabel, onSubmitClick, userPref }: Props) => {
+const EditGamingPreferencesSection = ({
+  buttonLabel,
+  onSubmitClick,
+  userPref,
+}: Props) => {
+  
   return (
     <PreferencesSection
       buttonLabel={buttonLabel}

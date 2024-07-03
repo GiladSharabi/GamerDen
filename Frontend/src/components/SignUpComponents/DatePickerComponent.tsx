@@ -1,4 +1,9 @@
-import { FormControl, FormHelperText, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -6,19 +11,18 @@ import dayjs from "dayjs";
 type DatePickerComponentProps = {
   selectedDate?: Date;
   onChange: (date: Date) => void;
-  dateError: string;
+  dateError?: string;
 };
 
 const DatePickerComponent = ({
   selectedDate,
   onChange,
-  dateError,
+  dateError = "",
 }: DatePickerComponentProps) => {
   const maxDate = dayjs().subtract(18, "year");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <FormControl>
         <DatePicker
           value={selectedDate ? dayjs(selectedDate) : null}
           label="Enter birthday"
@@ -27,9 +31,13 @@ const DatePickerComponent = ({
           onChange={(newDate) =>
             onChange(newDate ? newDate.toDate() : new Date(0))
           }
+          slotProps={{
+            textField: {
+              helperText: dateError,
+              error:!!dateError,
+            },
+          }}
         />
-        {dateError && <FormHelperText error>{dateError}</FormHelperText>}
-      </FormControl>
     </LocalizationProvider>
   );
 };

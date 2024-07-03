@@ -23,11 +23,11 @@ const Dashboard = () => {
     tempUser.preferences = preferences;
     const result = await findMatchingUsers(tempUser);
     if (result.users) {
-      console.log("match");
+      // console.log("match");
       setUsers(result.users);
       setHasMatch(true);
     } else {
-      console.log("no match");
+      // console.log("no match");
       setUsers([]);
       setHasMatch(false);
     }

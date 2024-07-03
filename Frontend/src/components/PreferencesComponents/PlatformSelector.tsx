@@ -1,4 +1,4 @@
-import { Typography, ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
+import { Typography, ToggleButton, ToggleButtonGroup, Grid, FormHelperText } from "@mui/material";
 import { MouseEvent } from "react";
 import { Platform } from "../../api/types";
 import theme from "../Theme";
@@ -7,12 +7,14 @@ type props = {
   label: string;
   selectedPlatforms: Platform[];
   onChange: (event: MouseEvent<HTMLElement>, newPlatform: Platform[]) => void;
+  platformError?: string;
 };
 
 const PlatformSelector = ({
   selectedPlatforms = [],
   onChange,
   label = "Select teammate Platforms",
+  platformError="",
 }: props) => {
 
   const platformValues = Object.values(Platform);
@@ -44,6 +46,7 @@ const PlatformSelector = ({
         ))}
 
       </ToggleButtonGroup>
+      {platformError && <FormHelperText error>{platformError}</FormHelperText>}
     </Grid>
   );
 };
