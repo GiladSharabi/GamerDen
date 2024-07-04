@@ -73,7 +73,7 @@ async function checkExistingUser(userData: any): Promise<AccessTokenResult | und
 
 export async function createUser(req: Request, res: Response): Promise<AccessTokenResult> {
   try {
-    const { preferences, ...userData } = req.body;
+    const { preferences, iat, ...userData } = req.body;
     const userRes = await checkExistingUser(userData);
 
     if (userRes?.usernameError || userRes?.emailError) {
@@ -85,32 +85,60 @@ export async function createUser(req: Request, res: Response): Promise<AccessTok
     }
 
     encryptPassword(userData);
-    const { games, ...preferencesData } = preferences;
+    await printAllGameIdsAndNames();
 
-    const createdUser = await createUserInDatabase(userData, preferencesData);
+    const createdUser = await createUserInDatabase(userData, preferences);
     const accessToken = createAccessToken(createdUser);
 
     return { accessToken: accessToken };
   } catch (error: any) {
+    console.log(error);
     return { error: "Internal server error" };
   }
 }
 
-async function createUserInDatabase(userData: User, preferences: UserPreferences): Promise<User> {
+async function printAllGameIdsAndNames(): Promise<void> {
+  const allGames = await db.game.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  const gameInfo = allGames.map(game => ({ id: game.id, name: game.name }));
+  console.log(gameInfo);
+}
+
+
+
+async function createUserInDatabase(userData: User, preferences: any): Promise<User> {
+  const { id: userId, ...userDataWithoutId } = userData;
+  const { id: preferencesId, userId: preferencesUserId, ...preferencesDataWithoutId } = preferences;
+
   return await db.user.create({
     data: {
-      ...userData,
+      ...userDataWithoutId,
       preferences: {
-        create: preferences,
+        create: {
+          ...preferencesDataWithoutId,
+          games: {
+            connect: preferences.games.map((game: any) => ({
+              id: game.id,
+            })),
+          },
+        },
       },
     },
     include: {
       preferences: {
-        include: { games: true },
+        include: {
+          games: true,
+        },
       },
     },
   });
 }
+
 
 function encryptPassword(userData: User) {
   const { password } = userData;
@@ -148,7 +176,6 @@ export async function updateUser(req: Request, res: Response) {
 
     res.status(200).json({ accessToken: accessToken });
   } catch (error: any) {
-    console.error("Error updating user:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }

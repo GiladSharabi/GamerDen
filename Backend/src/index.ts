@@ -14,7 +14,10 @@ import { compressAndSave, generateUniquePath } from "./multer/multer.service";
 import bcrypt from "bcrypt";
 export default bcrypt;
 
+import createUsers from "./user/user.seed";
+
 seedDB();
+createUsers();
 
 dotenvexpand.expand(dotenv.config());
 
