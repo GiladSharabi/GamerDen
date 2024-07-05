@@ -17,7 +17,7 @@ const PreferredGenderSelector = ({
   const genderValues = Object.values(Gender);
   const filteredGenderValues = genderValues.filter(value => value !== Gender.None);
 
-  const handleGenderChange = (event: any, newGender: Gender | null) => {
+  const handleGenderChange = (_event: any, newGender: Gender | null) => {
     if (newGender !== Gender.None && newGender !== null) {
       onChange(newGender);
     }

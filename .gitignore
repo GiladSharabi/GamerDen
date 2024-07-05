@@ -15,6 +15,9 @@ dist-ssr
 # User Images
 Backend/uploads/*
 
+.env
+.env.docker
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

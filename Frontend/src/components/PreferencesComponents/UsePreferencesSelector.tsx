@@ -1,4 +1,4 @@
-import { FormControlLabel, Checkbox, Box, Typography } from "@mui/material";
+import { FormControlLabel, Checkbox, Box } from "@mui/material";
 
 type props = {
   isUse: boolean;
