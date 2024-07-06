@@ -1,10 +1,10 @@
 # GamerDen
 
-GamerDen is a web application designed to connect gamers based on their specific gaming preferences from all over the world.
+GamerDen is a web application designed to connect gamers based on their specific \ gaming preferences from all over the world.
 Users can create accounts and update their gaming preferences.
 By tailoring these preferences, users can search for and connect with other gamers who share similar interests and view their profiles.
 
-&NewLine;
+
 
 ## Features
 - **User Registration:** Create an account with personal information and gaming preferences.
@@ -23,7 +23,7 @@ By tailoring these preferences, users can search for and connect with other game
 - **JWT:** JSON Web Tokens (JWT) are used for secure data transmission between the frontend and backend.
 - **Image Compression and Uploads:** Sharp is used for image compression, and Express Multer is used for handling file uploads.
 
-&NewLine;
+
 
 ## Getting Started
 If you choose to run or deploy GamerDen, Dockerfiles and a docker-compose.yaml file are available to run the app in an isolated environment.
