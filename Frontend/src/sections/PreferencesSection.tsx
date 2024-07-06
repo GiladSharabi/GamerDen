@@ -115,7 +115,7 @@ const PreferencesSection = ({
         <PlatformSelector
           label="Select Platform"
           selectedPlatforms={tempPreferences.platform}
-          onChange={(event, newPlatform) =>
+          onChange={(_event, newPlatform) =>
             handlePreferenceChange("platform", newPlatform)
           }
           platformError={errors.platform}
@@ -137,7 +137,7 @@ const PreferencesSection = ({
         <PlatformSelector
           label="Select teammate Platforms"
           selectedPlatforms={tempPreferences.teammate_platform}
-          onChange={(event, newPlatform) =>
+          onChange={(_event, newPlatform) =>
             handlePreferenceChange("teammate_platform", newPlatform)
           }
           platformError={errors.teammate_platform}

@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { PrismaClient } from '@prisma/client';
 import { Game } from '@prisma/client';
+import fs from 'fs';
 
 const db = new PrismaClient();
 
@@ -75,7 +76,6 @@ async function populateDatabase(gameData: Game[]): Promise<void> {
     });
 }
 
-
 async function seedDatabase(gameHeaders: any): Promise<void> {
     const gameData: Game[] = await fetchGameData(gameHeaders);
     const coverIds: number[] = gameData.filter(game => game.cover).map(game => Number(game.cover));
@@ -84,6 +84,7 @@ async function seedDatabase(gameHeaders: any): Promise<void> {
     const updatedGameData: Game[] = mapCoverUrls(gameData, coverData); // change game cover photo size
 
     await populateDatabase(updatedGameData);
+
     console.log("Finished database seeding");
     console.log("To check the db content use: npx prisma studio");
 }
@@ -95,7 +96,7 @@ async function resetGameTable() {
     await db.$executeRaw`ALTER SEQUENCE "Game_id_seq" RESTART WITH 1`;
 }
 
-async function seedDB(): Promise<void> {
+async function fetchGames(): Promise<void> {
     const gameHeaders: any = {
         "Client-ID": `${process.env.CLIENT_ID}`,
         "Authorization": `${process.env.IGDB_AUTHENTICATION_TOKEN}`,
@@ -111,4 +112,4 @@ async function seedDB(): Promise<void> {
     }
 }
 
-export default seedDB;
+export default fetchGames;

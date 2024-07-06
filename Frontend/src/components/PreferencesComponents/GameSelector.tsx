@@ -15,7 +15,7 @@ const GameSelector = ({
   selectedGames = [],
   onChange,
   useGamingPreferences,
-  gameError="",
+  gameError = "",
 }: Props) => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [gamesList, setGamesList] = useState<Game[]>([]);
@@ -74,7 +74,7 @@ const GameSelector = ({
         options={gamesList.map((game) => game.name)}
         freeSolo
         renderInput={(params) => <TextField {...params} label="Select Game" />}
-        onChange={(event, value) => value && handleAdd(value)}
+        onChange={(_event, value) => value && handleAdd(value)}
       />
       {gameError && <FormHelperText error>{gameError}</FormHelperText>}
       <Grid className="mt-2">
@@ -82,7 +82,7 @@ const GameSelector = ({
           <Chip
             key={game.name}
             label={game.name}
-            onDelete={(event) => {
+            onDelete={(_event) => {
               handleRemove(game.name);
             }}
             variant="filled"

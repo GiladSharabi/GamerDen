@@ -46,7 +46,7 @@ const LanguageSelector = ({
             helperText={languageError}
           />
         )}
-        onChange={(event, value) => value && handleAddLanguage(value)}
+        onChange={(_event, value) => value && handleAddLanguage(value)}
       />
       <Box marginTop={1}>
         {languages.map((language) => (

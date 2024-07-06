@@ -6,7 +6,7 @@ import gameRouter from "./game/game.router";
 import userRouter from "./user/user.router";
 import { createUser, fetchUserByUserName, updateUser } from "./user/user.service";
 import { jwtDecode } from "jwt-decode";
-import seedDB from "./game/game.seed";
+import fetchGames from "./game/game.seed";
 import { User } from "@prisma/client";
 import upload from "./multer/multer";
 import { compressAndSave, generateUniquePath } from "./multer/multer.service";
@@ -14,8 +14,16 @@ import { compressAndSave, generateUniquePath } from "./multer/multer.service";
 import bcrypt from "bcrypt";
 export default bcrypt;
 
-seedDB();
+import createUsers from "./user/user.seed";
 
+async function seedDataBase() {
+  await fetchGames();
+  await createUsers();
+}
+
+seedDataBase();
+
+const path = require('path')
 dotenvexpand.expand(dotenv.config());
 
 const app: Express = express();
@@ -23,7 +31,7 @@ const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static(path.resolve("/uploads")));
 app.use("/api/games", gameRouter);
 app.use("/api/users", userRouter);
 
