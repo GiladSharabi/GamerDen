@@ -16,6 +16,8 @@ GamerDen is a web application that helps gamers find partners based on their gam
 - **Database:** PostgreSQL
 - **API Integration:** Twitch IGDB API for fetching over 500k games
 
+---
+
 ## Getting Started
 
 To deploy GamerDen, you need to clone the repository and ensure Docker and Docker Compose are installed on your system. Follow the steps below to set up and run the application.
@@ -33,6 +35,7 @@ To deploy GamerDen, you need to clone the repository and ensure Docker and Docke
     git clone https://github.com/GiladSharabi/gamerden.git
     cd gamerden
     ```
+---
 
 2. **Create the `.env` File:**
 
@@ -59,6 +62,8 @@ To deploy GamerDen, you need to clone the repository and ensure Docker and Docke
     ```
 
     - **CLIENT_ID** and **IGDB_AUTHENTICATION_TOKEN** can be obtained from the [Twitch Developer Portal](https://dev.twitch.tv/console/apps/create).
+  
+---
 
 3. **Run the Application:**
 
