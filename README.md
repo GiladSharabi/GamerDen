@@ -1,4 +1,4 @@
-<h1 align="center">Welcome To GamerDen</h1>
+<h1 align="center">GamerDen</h1>
 
 ## About
 GamerDen is a web application designed to connect gamers based on their specific gaming preferences from all over the world.
