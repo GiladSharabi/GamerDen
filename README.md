@@ -1,9 +1,7 @@
 # GamerDen
 
 GamerDen is a web application designed to connect gamers based on their specific gaming preferences from all over the world.
-
 Users can create accounts and update their gaming preferences.
-
 By tailoring these preferences, users can search for and connect with other gamers who share similar interests and view their profiles.
 
 
