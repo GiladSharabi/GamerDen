@@ -17,6 +17,6 @@ FROM nginx:latest as prod
 COPY --from=build /dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80/tcp
+EXPOSE 80
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
