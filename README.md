@@ -17,7 +17,6 @@ By tailoring these preferences, users can search for and connect with other game
 - **Database:** PostgreSQL
 - **API Integration:** Twitch IGDB API for fetching over 500k games
 
---
 
 ## Getting Started
 If you choose to run or deploy GamerDen, Dockerfiles and docker-compose.yaml file are available to run the app in an isolated environment.
@@ -77,5 +76,3 @@ GamerDen includes an automated seed function that enables you to select how many
 ## Contributing
 
 Feel free to contribute, report issues, or suggest improvements to the GamerDen project!
-
----
