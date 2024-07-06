@@ -2,7 +2,7 @@
 
 GamerDen is a web application that helps gamers find partners based on their gaming preferences. Users can create an account, choose their gaming preferences, upload profile images, fill in their information, and then search for other gamers who are playing the same games. Users can also look at other people's profiles.
 
-## Features
+# Features
 
 - **User Registration:** Create an account with personal information and gaming preferences.
 - **Profile Management:** Upload profile images and update personal details.
