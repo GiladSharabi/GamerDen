@@ -96,7 +96,7 @@ async function resetGameTable() {
     await db.$executeRaw`ALTER SEQUENCE "Game_id_seq" RESTART WITH 1`;
 }
 
-async function seedDB(): Promise<void> {
+async function fetchGames(): Promise<void> {
     const gameHeaders: any = {
         "Client-ID": `${process.env.CLIENT_ID}`,
         "Authorization": `${process.env.IGDB_AUTHENTICATION_TOKEN}`,
@@ -112,4 +112,4 @@ async function seedDB(): Promise<void> {
     }
 }
 
-export default seedDB;
+export default fetchGames;

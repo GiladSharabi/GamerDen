@@ -109,7 +109,7 @@ const EditPersonalDetailsSection = ({
           margin="normal"
           fullWidth
           id="username"
-          label="username"
+          label="Username"
           name="username"
           autoComplete="username"
           value={user.username}

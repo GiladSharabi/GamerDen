@@ -85,7 +85,6 @@ export async function createUser(req: Request, res: Response): Promise<AccessTok
     }
 
     encryptPassword(userData);
-    await printAllGameIdsAndNames();
 
     const createdUser = await createUserInDatabase(userData, preferences);
     const accessToken = createAccessToken(createdUser);
@@ -96,20 +95,6 @@ export async function createUser(req: Request, res: Response): Promise<AccessTok
     return { error: "Internal server error" };
   }
 }
-
-async function printAllGameIdsAndNames(): Promise<void> {
-  const allGames = await db.game.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-
-  const gameInfo = allGames.map(game => ({ id: game.id, name: game.name }));
-  console.log(gameInfo);
-}
-
-
 
 async function createUserInDatabase(userData: User, preferences: any): Promise<User> {
   const { id: userId, ...userDataWithoutId } = userData;

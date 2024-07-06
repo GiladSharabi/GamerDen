@@ -12,14 +12,23 @@ async function createUsers(): Promise<void> {
         const users = JSON.parse(rawData);
         const results = [];
 
+        const usersExist = await db.user.findMany();
+        if (usersExist.length > 0) {
+            console.log("users already seeded");
+            return;
+        }
+
+        let usersSeeded = 0;
         for (const userData of users) {
             const { preferences, ...userDataWithoutPreferences } = userData;
 
             encryptPassword(userDataWithoutPreferences);
             const createdUser = await createUserInDatabase(userDataWithoutPreferences, preferences);
+            usersSeeded++;
+
             results.push(createdUser);
         }
-
+        console.log(`${usersSeeded} users seeded`);
     } catch (error: any) {
         console.log("Database already seeded with users");
     }
