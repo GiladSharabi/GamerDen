@@ -17,6 +17,11 @@ By tailoring these preferences, users can search for and connect with other game
 - **Database:** PostgreSQL
 - **API Integration:** Twitch IGDB API for fetching over 500k games
 
+### Security and File Handling
+- **Password Encryption:** bcrypt is used for secure password encryption in the database.
+- **JWT:** JSON Web Tokens (JWT) are used for secure data transmission between the frontend and backend.
+- **Image Compression and Uploads:** Sharp is used for image compression, and Express Multer is used for handling file uploads.
+
 
 ## Getting Started
 If you choose to run or deploy GamerDen, Dockerfiles and docker-compose.yaml file are available to run the app in an isolated environment.
