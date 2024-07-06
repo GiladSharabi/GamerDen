@@ -1,8 +1,8 @@
 # GamerDen
 
-- GamerDen is a web application designed to connect gamers based on their specific gaming preferences from all over the world.
-- Users can create accounts, select their favorite games, preferred gaming platforms (such as PC, PlayStation, and Xbox), choose their region, specify an age range, indicate a preference for voice communication, and more.
-- By tailoring these preferences, users can search for and connect with other gamers who share similar interests and view their profiles.
+GamerDen is a web application designed to connect gamers based on their specific gaming preferences from all over the world.
+Users can create accounts, select their favorite games, preferred gaming platforms (such as PC, PlayStation, and Xbox), choose their region, specify an age range, indicate a preference for voice communication, and more.
+By tailoring these preferences, users can search for and connect with other gamers who share similar interests and view their profiles.
 
 
 ## Features
