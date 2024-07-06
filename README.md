@@ -5,6 +5,7 @@ Users can create accounts and update their gaming preferences.
 By tailoring these preferences, users can search for and connect with other gamers who share similar interests and view their profiles.
 
 
+
 ## Features
 - **User Registration:** Create an account with personal information and gaming preferences.
 - **Profile Management:** Upload profile images and update personal details.
@@ -21,6 +22,7 @@ By tailoring these preferences, users can search for and connect with other game
 - **Password Encryption:** bcrypt is used for secure password encryption in the database.
 - **JWT:** JSON Web Tokens (JWT) are used for secure data transmission between the frontend and backend.
 - **Image Compression and Uploads:** Sharp is used for image compression, and Express Multer is used for handling file uploads.
+
 
 
 ## Getting Started
