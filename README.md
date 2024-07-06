@@ -2,15 +2,13 @@
 
 GamerDen is a web application that helps gamers find partners based on their gaming preferences. Users can create an account, choose their gaming preferences, upload profile images, fill in their information, and then search for other gamers who are playing the same games. Users can also look at other people's profiles.
 
-# Features
-
+## Features
 - **User Registration:** Create an account with personal information and gaming preferences.
 - **Profile Management:** Upload profile images and update personal details.
 - **Game Search:** Find other gamers playing the same games by certain preferences.
 - **Profile Viewing:** View other gamers' profiles to check out their details and preferences.
 
 ## Technology Stack
-
 - **Frontend:** React, TypeScript, Material-UI, Tailwind CSS, Nginx
 - **Backend:** Express, TypeScript, Prisma ORM
 - **Database:** PostgreSQL
@@ -19,16 +17,14 @@ GamerDen is a web application that helps gamers find partners based on their gam
 ---
 
 ## Getting Started
-
-To deploy GamerDen, you need to clone the repository and ensure Docker and Docker Compose are installed on your system. Follow the steps below to set up and run the application.
+If you choose to run or deploy GamerDen, Dockerfiles and docker-compose.yaml file are available to run the app in an isolated environment.
+you need to clone the repository and ensure Docker and Docker Compose are installed on your system. Follow the steps below to set up the application.
 
 ### Prerequisites
-
 - Docker
 - Docker Compose
 
 ### Installation
-
 1. **Clone the Repository:**
 
     ```bash
@@ -38,7 +34,6 @@ To deploy GamerDen, you need to clone the repository and ensure Docker and Docke
 ---
 
 2. **Create the `.env` File:**
-
     In the root folder of the project, create a `.env` file and fill in the following fields:
 
     ```env
@@ -66,7 +61,6 @@ To deploy GamerDen, you need to clone the repository and ensure Docker and Docke
 ---
 
 3. **Run the Application:**
-
     Navigate to the project directory and run the following commands:
 
     ```bash
