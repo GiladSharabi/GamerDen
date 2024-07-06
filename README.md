@@ -17,7 +17,7 @@ By tailoring these preferences, users can search for and connect with other game
 - **Database:** PostgreSQL
 - **API Integration:** Twitch IGDB API for fetching over 500k games
 
----
+--
 
 ## Getting Started
 If you choose to run or deploy GamerDen, Dockerfiles and docker-compose.yaml file are available to run the app in an isolated environment.
@@ -34,8 +34,7 @@ you need to clone the repository and ensure Docker and Docker Compose are instal
     git clone https://github.com/GiladSharabi/gamerden.git
     cd gamerden
     ```
----
-
+    
 2. **Create the `.env` File:**
     In the root folder of the project, create a `.env` file and fill in the following fields:
 
@@ -60,8 +59,6 @@ you need to clone the repository and ensure Docker and Docker Compose are instal
     ```
 
     - **CLIENT_ID** and **IGDB_AUTHENTICATION_TOKEN** can be obtained from the [Twitch Developer Portal](https://dev.twitch.tv/console/apps/create).
-  
----
 
 3. **Run the Application:**
     Navigate to the project directory and run the following commands:
