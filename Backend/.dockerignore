@@ -1,6 +1,3 @@
 # docker ignore
-.env
 node_module
-.env.example
 uploads
-.env.docker

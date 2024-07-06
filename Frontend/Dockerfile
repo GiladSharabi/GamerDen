@@ -7,6 +7,8 @@ RUN npm ci
 
 COPY . .
 
+ENV VITE_API_ENDPOINT="http://localhost:8080/api"
+
 RUN npm run build
 
 FROM nginx:latest as prod

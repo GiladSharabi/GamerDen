@@ -16,7 +16,6 @@ dist-ssr
 Backend/uploads/*
 
 .env
-.env.docker
 
 # Editor directories and files
 .vscode/*
